@@ -1,19 +1,37 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
+import {
+  getCategories,
+  addCategory,
+  deleteCategory,
+} from "../services/categoryService";
+
 export default function Admin() {
   const navigate = useNavigate();
 
   // حماية صفحة الأدمن
-  useEffect(() => {
-    const isAdmin = localStorage.getItem(
-      "adminLoggedIn"
-    );
+ useEffect(() => {
+  const isAdmin = localStorage.getItem(
+    "adminLoggedIn"
+  );
 
-    if (isAdmin !== "true") {
-      navigate("/admin-login");
-    }
-  }, [navigate]);
+  if (isAdmin !== "true") {
+    navigate("/admin-login");
+    return;
+  }
+
+  loadCategories();
+}, [navigate]);
+
+  async function loadCategories() {
+  try {
+    const data = await getCategories();
+    setCategories(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
 
   // تسجيل خروج
   function logout() {
@@ -25,14 +43,7 @@ export default function Admin() {
   }
 
   // Categories
-  const [categories, setCategories] = useState(() => {
-    const saved =
-      localStorage.getItem("categories");
-
-    return saved
-      ? JSON.parse(saved)
-      : ["WWE", "AEW", "Legends"];
-  });
+  const [categories, setCategories] = useState([]);
 
   const [newCategory, setNewCategory] =
     useState("");
@@ -64,13 +75,8 @@ export default function Admin() {
   const [editingId, setEditingId] =
     useState(null);
 
-  // حفظ الفئات
-  useEffect(() => {
-    localStorage.setItem(
-      "categories",
-      JSON.stringify(categories)
-    );
-  }, [categories]);
+
+ 
 
   // حفظ الأسئلة
   useEffect(() => {
@@ -81,25 +87,32 @@ export default function Admin() {
   }, [questions]);
 
   // إضافة فئة
-  const addCategory = () => {
-    if (!newCategory.trim()) return;
+ const addCategoryHandler = async () => {
+  if (!newCategory.trim()) return;
 
-    setCategories([
-      ...categories,
-      newCategory,
-    ]);
+  await addCategory({
+    name: newCategory,
+    description: "",
+    imageUrl: "",
+    color: "#3B82F6",
+    order: categories.length + 1,
+    packsCount: 0,
+    isActive: true,
+    //createdAt: new Date(),
+   // updatedAt: new Date(),
+  });
 
-    setNewCategory("");
-  };
+  setNewCategory("");
+
+  loadCategories();
+};
 
   // حذف فئة
-  const deleteCategory = (category) => {
-    setCategories(
-      categories.filter(
-        (c) => c !== category
-      )
-    );
-  };
+  const deleteCategoryHandler = async (id) => {
+  await deleteCategory(id);
+
+  loadCategories();
+};
 
   // إضافة أو تعديل سؤال
   const addQuestion = () => {
@@ -206,25 +219,23 @@ export default function Admin() {
         placeholder="Category Name"
       />
 
-      <button onClick={addCategory}>
+      <button onClick={addCategoryHandler}>
         Add Category
       </button>
 
       {categories.map((category) => (
-        <div key={category}>
-          {category}
+  <div key={category.id}>
+    {category.name}
 
-          <button
-            onClick={() =>
-              deleteCategory(
-                category
-              )
-            }
-          >
-            Delete
-          </button>
-        </div>
-      ))}
+    <button
+      onClick={() =>
+        deleteCategoryHandler(category.id)
+      }
+    >
+      Delete
+    </button>
+  </div>
+))}
 
       <hr />
 
@@ -242,14 +253,14 @@ export default function Admin() {
           Select Category
         </option>
 
-        {categories.map((category) => (
-          <option
-            key={category}
-            value={category}
-          >
-            {category}
-          </option>
-        ))}
+       {categories.map((category) => (
+  <option
+    key={category.id}
+    value={category.name}
+  >
+    {category.name}
+  </option>
+))}
       </select>
 
       <br />
