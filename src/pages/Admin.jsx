@@ -1,5 +1,15 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import {
+  getPacks,
+  addPack,
+  deletePack,
+} from "../services/packService";
+import {
+  getQuestions,
+  addQuestion,
+  deleteQuestion,
+} from "../services/questionService";
 
 import {
   getCategories,
@@ -47,18 +57,68 @@ export default function Admin() {
 
   const [newCategory, setNewCategory] =
     useState("");
+    const [selectedCategoryId, setSelectedCategoryId] = useState("");
 
-  // Questions
-  const [questions, setQuestions] = useState(
-    () => {
-      const saved =
-        localStorage.getItem("questions");
+const [packs, setPacks] = useState([]);
 
-      return saved
-        ? JSON.parse(saved)
-        : [];
-    }
-  );
+const [newPack, setNewPack] = useState("");
+const [selectedPackId, setSelectedPackId] = useState("");
+const [selectedQuestionPackId, setSelectedQuestionPackId] = useState("");
+
+const [questions, setQuestions] = useState([]);
+
+
+
+async function loadPacks(categoryId) {
+  if (!categoryId) {
+    setPacks([]);
+    return;
+  }
+
+  try {
+    const data = await getPacks(categoryId);
+    setPacks(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+async function loadQuestions(packId) {
+  if (!packId) {
+    setQuestions([]);
+    return;
+  }
+
+  try {
+    const data = await getQuestions(packId);
+    setQuestions(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+async function addPackHandler() {
+  if (!selectedCategoryId || !newPack.trim()) return;
+
+  await addPack({
+    categoryId: selectedCategoryId,
+    name: newPack,
+    order: packs.length + 1,
+    isActive: true,
+  });
+
+  setNewPack("");
+
+  loadPacks(selectedCategoryId);
+}
+
+async function deletePackHandler(id) {
+  await deletePack(id);
+
+  loadPacks(selectedCategoryId);
+}
+
+  
 
   const [selectedCategory, setSelectedCategory] =
     useState("");
@@ -78,13 +138,7 @@ export default function Admin() {
 
  
 
-  // حفظ الأسئلة
-  useEffect(() => {
-    localStorage.setItem(
-      "questions",
-      JSON.stringify(questions)
-    );
-  }, [questions]);
+
 
   // إضافة فئة
  const addCategoryHandler = async () => {
@@ -115,57 +169,31 @@ export default function Admin() {
 };
 
   // إضافة أو تعديل سؤال
-  const addQuestion = () => {
-    if (
-      !selectedCategory ||
-      !questionText.trim() ||
-      !answerText.trim() ||
-      !questionPoints
-    ) {
-      return;
-    }
+const addQuestionHandler = async () => {
+  if (
+    !selectedQuestionPackId ||
+    !questionText.trim() ||
+    !answerText.trim() ||
+    !questionPoints
+  ) {
+    return;
+  }
 
-    if (editingId) {
-      setQuestions(
-        questions.map((q) =>
-          q.id === editingId
-            ? {
-                ...q,
-                category:
-                  selectedCategory,
-                points:
-                  Number(
-                    questionPoints
-                  ),
-                question:
-                  questionText,
-                answer: answerText,
-              }
-            : q
-        )
-      );
+  await addQuestion({
+    packId: selectedQuestionPackId,
+    question: questionText,
+    answer: answerText,
+    points: Number(questionPoints),
+    order: questions.length + 1,
+    isActive: true,
+  });
 
-      setEditingId(null);
-    } else {
-      const newQuestion = {
-        id: Date.now(),
-        category: selectedCategory,
-        points:
-          Number(questionPoints),
-        question: questionText,
-        answer: answerText,
-      };
+  setQuestionText("");
+  setAnswerText("");
+  setQuestionPoints("");
 
-      setQuestions([
-        ...questions,
-        newQuestion,
-      ]);
-    }
-
-    setQuestionText("");
-    setAnswerText("");
-    setQuestionPoints("");
-  };
+  loadQuestions(selectedQuestionPackId);
+};
 
   // تعديل سؤال
   const editQuestion = (question) => {
@@ -239,29 +267,86 @@ export default function Admin() {
 
       <hr />
 
+      <h2>Packs</h2>
+
+<select
+  value={selectedCategoryId}
+  onChange={(e) => {
+    setSelectedCategoryId(e.target.value);
+    loadPacks(e.target.value);
+  }}
+>
+  <option value="">
+    Select Category
+  </option>
+
+  {categories.map((category) => (
+    <option
+      key={category.id}
+      value={category.id}
+    >
+      {category.name}
+    </option>
+  ))}
+</select>
+
+<br />
+<br />
+
+<input
+  type="text"
+  placeholder="Pack Name"
+  value={newPack}
+  onChange={(e) =>
+    setNewPack(e.target.value)
+  }
+/>
+
+<button onClick={addPackHandler}>
+  Add Pack
+</button>
+
+<br />
+<br />
+
+{packs.map((pack) => (
+  <div key={pack.id}>
+    {pack.name}
+
+    <button
+      onClick={() =>
+        deletePackHandler(pack.id)
+      }
+    >
+      Delete
+    </button>
+  </div>
+))}
+
+<hr />  
+
       <h2>Questions</h2>
 
       <select
-        value={selectedCategory}
-        onChange={(e) =>
-          setSelectedCategory(
-            e.target.value
-          )
-        }
-      >
-        <option value="">
-          Select Category
-        </option>
-
-       {categories.map((category) => (
-  <option
-    key={category.id}
-    value={category.name}
-  >
-    {category.name}
+  value={selectedQuestionPackId}
+  onChange={(e) => {
+    setSelectedQuestionPackId(e.target.value);
+    loadQuestions(e.target.value);
+  }}
+>
+  <option value="">
+    Select Pack
   </option>
-))}
-      </select>
+
+  {packs.map((pack) => (
+    <option
+      key={pack.id}
+      value={pack.id}
+    >
+      {pack.name}
+    </option>
+  ))}
+</select>
 
       <br />
       <br />
@@ -308,10 +393,10 @@ export default function Admin() {
       <br />
       <br />
 
-      <button onClick={addQuestion}>
-        {editingId
-          ? "Update Question"
-          : "Add Question"}
+     <button onClick={addQuestionHandler}>
+       
+         
+           "Add Question"
       </button>
 
       <hr />

@@ -11,12 +11,12 @@ import {
 
 import { db } from "../firebase";
 
-const packsRef = collection(db, "packs");
+const questionsRef = collection(db, "questions");
 
-export async function getPacks(categoryId) {
+export async function getQuestions(packId) {
   const q = query(
-    packsRef,
-    where("categoryId", "==", categoryId),
+    questionsRef,
+    where("packId", "==", packId),
     where("isActive", "==", true),
     orderBy("order")
   );
@@ -29,10 +29,10 @@ export async function getPacks(categoryId) {
   }));
 }
 
-export async function addPack(pack) {
-  return await addDoc(packsRef, pack);
+export async function addQuestion(question) {
+  return await addDoc(questionsRef, question);
 }
 
-export async function deletePack(id) {
-  return await deleteDoc(doc(db, "packs", id));
+export async function deleteQuestion(id) {
+  return await deleteDoc(doc(db, "questions", id));
 }
