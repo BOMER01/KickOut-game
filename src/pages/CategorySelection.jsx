@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { getCategories } from "../services/categoryService";
+import { getRandomPack } from "../services/packService";
 
 function CategorySelection() {
   const [categories, setCategories] = useState([]);
@@ -33,12 +34,12 @@ function CategorySelection() {
   function handleCategoryClick(category) {
     if (isSelected(category)) return;
 
-    if (teamOneCategories.length < 2) {
+    if (teamOneCategories.length < 4) {
       setTeamOneCategories([...teamOneCategories, category]);
       return;
     }
 
-    if (teamTwoCategories.length < 2) {
+    if (teamTwoCategories.length < 4) {
       setTeamTwoCategories([...teamTwoCategories, category]);
       return;
     }
@@ -58,30 +59,55 @@ function CategorySelection() {
     );
   }
 
-  function handleNext() {
-    if (
-      teamOneCategories.length !== 2 ||
-      teamTwoCategories.length !== 2
-    ) {
-      alert("يجب اختيار فئتين لكل فريق");
-      return;
+  async function handleNext() {
+  if (
+    teamOneCategories.length !== 4 ||
+    teamTwoCategories.length !== 4
+  ) {
+    alert("يجب اختيار 4 فئات لكل فريق");
+    return;
+  }
+
+  try {
+    const selectedCategories = [];
+
+    const allCategories = [
+      ...teamOneCategories,
+      ...teamTwoCategories,
+    ];
+
+    for (const category of allCategories) {
+      const randomPack = await getRandomPack(category.id);
+
+      if (!randomPack) {
+        alert(`الفئة ${category.name} لا تحتوي على أي Pack`);
+        return;
+      }
+
+      selectedCategories.push({
+        categoryId: category.id,
+        categoryName: category.name,
+        packId: randomPack.id,
+        packName: randomPack.name,
+      });
     }
 
     navigate("/setup", {
       state: {
-        categories: [
-          ...teamOneCategories,
-          ...teamTwoCategories,
-        ],
+        categories: selectedCategories,
       },
     });
+  } catch (error) {
+    console.error(error);
+    alert("حدث خطأ أثناء تجهيز المباراة");
   }
+}
 
   let currentTurn = "";
 
-  if (teamOneCategories.length < 2) {
+  if (teamOneCategories.length < 4) {
     currentTurn = "🎯 دور الفريق الأول لاختيار الفئات";
-  } else if (teamTwoCategories.length < 2) {
+  } else if (teamTwoCategories.length < 4) {
     currentTurn = "🎯 دور الفريق الثاني لاختيار الفئات";
   } else {
     currentTurn = "✅ تم اختيار جميع الفئات";

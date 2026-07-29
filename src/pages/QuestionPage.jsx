@@ -2,6 +2,7 @@ import { useLocation } from "react-router-dom";
 import { useState, useContext, useEffect } from "react";
 import { GameContext } from "../context/GameContext";
 import { useNavigate } from "react-router-dom";
+import { getQuestions } from "../services/questionService";
 
 function QuestionPage() {
   const location = useLocation();
@@ -9,11 +10,9 @@ function QuestionPage() {
 
   const [showAnswer, setShowAnswer] =
     useState(false);
+   const [currentQuestion, setCurrentQuestion] = useState(null);
 
-  const [questions, setQuestions] =
-    useState([]);
-
-  const { gameData, setGameData } =
+  const { gameData, setGameData } = 
     useContext(GameContext);
 
   useEffect(() => {
@@ -27,19 +26,37 @@ function QuestionPage() {
     }
   }, []);
 
-  const {
-    category,
-    points,
-    teamOne,
-    teamTwo,
-  } = location.state || {};
+ const {
+  categoryId,
+  categoryName,
+  packId,
+  questionId,
+  points,
+  teamOne,
+  teamTwo,
+} = location.state || {}; 
 
   const currentQuestion =
     questions.find(
       (q) =>
         q.category === category &&
         q.points === Number(points)
+    )
+    useEffect(() => {
+  async function loadQuestion() {
+    const questions = await getQuestions(packId);
+
+    const question = questions.find(
+      (q) => q.id === questionId
     );
+
+    setCurrentQuestion(question);
+  }
+
+  if (packId && questionId) {
+    loadQuestion();
+  }
+}, [packId, questionId]);
 
   function givePointsToTeamOne() {
     const questionId =
@@ -78,14 +95,13 @@ function QuestionPage() {
   }
 
   function noWinner() {
-    const questionId =
-      `${category}-${points}`;
+   const usedQuestionId = questionId;
 
     setGameData({
       ...gameData,
       usedQuestions: [
-        ...gameData.usedQuestions,
-        questionId,
+         ...gameData.usedQuestions,
+  usedQuestionId,
       ],
     });
 
@@ -96,7 +112,7 @@ function QuestionPage() {
     <div>
       <h1>السؤال</h1>
 
-      <h2>الفئة: {category}</h2>
+      <h2>الفئة: {categoryName}</h2>
 
       <h3>النقاط: {points}</h3>
 

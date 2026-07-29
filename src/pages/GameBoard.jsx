@@ -1,23 +1,33 @@
 import { useNavigate } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import { GameContext } from "../context/GameContext";
+import { getQuestions } from "../services/questionService";
 
 function GameBoard() {
   const { gameData } = useContext(GameContext);
   const navigate = useNavigate();
 
-  const [questions, setQuestions] = useState([]);
+  const [questionsByPack, setQuestionsByPack] = useState({});
 
   useEffect(() => {
-    const savedQuestions =
-      localStorage.getItem("questions");
+  async function loadQuestions() {
+    const data = {};
 
-    if (savedQuestions) {
-      setQuestions(
-        JSON.parse(savedQuestions)
-      );
+    for (const category of gameData.categories) {
+      const questions = await getQuestions(category.packId);
+
+      data[category.packId] = questions;
     }
-  }, []);
+
+    setQuestionsByPack(data);
+  }
+
+  if (gameData.categories.length > 0) {
+    loadQuestions();
+  }
+}, [gameData.categories]);
+
+ 
 
   function endGame() {
     navigate("/winner");
@@ -33,9 +43,9 @@ function GameBoard() {
     usedQuestions,
   } = gameData;
 
-  const totalQuestions = questions.filter(
-    (q) => categories?.includes(q.category)
-  ).length;
+  const totalQuestions = Object.values(questionsByPack)
+  .flat()
+  .length;
 
   useEffect(() => {
     if (
@@ -75,28 +85,21 @@ function GameBoard() {
 
       <div className="game-board-grid">
         {categories?.map((category) => {
-          const categoryQuestions =
-            questions
-              .filter(
-                (q) =>
-                  q.category === category
-              )
-              .sort(
-                (a, b) =>
-                  a.points - b.points
-              );
+        const categoryQuestions =
+  [...(questionsByPack[category.packId] || [])]
+    .sort((a, b) => a.points - b.points);
 
           return (
-            <div
-              key={category}
-              className="category-column"
-            >
-              <h3>{category}</h3>
+           <div
+  key={category.categoryId}
+  className="category-column"
+>
+              <h3>{category.categoryName}</h3>
 
               {categoryQuestions.map(
                 (question) => {
                   const questionId =
-                    `${category}-${question.points}`;
+`${category.packId}-${question.id}`;
 
                   if (
                     usedQuestions.includes(
@@ -114,13 +117,12 @@ function GameBoard() {
                         navigate(
                           "/question",
                           {
-                            state: {
-                              category,
-                              points:
-                                question.points,
-                              teamOne,
-                              teamTwo,
-                            },
+                           state: {
+  categoryName: category.categoryName,
+  teamOne,
+  teamTwo,
+  question,
+}
                           }
                         )
                       }

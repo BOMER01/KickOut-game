@@ -76,10 +76,13 @@ navigate("/game");
 
       <h2>الفئات المختارة</h2>
 
-      {categories.map((category) => (
-        <p key={category}>{category}</p>
-      ))}
-
+    {categories.map((category) => (
+  <p key={category.categoryId}>
+    {category.categoryName}
+    {" "}
+    ({category.packName})
+  </p>
+))}
       <button onClick={handleStartGame}>
         ابدأ المباراة
       </button>

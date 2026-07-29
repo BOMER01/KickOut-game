@@ -17,7 +17,7 @@ function Home() {
 
   return (
     <div>
-      <h1>Wrestling Challenge</h1>
+      <h1>KickOut</h1>
 
       {currentUser ? (
         <>
@@ -51,7 +51,7 @@ function Home() {
           <br />
 
           <Link to="/register">
-            <button>إنشاء حساب</button>
+            <button>إنشاء حساب جديد </button>
           </Link>
         </>
       )}

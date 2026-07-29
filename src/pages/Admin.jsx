@@ -217,13 +217,11 @@ const addQuestionHandler = async () => {
   };
 
   // حذف سؤال
-  const deleteQuestion = (id) => {
-    setQuestions(
-      questions.filter(
-        (q) => q.id !== id
-      )
-    );
-  };
+ async function deleteQuestionHandler(id) {
+  await deleteQuestion(id);
+
+  loadQuestions(selectedQuestionPackId);
+}
 
   return (
     <div>
@@ -439,7 +437,7 @@ const addQuestionHandler = async () => {
             {question.answer}
           </p>
 
-          <button
+          {/*<button
             onClick={() =>
               editQuestion(
                 question
@@ -447,17 +445,17 @@ const addQuestionHandler = async () => {
             }
           >
             Edit
-          </button>
+          </button>*/}
 
           <button
-            onClick={() =>
-              deleteQuestion(
-                question.id
-              )
-            }
-          >
-            Delete
-          </button>
+  onClick={() =>
+    deleteQuestionHandler(
+      question.id
+    )
+  }
+>
+  Delete
+</button>
         </div>
       ))}
     </div>

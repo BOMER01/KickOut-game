@@ -36,3 +36,16 @@ export async function addPack(pack) {
 export async function deletePack(id) {
   return await deleteDoc(doc(db, "packs", id));
 }
+
+// أضف هذه الدالة الجديدة
+export async function getRandomPack(categoryId) {
+  const packs = await getPacks(categoryId);
+
+  if (packs.length === 0) return null;
+
+  const randomIndex = Math.floor(
+    Math.random() * packs.length
+  );
+
+  return packs[randomIndex];
+}
