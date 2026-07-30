@@ -98,16 +98,11 @@ function GameBoard() {
 
               {categoryQuestions.map(
                 (question) => {
-                  const questionId =
-`${category.packId}-${question.id}`;
+                const questionId = question.id;
 
-                  if (
-                    usedQuestions.includes(
-                      questionId
-                    )
-                  ) {
-                    return null;
-                  }
+if (usedQuestions.includes(questionId)) {
+  return null;
+}
 
                   return (
                     <button

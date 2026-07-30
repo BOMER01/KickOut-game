@@ -34,12 +34,12 @@ function CategorySelection() {
   function handleCategoryClick(category) {
     if (isSelected(category)) return;
 
-    if (teamOneCategories.length < 4) {
+    if (teamOneCategories.length < 2) {
       setTeamOneCategories([...teamOneCategories, category]);
       return;
     }
 
-    if (teamTwoCategories.length < 4) {
+    if (teamTwoCategories.length < 2) {
       setTeamTwoCategories([...teamTwoCategories, category]);
       return;
     }
@@ -61,8 +61,8 @@ function CategorySelection() {
 
   async function handleNext() {
   if (
-    teamOneCategories.length !== 4 ||
-    teamTwoCategories.length !== 4
+    teamOneCategories.length !== 2 ||
+    teamTwoCategories.length !== 2
   ) {
     alert("يجب اختيار 4 فئات لكل فريق");
     return;
@@ -105,9 +105,9 @@ function CategorySelection() {
 
   let currentTurn = "";
 
-  if (teamOneCategories.length < 4) {
+  if (teamOneCategories.length < 2) {
     currentTurn = "🎯 دور الفريق الأول لاختيار الفئات";
-  } else if (teamTwoCategories.length < 4) {
+  } else if (teamTwoCategories.length < 2) {
     currentTurn = "🎯 دور الفريق الثاني لاختيار الفئات";
   } else {
     currentTurn = "✅ تم اختيار جميع الفئات";

@@ -2,7 +2,7 @@ import { useLocation } from "react-router-dom";
 import { useState, useContext, useEffect } from "react";
 import { GameContext } from "../context/GameContext";
 import { useNavigate } from "react-router-dom";
-import { getQuestions } from "../services/questionService";
+
 
 function QuestionPage() {
   const location = useLocation();
@@ -10,7 +10,6 @@ function QuestionPage() {
 
   const [showAnswer, setShowAnswer] =
     useState(false);
-   const [currentQuestion, setCurrentQuestion] = useState(null);
 
   const { gameData, setGameData } = 
     useContext(GameContext);
@@ -27,14 +26,11 @@ function QuestionPage() {
   }, []);
 
  const {
-  categoryId,
   categoryName,
-  packId,
-  questionId,
-  points,
   teamOne,
   teamTwo,
-} = location.state || {}; 
+  question,
+} = location.state || {};
 
   const currentQuestion =
     questions.find(
@@ -42,71 +38,55 @@ function QuestionPage() {
         q.category === category &&
         q.points === Number(points)
     )
-    useEffect(() => {
-  async function loadQuestion() {
-    const questions = await getQuestions(packId);
+    
 
-    const question = questions.find(
-      (q) => q.id === questionId
-    );
+ function givePointsToTeamOne() {
+  const usedQuestionId = question.id;
 
-    setCurrentQuestion(question);
-  }
+  setGameData({
+    ...gameData,
+    scoreTeamOne:
+      gameData.scoreTeamOne +
+      Number(question.points),
+    usedQuestions: [
+      ...gameData.usedQuestions,
+      usedQuestionId,
+    ],
+  });
 
-  if (packId && questionId) {
-    loadQuestion();
-  }
-}, [packId, questionId]);
-
-  function givePointsToTeamOne() {
-    const questionId =
-      `${category}-${points}`;
-
-    setGameData({
-      ...gameData,
-      scoreTeamOne:
-        gameData.scoreTeamOne +
-        Number(points),
-      usedQuestions: [
-        ...gameData.usedQuestions,
-        questionId,
-      ],
-    });
-
-    navigate("/game");
-  }
+  navigate("/game");
+}
 
   function givePointsToTeamTwo() {
-    const questionId =
-      `${category}-${points}`;
+  const usedQuestionId = question.id;
 
-    setGameData({
-      ...gameData,
-      scoreTeamTwo:
-        gameData.scoreTeamTwo +
-        Number(points),
-      usedQuestions: [
-        ...gameData.usedQuestions,
-        questionId,
-      ],
-    });
+  setGameData({
+    ...gameData,
+    scoreTeamTwo:
+      gameData.scoreTeamTwo +
+      Number(question.points),
+    usedQuestions: [
+      ...gameData.usedQuestions,
+      usedQuestionId,
+    ],
+  });
 
-    navigate("/game");
-  }
+  navigate("/game");
+} 
 
-  function noWinner() {
-   const usedQuestionId = questionId;
+function noWinner() {
+  const usedQuestionId = question.id;
 
-    setGameData({
-      ...gameData,
-      usedQuestions: [
-         ...gameData.usedQuestions,
-  usedQuestionId,
-      ],
-    });
+  setGameData({
+    ...gameData,
+    usedQuestions: [
+      ...gameData.usedQuestions,
+      usedQuestionId,
+    ],
+  });
 
-    navigate("/game");
-  }
+  navigate("/game");
+}
 
   return (
     <div>
@@ -123,7 +103,7 @@ function QuestionPage() {
       <hr />
 
       <p>
-        {currentQuestion?.question}
+        {question?.question}
       </p>
 
       <button
@@ -139,7 +119,7 @@ function QuestionPage() {
           <h3>الإجابة:</h3>
 
           <p>
-            {currentQuestion?.answer}
+            {question?.answer}
           </p>
         </div>
       )}
