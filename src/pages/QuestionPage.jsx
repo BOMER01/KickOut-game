@@ -1,92 +1,65 @@
 import { useLocation } from "react-router-dom";
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext } from "react";
 import { GameContext } from "../context/GameContext";
 import { useNavigate } from "react-router-dom";
-
 
 function QuestionPage() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const [showAnswer, setShowAnswer] =
-    useState(false);
+  const [showAnswer, setShowAnswer] = useState(false);
 
-  const { gameData, setGameData } = 
+  const { gameData, setGameData } =
     useContext(GameContext);
 
-  useEffect(() => {
-    const savedQuestions =
-      localStorage.getItem("questions");
+  const {
+    categoryName,
+    teamOne,
+    teamTwo,
+    question,
+  } = location.state || {};
 
-    if (savedQuestions) {
-      setQuestions(
-        JSON.parse(savedQuestions)
-      );
-    }
-  }, []);
+  function givePointsToTeamOne() {
+    setGameData({
+      ...gameData,
+      scoreTeamOne:
+        gameData.scoreTeamOne +
+        Number(question.points),
+      usedQuestions: [
+        ...gameData.usedQuestions,
+        question.id,
+      ],
+    });
 
- const {
-  categoryName,
-  teamOne,
-  teamTwo,
-  question,
-} = location.state || {};
-
-  const currentQuestion =
-    questions.find(
-      (q) =>
-        q.category === category &&
-        q.points === Number(points)
-    )
-    
-
- function givePointsToTeamOne() {
-  const usedQuestionId = question.id;
-
-  setGameData({
-    ...gameData,
-    scoreTeamOne:
-      gameData.scoreTeamOne +
-      Number(question.points),
-    usedQuestions: [
-      ...gameData.usedQuestions,
-      usedQuestionId,
-    ],
-  });
-
-  navigate("/game");
-}
+    navigate("/game");
+  }
 
   function givePointsToTeamTwo() {
-  const usedQuestionId = question.id;
+    setGameData({
+      ...gameData,
+      scoreTeamTwo:
+        gameData.scoreTeamTwo +
+        Number(question.points),
+      usedQuestions: [
+        ...gameData.usedQuestions,
+        question.id,
+      ],
+    });
 
-  setGameData({
-    ...gameData,
-    scoreTeamTwo:
-      gameData.scoreTeamTwo +
-      Number(question.points),
-    usedQuestions: [
-      ...gameData.usedQuestions,
-      usedQuestionId,
-    ],
-  });
+    navigate("/game");
+  }
 
-  navigate("/game");
-} 
+  function noWinner() {
+    setGameData({
+      ...gameData,
+      usedQuestions: [
+        ...gameData.usedQuestions,
+        question.id,
+      ],
+    });
 
-function noWinner() {
-  const usedQuestionId = question.id;
-
-  setGameData({
-    ...gameData,
-    usedQuestions: [
-      ...gameData.usedQuestions,
-      usedQuestionId,
-    ],
-  });
-
-  navigate("/game");
-}
+    navigate("/game");
+  }
 
   return (
     <div>
@@ -94,7 +67,7 @@ function noWinner() {
 
       <h2>الفئة: {categoryName}</h2>
 
-      <h3>النقاط: {points}</h3>
+      <h3>النقاط: {question?.points}</h3>
 
       <h3>
         {teamOne} VS {teamTwo}
@@ -102,56 +75,32 @@ function noWinner() {
 
       <hr />
 
-      <p>
-        {question?.question}
-      </p>
+      <p>{question?.question}</p>
 
-      <button
-        onClick={() =>
-          setShowAnswer(true)
-        }
-      >
+      <button onClick={() => setShowAnswer(true)}>
         إظهار الإجابة
       </button>
 
       {showAnswer && (
-        <div>
+        <>
           <h3>الإجابة:</h3>
 
-          <p>
-            {question?.answer}
-          </p>
-        </div>
-      )}
+          <p>{question?.answer}</p>
 
-      {showAnswer && (
-        <div>
-          <h3>
-            من حصل على النقاط؟
-          </h3>
+          <h3>من حصل على النقاط؟</h3>
 
-          <button
-            onClick={
-              givePointsToTeamOne
-            }
-          >
+          <button onClick={givePointsToTeamOne}>
             {teamOne}
           </button>
 
-          <button
-            onClick={
-              givePointsToTeamTwo
-            }
-          >
+          <button onClick={givePointsToTeamTwo}>
             {teamTwo}
           </button>
 
-          <button
-            onClick={noWinner}
-          >
+          <button onClick={noWinner}>
             لا أحد
           </button>
-        </div>
+        </>
       )}
     </div>
   );

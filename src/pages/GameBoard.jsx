@@ -20,6 +20,7 @@ function GameBoard() {
     }
 
     setQuestionsByPack(data);
+    console.log(data);
   }
 
   if (gameData.categories.length > 0) {
@@ -85,6 +86,8 @@ function GameBoard() {
 
       <div className="game-board-grid">
         {categories?.map((category) => {
+          console.log(category);
+console.log(questionsByPack[category.packId]);
         const categoryQuestions =
   [...(questionsByPack[category.packId] || [])]
     .sort((a, b) => a.points - b.points);

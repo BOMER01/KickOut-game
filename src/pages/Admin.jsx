@@ -82,6 +82,19 @@ async function loadPacks(categoryId) {
     console.error(error);
   }
 }
+async function loadQuestionPacks(categoryId) {
+  if (!categoryId) {
+    setQuestionPacks([]);
+    return;
+  }
+
+  try {
+    const data = await getPacks(categoryId);
+    setQuestionPacks(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
 
 async function loadQuestions(packId) {
   if (!packId) {
@@ -120,73 +133,78 @@ async function deletePackHandler(id) {
 
   
 
-  const [selectedCategory, setSelectedCategory] =
-    useState("");
+    const [selectedCategory, setSelectedCategory] =
+      useState("");
+      
 
-  const [questionPoints, setQuestionPoints] =
-    useState("");
+  const [questionPacks, setQuestionPacks] =
+    useState([]);
+      //
 
-  const [questionText, setQuestionText] =
-    useState("");
+    const [questionPoints, setQuestionPoints] =
+      useState("");
 
-  const [answerText, setAnswerText] =
-    useState("");
+    const [questionText, setQuestionText] =
+      useState("");
 
-  const [editingId, setEditingId] =
-    useState(null);
+    const [answerText, setAnswerText] =
+      useState("");
+
+    const [editingId, setEditingId] =
+      useState(null);
 
 
- 
+  
 
 
 
-  // إضافة فئة
- const addCategoryHandler = async () => {
-  if (!newCategory.trim()) return;
+    // إضافة فئة
+  const addCategoryHandler = async () => {
+    if (!newCategory.trim()) return;
 
-  await addCategory({
-    name: newCategory,
-    description: "",
-    imageUrl: "",
-    color: "#3B82F6",
-    order: categories.length + 1,
-    packsCount: 0,
-    isActive: true,
-    //createdAt: new Date(),
-   // updatedAt: new Date(),
-  });
+    await addCategory({
+      name: newCategory,
+      description: "",
+      imageUrl: "",
+      color: "#3B82F6",
+      order: categories.length + 1,
+      packsCount: 0,
+      isActive: true,
+      //createdAt: new Date(),
+    // updatedAt: new Date(),
+    });
 
-  setNewCategory("");
+    setNewCategory("");
 
-  loadCategories();
-};
+    loadCategories();
+  };
 
-  // حذف فئة
-  const deleteCategoryHandler = async (id) => {
-  await deleteCategory(id);
+    // حذف فئة
+    const deleteCategoryHandler = async (id) => {
+    await deleteCategory(id);
 
-  loadCategories();
-};
+    loadCategories();
+  };
 
-  // إضافة أو تعديل سؤال
-const addQuestionHandler = async () => {
-  if (
-    !selectedQuestionPackId ||
-    !questionText.trim() ||
-    !answerText.trim() ||
-    !questionPoints
-  ) {
-    return;
-  }
+    // إضافة أو تعديل سؤال
+  const addQuestionHandler = async () => {
+    if (
+      !selectedQuestionPackId ||
+      !questionText.trim() ||
+      !answerText.trim() ||
+      !questionPoints
+    ) {
+      return;
+    }
 
-  await addQuestion({
-    packId: selectedQuestionPackId,
-    question: questionText,
-    answer: answerText,
-    points: Number(questionPoints),
-    order: questions.length + 1,
-    isActive: true,
-  });
+    await addQuestion({
+      packId: selectedQuestionPackId,
+      question: questionText,
+      answer: answerText,
+      points: Number(questionPoints),
+      order: questions.length + 1,
+      isActive: true,
+    });
 
   setQuestionText("");
   setAnswerText("");
