@@ -17,14 +17,22 @@ import {
   deleteCategory,
 } from "../services/categoryService";
 
+import {
+  getPackages,
+  addPackage,
+  deletePackage,
+  updatePackage,
+} from "../services/packageService";
+
 export default function Admin() {
   const navigate = useNavigate();
 
   // حماية صفحة الأدمن
- useEffect(() => {
-  const isAdmin = localStorage.getItem(
-    "adminLoggedIn"
-  );
+useEffect(() => {
+  const isAdmin =
+    localStorage.getItem(
+      "adminLoggedIn"
+    );
 
   if (isAdmin !== "true") {
     navigate("/admin-login");
@@ -32,6 +40,8 @@ export default function Admin() {
   }
 
   loadCategories();
+  loadPackages();
+
 }, [navigate]);
 
   async function loadCategories() {
@@ -67,6 +77,19 @@ const [selectedQuestionPackId, setSelectedQuestionPackId] = useState("");
 
 const [questions, setQuestions] = useState([]);
 
+const [packages, setPackages] = useState([]);
+
+const [packageName, setPackageName] = useState("");
+
+const [packageGames, setPackageGames] =
+  useState("");
+
+const [packagePrice, setPackagePrice] =
+  useState("");
+
+const [packageCurrency, setPackageCurrency] =
+  useState("USD");
+
 
 
 async function loadPacks(categoryId) {
@@ -78,6 +101,16 @@ async function loadPacks(categoryId) {
   try {
     const data = await getPacks(categoryId);
     setPacks(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+async function loadPackages() {
+  try {
+    const data = await getPackages();
+
+    setPackages(data);
   } catch (error) {
     console.error(error);
   }
@@ -129,6 +162,37 @@ async function deletePackHandler(id) {
   await deletePack(id);
 
   loadPacks(selectedCategoryId);
+}
+
+async function addPackageHandler() {
+  if (
+    !packageName.trim() ||
+    !packageGames ||
+    !packagePrice
+  ) {
+    return;
+  }
+
+  await addPackage({
+    name: packageName,
+    games: Number(packageGames),
+    price: Number(packagePrice),
+    currency: packageCurrency,
+    order: packages.length + 1,
+    isActive: true,
+  });
+
+  setPackageName("");
+  setPackageGames("");
+  setPackagePrice("");
+
+  loadPackages();
+}
+
+async function deletePackageHandler(id) {
+  await deletePackage(id);
+
+  loadPackages();
 }
 
   
@@ -476,6 +540,100 @@ async function deletePackHandler(id) {
 </button>
         </div>
       ))}
+
+      <hr />
+
+<h2>Packages</h2>
+
+<input
+  type="text"
+  placeholder="Package Name"
+  value={packageName}
+  onChange={(e) =>
+    setPackageName(e.target.value)
+  }
+/>
+
+<br />
+<br />
+
+<input
+  type="number"
+  placeholder="Games"
+  value={packageGames}
+  onChange={(e) =>
+    setPackageGames(e.target.value)
+  }
+/>
+
+<br />
+<br />
+
+<input
+  type="number"
+  placeholder="Price"
+  value={packagePrice}
+  onChange={(e) =>
+    setPackagePrice(e.target.value)
+  }
+/>
+
+<br />
+<br />
+
+<select
+  value={packageCurrency}
+  onChange={(e) =>
+    setPackageCurrency(e.target.value)
+  }
+>
+ 
+
+  <option value="SAR">
+    SAR
+  </option>
+</select>
+
+<br />
+<br />
+
+<button onClick={addPackageHandler}>
+  Add Package
+</button>
+
+<hr />
+
+{packages.map((pkg) => (
+  <div
+    key={pkg.id}
+    style={{
+      border: "1px solid gray",
+      padding: "10px",
+      marginBottom: "10px",
+    }}
+  >
+    <p>
+      <strong>Name:</strong> {pkg.name}
+    </p>
+
+    <p>
+      <strong>Games:</strong> {pkg.games}
+    </p>
+
+    <p>
+      <strong>Price:</strong> {pkg.price}{" "}
+      {pkg.currency}
+    </p>
+
+    <button
+      onClick={() =>
+        deletePackageHandler(pkg.id)
+      }
+    >
+      Delete
+    </button>
+  </div>
+))}
     </div>
   );
 }
