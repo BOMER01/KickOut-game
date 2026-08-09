@@ -1,6 +1,622 @@
+import { useEffect, useRef } from "react";
+
 export default function HowToPlay() {
+  const sectionRef = useRef(null);
+
+  useEffect(() => {
+    const section = sectionRef.current;
+
+    if (!section) return;
+
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+
+    const board = section.querySelector("#tutorialBoard");
+    const stages = [
+      ...section.querySelectorAll(".tutorial-stage"),
+    ];
+    const copy = [
+      ...section.querySelectorAll(".tutorial-copy__item"),
+    ];
+    const nodes = [
+      ...section.querySelectorAll(".ref-node"),
+    ];
+
+    const scoreboard = section.querySelector("#scoreboard");
+    const blueName = section.querySelector("#blueTeamName");
+    const redName = section.querySelector("#redTeamName");
+    const vs = section.querySelector("#vsBadge");
+
+    const catWM = section.querySelector("#catWM");
+    const catTitles = section.querySelector("#catTitles");
+
+    const tile500 = section.querySelector("#tile500");
+    const values = section.querySelector("#valueGrid");
+    const question = section.querySelector("#questionPanel");
+
+    const score = section.querySelector("#sbBlueScore");
+    const redTeam = section.querySelector(".sb-team--red");
+
+    const cursor = section.querySelector("#tutCursor");
+
+    let active = -1;
+    let run = 0;
+    let tutorialStarted = false;
+
+    const timers = new Set();
+
+    const wait = (ms) =>
+      new Promise((resolve) => {
+        const timer = setTimeout(() => {
+          timers.delete(timer);
+          resolve();
+        }, ms);
+
+        timers.add(timer);
+      });
+
+    function clearTimers() {
+      timers.forEach((timer) => clearTimeout(timer));
+      timers.clear();
+    }
+
+    function setCursorVisible(show) {
+      if (!cursor) return;
+
+      cursor.classList.toggle(
+        "show",
+        show && !reduceMotion
+      );
+    }
+
+    function moveCursorTo(
+      element,
+      id,
+      duration = 420
+    ) {
+      if (
+        !cursor ||
+        !element ||
+        !board ||
+        reduceMotion
+      ) {
+        return Promise.resolve();
+      }
+
+      if (id !== run) {
+        return Promise.resolve();
+      }
+
+      const targetRect =
+        element.getBoundingClientRect();
+
+      const boardRect =
+        board.getBoundingClientRect();
+
+      cursor.style.transition = `
+        left ${duration}ms cubic-bezier(.16,1,.3,1),
+        top ${duration}ms cubic-bezier(.16,1,.3,1),
+        transform .12s ease
+      `;
+
+      cursor.style.left =
+        `${
+          targetRect.left -
+          boardRect.left +
+          targetRect.width / 2
+        }px`;
+
+      cursor.style.top =
+        `${
+          targetRect.top -
+          boardRect.top +
+          targetRect.height / 2
+        }px`;
+
+      return wait(duration + 70);
+    }
+
+    function cursorClick() {
+      if (!cursor || reduceMotion) return;
+
+      cursor.classList.add("click");
+
+      const timer = setTimeout(() => {
+        cursor.classList.remove("click");
+        timers.delete(timer);
+      }, 130);
+
+      timers.add(timer);
+    }
+
+    function reset() {
+      run += 1;
+
+      clearTimers();
+
+      setCursorVisible(false);
+
+      stages.forEach((element) => {
+        element.classList.remove("active");
+      });
+
+      copy.forEach((element) => {
+        element.classList.remove("active");
+      });
+
+      nodes.forEach((element) => {
+        element.classList.remove(
+          "active",
+          "done"
+        );
+      });
+
+      board?.classList.remove(
+        "has-scoreboard",
+        "to-winner",
+        "shake"
+      );
+
+      scoreboard?.classList.remove("show");
+
+      vs?.classList.remove("slam");
+
+      catWM?.classList.remove(
+        "sel-blue",
+        "lift",
+        "press"
+      );
+
+      catTitles?.classList.remove(
+        "sel-red",
+        "lift",
+        "press"
+      );
+
+      tile500?.classList.remove(
+        "lift",
+        "flip"
+      );
+
+      values?.classList.remove("hide");
+
+      question?.classList.remove("show");
+
+      if (blueName) {
+        blueName.textContent = "";
+      }
+
+      if (redName) {
+        redName.textContent = "";
+      }
+
+      if (score) {
+        score.textContent = "0";
+      }
+
+      const correctButton =
+        question?.querySelector(
+          ".answer-btn--correct"
+        );
+
+      correctButton?.classList.remove(
+        "lift",
+        "press"
+      );
+    }
+
+    function type(element, text, id) {
+      if (!element) {
+        return Promise.resolve();
+      }
+
+      if (reduceMotion) {
+        element.textContent = text;
+        return Promise.resolve();
+      }
+
+      element.textContent = "";
+
+      let index = 0;
+
+      return new Promise((resolve) => {
+        const timer = setInterval(() => {
+          if (
+            id !== run ||
+            index >= text.length
+          ) {
+            clearInterval(timer);
+            resolve();
+            return;
+          }
+
+          element.textContent += text[index];
+          index += 1;
+        }, 75);
+      });
+    }
+
+    async function play(stage, id) {
+      if (reduceMotion) return;
+
+      /*
+       * STAGE 0
+       * Team names + VS
+       */
+      if (stage === 0) {
+        await type(
+          blueName,
+          "فريق الروك",
+          id
+        );
+
+        await wait(150);
+
+        if (id !== run) return;
+
+        await type(
+          redName,
+          "فريق سينا",
+          id
+        );
+
+        await wait(150);
+
+        if (id !== run) return;
+
+        vs?.classList.add("slam");
+        board?.classList.add("shake");
+      }
+
+      /*
+       * STAGE 1
+       * Category selection
+       */
+      if (stage === 1) {
+        await wait(300);
+
+        if (id !== run) return;
+
+        setCursorVisible(true);
+
+        await moveCursorTo(
+          catWM,
+          id
+        );
+
+        if (id !== run) return;
+
+        catWM?.classList.add("lift");
+
+        await wait(180);
+
+        if (id !== run) return;
+
+        cursorClick();
+
+        catWM?.classList.remove("lift");
+        catWM?.classList.add("press");
+
+        await wait(150);
+
+        if (id !== run) return;
+
+        catWM?.classList.remove("press");
+        catWM?.classList.add("sel-blue");
+
+        await wait(320);
+
+        if (id !== run) return;
+
+        await moveCursorTo(
+          catTitles,
+          id
+        );
+
+        if (id !== run) return;
+
+        catTitles?.classList.add("lift");
+
+        await wait(180);
+
+        if (id !== run) return;
+
+        cursorClick();
+
+        catTitles?.classList.remove("lift");
+        catTitles?.classList.add("press");
+
+        await wait(150);
+
+        if (id !== run) return;
+
+        catTitles?.classList.remove("press");
+        catTitles?.classList.add("sel-red");
+
+        await wait(260);
+
+        if (id !== run) return;
+
+        setCursorVisible(false);
+      }
+
+      /*
+       * STAGE 2
+       * Choose 500 -> question -> answer
+       */
+      if (stage === 2) {
+        await wait(280);
+
+        if (id !== run) return;
+
+        setCursorVisible(true);
+
+        await moveCursorTo(
+          tile500,
+          id
+        );
+
+        if (id !== run) return;
+
+        tile500?.classList.add("lift");
+
+        await wait(180);
+
+        if (id !== run) return;
+
+        cursorClick();
+
+        tile500?.classList.remove("lift");
+        tile500?.classList.add("flip");
+
+        await wait(250);
+
+        if (id !== run) return;
+
+        values?.classList.add("hide");
+        question?.classList.add("show");
+
+        await wait(420);
+
+        if (id !== run) return;
+
+        const correctButton =
+          question?.querySelector(
+            ".answer-btn--correct"
+          );
+
+        await moveCursorTo(
+          correctButton,
+          id
+        );
+
+        if (id !== run) return;
+
+        correctButton?.classList.add("lift");
+
+        await wait(170);
+
+        if (id !== run) return;
+
+        cursorClick();
+
+        correctButton?.classList.remove("lift");
+        correctButton?.classList.add("press");
+
+        await wait(170);
+
+        if (id !== run) return;
+
+        setCursorVisible(false);
+      }
+
+      /*
+       * STAGE 3
+       * Score -> winner
+       */
+      if (stage === 3) {
+        for (
+          const value of ["100", "300", "500"]
+        ) {
+          await wait(180);
+
+          if (id !== run) return;
+
+          if (score) {
+            score.textContent = value;
+          }
+        }
+
+        board?.classList.add("shake");
+        redTeam?.classList.add("wobble");
+
+        await wait(400);
+
+        if (id !== run) return;
+
+        board?.classList.add("to-winner");
+      }
+    }
+
+    function show(stage) {
+      reset();
+
+      const id = run;
+
+      stages[stage]?.classList.add("active");
+      copy[stage]?.classList.add("active");
+
+      nodes.forEach(
+        (node, index) => {
+          node.classList.toggle(
+            "done",
+            index < stage
+          );
+        }
+      );
+
+      nodes[stage]?.classList.add("active");
+
+      if (stage > 0) {
+        board?.classList.add(
+          "has-scoreboard"
+        );
+
+        scoreboard?.classList.add("show");
+      }
+
+      /*
+       * Reduced motion fallback
+       */
+      if (
+        reduceMotion &&
+        stage === 0
+      ) {
+        if (blueName) {
+          blueName.textContent =
+            "فريق الروك";
+        }
+
+        if (redName) {
+          redName.textContent =
+            "فريق سينا";
+        }
+
+        vs?.classList.add("slam");
+      }
+
+      if (
+        reduceMotion &&
+        stage === 1
+      ) {
+        catWM?.classList.add(
+          "sel-blue"
+        );
+
+        catTitles?.classList.add(
+          "sel-red"
+        );
+      }
+
+      if (
+        reduceMotion &&
+        stage === 2
+      ) {
+        values?.classList.add("hide");
+        question?.classList.add("show");
+      }
+
+      if (
+        reduceMotion &&
+        stage === 3
+      ) {
+        if (score) {
+          score.textContent = "500";
+        }
+
+        board?.classList.add(
+          "to-winner"
+        );
+      }
+
+      play(stage, id);
+    }
+
+    function update() {
+      if (!section) return;
+
+      const rect =
+        section.getBoundingClientRect();
+
+      const travel = Math.max(
+        1,
+        section.offsetHeight -
+          window.innerHeight
+      );
+
+      const progress = Math.min(
+        1,
+        Math.max(
+          0,
+          -rect.top / travel
+        )
+      );
+
+      section.style.setProperty(
+        "--tut",
+        progress.toFixed(3)
+      );
+
+      /*
+       * Start tutorial when section
+       * properly enters viewport.
+       */
+      const triggerPoint =
+        window.innerHeight * 0.75;
+
+      if (!tutorialStarted) {
+        if (
+          rect.top >
+          triggerPoint
+        ) {
+          return;
+        }
+
+        tutorialStarted = true;
+      }
+
+      if (
+        rect.bottom <= 0 ||
+        rect.top >= window.innerHeight
+      ) {
+        return;
+      }
+
+      const next = Math.min(
+        3,
+        Math.floor(progress * 4)
+      );
+
+      if (next !== active) {
+        active = next;
+        show(next);
+      }
+    }
+
+    window.addEventListener(
+      "scroll",
+      update,
+      { passive: true }
+    );
+
+    window.addEventListener(
+      "resize",
+      update
+    );
+
+    update();
+
+    return () => {
+      window.removeEventListener(
+        "scroll",
+        update
+      );
+
+      window.removeEventListener(
+        "resize",
+        update
+      );
+
+      run += 1;
+
+      clearTimers();
+    };
+  }, []);
+
   return (
     <section
+      ref={sectionRef}
       className="how-to-play"
       id="howToPlay"
       aria-label="كيف تلعب؟"
@@ -8,7 +624,7 @@ export default function HowToPlay() {
       <div
         className="how-to-play__rise"
         aria-hidden="true"
-      ></div>
+      />
 
       <div className="how-to-sticky">
 
@@ -30,12 +646,11 @@ export default function HowToPlay() {
 
         <div className="tutorial-layout">
 
-          {/* Progress */}
           <div
             className="tutorial-progress"
             aria-hidden="true"
           >
-            <span className="ref-count ref-count--fill"></span>
+            <span className="ref-count ref-count--fill" />
 
             <span
               className="ref-node"
@@ -66,7 +681,6 @@ export default function HowToPlay() {
             </span>
           </div>
 
-          {/* Tutorial Text */}
           <div className="tutorial-copy">
 
             <div
@@ -139,7 +753,6 @@ export default function HowToPlay() {
 
           </div>
 
-          {/* Tutorial Board */}
           <div
             className="tutorial-board"
             id="tutorialBoard"
@@ -149,9 +762,8 @@ export default function HowToPlay() {
               className="tutorial-cursor"
               id="tutCursor"
               aria-hidden="true"
-            ></span>
+            />
 
-            {/* Scoreboard */}
             <div
               className="tutorial-scoreboard"
               id="scoreboard"
@@ -184,7 +796,6 @@ export default function HowToPlay() {
               </div>
             </div>
 
-            {/* Stage 1 - Teams */}
             <div
               className="tutorial-stage stage--teams"
               data-stage="0"
@@ -198,7 +809,7 @@ export default function HowToPlay() {
                 <span
                   className="team-panel__name"
                   id="blueTeamName"
-                ></span>
+                />
               </div>
 
               <div
@@ -216,11 +827,10 @@ export default function HowToPlay() {
                 <span
                   className="team-panel__name"
                   id="redTeamName"
-                ></span>
+                />
               </div>
             </div>
 
-            {/* Stage 2 - Categories */}
             <div
               className="tutorial-stage stage--cats"
               data-stage="1"
@@ -230,7 +840,9 @@ export default function HowToPlay() {
                 <div
                   className="cat-card"
                   id="catWM"
-                  style={{ "--rot": "-2deg" }}
+                  style={{
+                    "--rot": "-2deg",
+                  }}
                 >
                   راسلمنيا
                 </div>
@@ -238,35 +850,45 @@ export default function HowToPlay() {
                 <div
                   className="cat-card"
                   id="catTitles"
-                  style={{ "--rot": "1.5deg" }}
+                  style={{
+                    "--rot": "1.5deg",
+                  }}
                 >
                   الألقاب
                 </div>
 
                 <div
                   className="cat-card"
-                  style={{ "--rot": "-1deg" }}
+                  style={{
+                    "--rot": "-1deg",
+                  }}
                 >
                   خمن المصارع
                 </div>
 
                 <div
                   className="cat-card"
-                  style={{ "--rot": "2deg" }}
+                  style={{
+                    "--rot": "2deg",
+                  }}
                 >
                   من قالها؟
                 </div>
 
                 <div
                   className="cat-card"
-                  style={{ "--rot": "-1.5deg" }}
+                  style={{
+                    "--rot": "-1.5deg",
+                  }}
                 >
                   اللحظات التاريخية
                 </div>
 
                 <div
                   className="cat-card"
-                  style={{ "--rot": "1deg" }}
+                  style={{
+                    "--rot": "1deg",
+                  }}
                 >
                   أبطال زمان
                 </div>
@@ -274,7 +896,6 @@ export default function HowToPlay() {
               </div>
             </div>
 
-            {/* Stage 3 - Playing */}
             <div
               className="tutorial-stage stage--play"
               data-stage="2"
@@ -336,7 +957,9 @@ export default function HowToPlay() {
                 id="questionPanel"
               >
                 <p
-                  style={{ marginTop: "70px" }}
+                  style={{
+                    marginTop: "70px",
+                  }}
                   className="question-panel__q"
                 >
                   من فاز بالحدث الرئيسي في راسلمينيا؟
@@ -367,7 +990,6 @@ export default function HowToPlay() {
               </div>
             </div>
 
-            {/* Stage 4 - Winner */}
             <div
               className="tutorial-stage stage--winner"
               data-stage="3"
@@ -394,7 +1016,7 @@ export default function HowToPlay() {
               className="confetti"
               id="confetti"
               aria-hidden="true"
-            ></span>
+            />
 
           </div>
         </div>
@@ -403,7 +1025,7 @@ export default function HowToPlay() {
       <div
         className="how-to-play__rise1"
         aria-hidden="true"
-      ></div>
+      />
     </section>
   );
 }

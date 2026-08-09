@@ -110,3 +110,25 @@
   font-size: 20px;
   cursor: pointer;
 }
+
+/* Fix Vite default layout for KickOut */
+#root {
+  width: 100%;
+  min-height: 100vh;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  text-align: initial;
+}
+
+html,
+body {
+  width: 100%;
+  min-width: 320px;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  display: block;
+}

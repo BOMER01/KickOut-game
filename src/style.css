@@ -1032,7 +1032,7 @@ body.intro .hud__nav--left {
 /* ---- section intro ---- */
 .tutorial-intro {
   position: absolute;
-  top: var(--hud-clearance);
+  top: clamp(185px, 22vh, 220px);
   left: 0;
   right: 0;
   text-align: center;
@@ -1094,12 +1094,19 @@ body.intro .hud__nav--left {
   position: relative;
   width: 100%;
   max-width: 1080px;
+
   display: grid;
-  grid-template-columns: 1fr minmax(320px, 620px) 64px;
-  grid-template-areas: "copy board progress";
+
+  grid-template-columns: 64px minmax(320px, 620px) 1fr;
+
+  grid-template-areas:
+    "progress board copy";
+
   align-items: center;
+
   gap: clamp(20px, 4vw, 54px);
-  margin-top: 34px;
+
+  margin-top: 110px;
 }
 
 /* referee-count progress indicator (vertical) */
@@ -1193,6 +1200,10 @@ body.intro .hud__nav--left {
   transform: translateX(40px) rotate(2deg);
   pointer-events: none;
   text-align: right;
+}
+.tutorial-copy {
+  grid-area: copy;
+  direction: rtl;
 }
 
 .tutorial-copy__item.active {
@@ -1799,16 +1810,30 @@ body.intro .hud__nav--left {
 /* ---- How to Play: tablet ---- */
 @media (max-width: 1000px) {
   .tutorial-layout {
-    grid-template-columns: 1fr 48px;
+    grid-template-columns: 48px 1fr;
     grid-template-areas:
-      "copy progress"
-      "board progress";
+      "progress copy"
+      "progress board";
+
     gap: 18px 22px;
   }
-  .tutorial-copy { grid-area: copy; min-height: 120px; }
-  .tutorial-board { grid-area: board; }
-  .tutorial-progress { grid-area: progress; }
-  .tutorial-board { height: min(56vh, 400px); }
+
+  .tutorial-copy {
+    grid-area: copy;
+    min-height: 120px;
+  }
+
+  .tutorial-board {
+    grid-area: board;
+  }
+
+  .tutorial-progress {
+    grid-area: progress;
+  }
+
+  .tutorial-board {
+    height: min(56vh, 400px);
+  }
 }
 
 /* ---- How to Play: mobile ---- */
