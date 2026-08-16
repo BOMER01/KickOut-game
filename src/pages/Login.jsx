@@ -1,61 +1,153 @@
 import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { loginUser } from "../services/authService";
-import { useNavigate } from "react-router-dom";
+import "../styles/Auth.css";
 
 function Login() {
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleLogin = async (e) => {
     e.preventDefault();
 
+    const cleanEmail = email.trim();
+
+    if (!cleanEmail || !password) {
+      alert("الرجاء إدخال البريد الإلكتروني وكلمة المرور");
+      return;
+    }
+
     try {
-      await loginUser(email, password);
+      await loginUser(cleanEmail, password);
 
       alert("تم تسجيل الدخول بنجاح ✅");
 
       navigate("/");
     } catch (error) {
-      alert(error.message);
+      console.error(error);
+
+      if (error.code === "auth/invalid-credential") {
+        alert("البريد الإلكتروني أو كلمة المرور غير صحيحة");
+      } else if (error.code === "auth/invalid-email") {
+        alert("البريد الإلكتروني غير صحيح");
+      } else if (error.code === "auth/user-not-found") {
+        alert("لا يوجد حساب بهذا البريد الإلكتروني");
+      } else {
+        alert(error.message);
+      }
     }
   };
 
   return (
-    <div
-      style={{
-        maxWidth: "400px",
-        margin: "50px auto",
-      }}
-    >
-      <h2>تسجيل الدخول</h2>
+    <div className="auth-page" dir="rtl">
+      <div className="auth-card">
 
-      <form onSubmit={handleLogin}>
-        <input
-          type="email"
-          placeholder="البريد الإلكتروني"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
+        <div className="auth-header">
+          <h1>جاهز لدخول الحلبة؟</h1>
 
-        <br />
-        <br />
+          <p>
+            سجل دخولك وابدأ التحدي.
+          </p>
+        </div>
 
-        <input
-          type="password"
-          placeholder="كلمة المرور"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+        <form className="auth-form" onSubmit={handleLogin}>
 
-        <br />
-        <br />
+          {/* Email */}
+          <div className="auth-field">
+            <label>البريد الإلكتروني</label>
 
-        <button type="submit">
-          تسجيل الدخول
-        </button>
-      </form>
+            <div className="auth-input-wrapper">
+
+              <input
+                type="email"
+                placeholder="example@gmail.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+
+              <span className="auth-input-icon">
+                ✉
+              </span>
+
+            </div>
+          </div>
+
+          {/* Password */}
+          <div className="auth-field">
+            <label>كلمة المرور</label>
+
+            <div className="auth-input-wrapper">
+
+              <input
+                type={showPassword ? "text" : "password"}
+                placeholder="••••••••"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+
+              <button
+                type="button"
+                className="password-toggle"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? "◉" : "◌"}
+              </button>
+
+              <span className="auth-input-icon">
+                🔒
+              </span>
+
+            </div>
+          </div>
+
+          {/* Options */}
+          <div className="auth-options">
+
+            <label className="remember-me">
+              <input type="checkbox" />
+              <span>تذكرني</span>
+            </label>
+
+            <button
+              type="button"
+              className="forgot-password"
+              onClick={() =>
+                alert("ميزة استعادة كلمة المرور سنضيفها لاحقًا")
+              }
+            >
+              نسيت كلمة المرور؟
+            </button>
+
+          </div>
+
+          {/* Submit */}
+          <button
+            type="submit"
+            className="auth-submit"
+          >
+            <span>←</span>
+            ادخل الحلبة
+          </button>
+
+        </form>
+
+        {/* Register */}
+        <div className="auth-switch">
+
+          <span>ما عندك حساب؟</span>
+
+          <Link to="/register">
+            أنشئ حساب جديد
+          </Link>
+
+        </div>
+
+      </div>
     </div>
   );
 }

@@ -1,0 +1,542 @@
+/* =========================================================
+   KICKOUT ADMIN PANEL
+   ========================================================= */
+
+.admin-page {
+  min-height: 100vh;
+  padding: 40px;
+  background: #eef3f8;
+  color: #1f2937;
+  font-family: inherit;
+  box-sizing: border-box;
+  direction: rtl;
+}
+
+.admin-page *,
+.admin-page *::before,
+.admin-page *::after {
+  box-sizing: border-box;
+}
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.admin-page h1 {
+  width: min(1200px, 100%);
+  margin: 0 auto 30px;
+
+  padding: 22px 30px;
+
+  background: #ffffff;
+
+  border: 3px solid #1f2937;
+  border-radius: 18px;
+
+  box-shadow: 7px 7px 0 #1f2937;
+
+  text-align: center;
+
+  font-size: 34px;
+  font-weight: 900;
+}
+
+.admin-page > button {
+  display: block;
+  margin: 0 auto 35px;
+
+  padding: 12px 28px;
+
+  border: 3px solid #1f2937;
+  border-radius: 12px;
+
+  background: #ffffff;
+
+  color: #1f2937;
+
+  font-weight: 800;
+
+  cursor: pointer;
+
+  box-shadow: 4px 4px 0 #1f2937;
+
+  transition: 0.15s ease;
+}
+
+.admin-page > button:hover {
+  transform: translateY(-2px);
+}
+
+.admin-page > button:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 #1f2937;
+}
+
+/* =========================================================
+   SECTION TITLES
+   ========================================================= */
+
+.admin-page h2 {
+  width: min(1200px, 100%);
+  margin: 45px auto 18px;
+
+  padding: 14px 20px;
+
+  background: #1f2937;
+  color: #ffffff;
+
+  border-radius: 12px;
+
+  font-size: 22px;
+  font-weight: 900;
+
+  box-shadow: 5px 5px 0 #facc15;
+}
+
+/* =========================================================
+   DIVIDERS
+   ========================================================= */
+
+.admin-page hr {
+  width: min(1200px, 100%);
+  margin: 40px auto;
+
+  border: 0;
+  border-top: 3px solid #1f2937;
+  opacity: 0.15;
+}
+
+/* =========================================================
+   CATEGORY FORM
+   ========================================================= */
+
+.category-admin-form {
+  width: min(1200px, 100%);
+  margin: 0 auto;
+
+  padding: 28px;
+
+  background: #ffffff;
+
+  border: 3px solid #1f2937;
+  border-radius: 18px;
+
+  box-shadow: 7px 7px 0 #1f2937;
+
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* =========================================================
+   INPUTS
+   ========================================================= */
+
+.admin-page input[type="text"],
+.admin-page input[type="number"],
+.admin-page input:not([type]),
+.admin-page textarea,
+.admin-page select {
+  width: 100%;
+
+  padding: 13px 15px;
+
+  border: 3px solid #1f2937;
+  border-radius: 10px;
+
+  background: #ffffff;
+
+  color: #1f2937;
+
+  font-size: 15px;
+  font-weight: 600;
+
+  outline: none;
+
+  transition: 0.15s ease;
+}
+
+.admin-page textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.admin-page input:focus,
+.admin-page textarea:focus,
+.admin-page select:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+/* =========================================================
+   COLOR PICKER
+   ========================================================= */
+
+.admin-page input[type="color"] {
+  width: 70px;
+  height: 45px;
+
+  padding: 3px;
+
+  border: 3px solid #1f2937;
+  border-radius: 10px;
+
+  background: #ffffff;
+
+  cursor: pointer;
+}
+
+/* =========================================================
+   ICON PICKER
+   ========================================================= */
+
+.category-icon-picker {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.category-icon-picker-title {
+  display: block;
+
+  margin-bottom: 12px;
+
+  font-size: 16px;
+  font-weight: 900;
+}
+
+.category-icon-grid {
+  display: grid;
+
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(70px, 1fr)
+  );
+
+  gap: 12px;
+
+  max-width: 600px;
+}
+
+.category-icon-option {
+  position: relative;
+
+  width: 70px;
+  height: 70px;
+
+  border: 3px solid #1f2937;
+  border-radius: 14px;
+
+  background: #ffffff;
+
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transition: 0.15s ease;
+
+  box-shadow: 3px 3px 0 #1f2937;
+}
+
+.category-icon-option:hover {
+  transform: translateY(-3px);
+}
+
+.category-icon-option:active {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0 #1f2937;
+}
+
+.category-icon-option.selected {
+  border-color: #facc15;
+
+  background: #fff8dc;
+
+  box-shadow:
+    0 0 0 3px #facc15,
+    3px 3px 0 #1f2937;
+}
+
+.category-icon-symbol {
+  font-size: 30px;
+  line-height: 1;
+}
+
+.category-icon-check {
+  position: absolute;
+
+  top: 4px;
+  right: 5px;
+
+  width: 20px;
+  height: 20px;
+
+  border-radius: 50%;
+
+  background: #facc15;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #1f2937;
+
+  font-size: 13px;
+  font-weight: 900;
+}
+
+/* =========================================================
+   FORM BUTTONS
+   ========================================================= */
+
+.category-admin-form button {
+  padding: 12px 20px;
+
+  border: 3px solid #1f2937;
+  border-radius: 10px;
+
+  background: #facc15;
+
+  color: #1f2937;
+
+  font-weight: 900;
+
+  cursor: pointer;
+
+  box-shadow: 4px 4px 0 #1f2937;
+
+  transition: 0.15s ease;
+}
+
+.category-admin-form button:hover {
+  transform: translateY(-2px);
+}
+
+.category-admin-form button:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 #1f2937;
+}
+
+/* =========================================================
+   CATEGORY LIST
+   ========================================================= */
+
+.admin-category-item {
+  width: min(1200px, 100%);
+  margin: 0 auto 14px;
+
+  padding: 18px 20px;
+
+  background: #ffffff;
+
+  border: 3px solid #1f2937;
+  border-radius: 15px;
+
+  box-shadow: 5px 5px 0 #1f2937;
+
+  display: grid;
+
+  grid-template-columns:
+    70px
+    1fr
+    auto
+    auto;
+
+  align-items: center;
+
+  gap: 18px;
+}
+
+.admin-category-icon {
+  width: 58px;
+  height: 58px;
+
+  border: 3px solid #1f2937;
+  border-radius: 13px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 28px;
+
+  background: #f3f4f6;
+
+  box-shadow: 3px 3px 0 #1f2937;
+}
+
+.admin-category-item strong {
+  display: block;
+
+  margin-bottom: 5px;
+
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.admin-category-item p {
+  margin: 0 0 5px;
+
+  color: #64748b;
+
+  font-size: 14px;
+}
+
+.admin-category-item small {
+  color: #64748b;
+
+  font-weight: 700;
+}
+
+/* =========================================================
+   EDIT / DELETE BUTTONS
+   ========================================================= */
+
+.admin-category-item button,
+.admin-page > div > button {
+  padding: 9px 16px;
+
+  border: 3px solid #1f2937;
+  border-radius: 9px;
+
+  background: #ffffff;
+
+  color: #1f2937;
+
+  font-weight: 800;
+
+  cursor: pointer;
+
+  box-shadow: 3px 3px 0 #1f2937;
+
+  transition: 0.15s ease;
+}
+
+.admin-category-item button:hover,
+.admin-page > div > button:hover {
+  transform: translateY(-2px);
+}
+
+.admin-category-item button:last-child {
+  background: #ff4b4b;
+  color: #ffffff;
+}
+
+/* =========================================================
+   SELECT / PACKS / QUESTIONS
+   ========================================================= */
+
+.admin-page > select,
+.admin-page > input,
+.admin-page > div:not(.category-admin-form) > input,
+.admin-page > div:not(.category-admin-form) > select {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* =========================================================
+   PACK ROWS
+   ========================================================= */
+
+.admin-page > div {
+  position: relative;
+}
+
+.admin-page > div > button {
+  margin: 5px;
+}
+
+/* =========================================================
+   QUESTION / PACKAGE CARDS
+   ========================================================= */
+
+.admin-page > div[style] {
+  width: min(1200px, 100%) !important;
+
+  margin: 15px auto !important;
+
+  background: #ffffff !important;
+
+  border: 3px solid #1f2937 !important;
+  border-radius: 14px;
+
+  box-shadow: 5px 5px 0 #1f2937;
+
+  color: #1f2937;
+}
+
+.admin-page > div[style] p {
+  margin: 7px 0;
+}
+
+.admin-page > div[style] button {
+  padding: 8px 15px;
+
+  border: 3px solid #1f2937;
+  border-radius: 8px;
+
+  background: #ff4b4b;
+  color: #ffffff;
+
+  font-weight: 800;
+
+  cursor: pointer;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 800px) {
+
+  .admin-page {
+    padding: 20px 12px;
+  }
+
+  .admin-page h1 {
+    font-size: 26px;
+  }
+
+  .admin-category-item {
+    grid-template-columns: 60px 1fr;
+
+    gap: 12px;
+  }
+
+  .admin-category-item button {
+    grid-column: span 1;
+  }
+
+  .category-icon-grid {
+    grid-template-columns: repeat(
+      auto-fill,
+      minmax(65px, 1fr)
+    );
+  }
+}
+
+@media (max-width: 500px) {
+
+  .admin-page h1 {
+    font-size: 22px;
+    padding: 18px;
+  }
+
+  .admin-page h2 {
+    font-size: 18px;
+  }
+
+  .category-admin-form {
+    padding: 18px;
+  }
+
+  .admin-category-item {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-category-icon {
+    margin: 0 auto;
+  }
+}

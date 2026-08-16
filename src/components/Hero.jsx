@@ -228,17 +228,17 @@ export default function Hero() {
           </span>
 
           <Link
-            to="/categories"
-            className="arcade-btn arcade-btn--lg"
-            id="heroCta"
-          >
-            <span
-              className="arcade-btn__face"
-              id="heroCtaFace"
-            >
-              ادخل الحلبة
-            </span>
-          </Link>
+  to="/categories"
+  className="arcade-btn arcade-btn--lg"
+  id="heroCta"
+>
+  <span
+    className="arcade-btn__face"
+    id="heroCtaFace"
+  >
+    ادخل الحلبة
+  </span>
+</Link>
         </div>
       </div>
 

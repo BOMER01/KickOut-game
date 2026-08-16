@@ -74,7 +74,7 @@ export default function Header() {
 
             <li>
               <Link
-                to="/category"
+                to="/categories"
                 className="arcade-btn arcade-btn--sm"
                 id="headerCta"
                 data-fx="press"

@@ -1,0 +1,1569 @@
+/* =========================================================
+   KICKOUT
+   CATEGORY SELECTION
+   Clean standalone stylesheet
+   ========================================================= */
+
+
+/* =========================================================
+   1. PAGE
+   ========================================================= */
+
+.category-selection-page {
+    --blue: #3B82F6;
+    --red: #EF4444;
+    --yellow: #FACC15;
+    --white: #FFFFFF;
+    --ink: #1F2937;
+    --muted: #64748B;
+    --background: #EEF2F7;
+
+    position: relative;
+
+    width: 100%;
+    min-height: 100vh;
+
+    padding: 0 0 105px;
+
+    overflow-x: hidden;
+
+    background:
+        radial-gradient(
+            circle at 50% 42%,
+            rgba(59, 130, 246, 0.10),
+            transparent 45%
+        ),
+        var(--background);
+
+    color: var(--ink);
+
+    font-family:
+        "Tajawal",
+        "Cairo",
+        system-ui,
+        sans-serif;
+
+    isolation: isolate;
+}
+
+.category-selection-page *,
+.category-selection-page *::before,
+.category-selection-page *::after {
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   2. WRESTLING ROPES / BACKGROUND
+   ========================================================= */
+
+.category-selection-page::before {
+    content: "";
+
+    position: fixed;
+
+    top: 17%;
+    left: -10%;
+
+    width: 60%;
+    height: 12px;
+
+    background: var(--red);
+
+    border: 3px solid var(--ink);
+    border-radius: 999px;
+
+    transform: rotate(-10deg);
+
+    opacity: 0.65;
+
+    box-shadow:
+        0 3px 0 rgba(31, 41, 55, 0.20);
+
+    pointer-events: none;
+
+    z-index: 0;
+}
+
+.category-selection-page::after {
+    content: "";
+
+    position: fixed;
+
+    top: 31%;
+    right: -12%;
+
+    width: 65%;
+    height: 12px;
+
+    background: var(--blue);
+
+    border: 3px solid var(--ink);
+    border-radius: 999px;
+
+    transform: rotate(-9deg);
+
+    opacity: 0.65;
+
+    box-shadow:
+        0 3px 0 rgba(31, 41, 55, 0.20);
+
+    pointer-events: none;
+
+    z-index: 0;
+}
+
+
+/* =========================================================
+   3. TOP HEADER
+   ========================================================= */
+
+/*
+   If your main/header component uses .category-hud,
+   these rules keep it visually consistent with the
+   reference design.
+*/
+
+.category-selection-page .category-hud {
+    position: relative;
+    z-index: 20;
+
+    width: min(1020px, calc(100% - 40px));
+
+    min-height: 82px;
+
+    margin-top: 8px;
+    margin-left: auto;
+    margin-right: auto;
+
+    padding: 8px 14px;
+
+    display: grid;
+
+    grid-template-columns:
+        1fr
+        auto
+        1fr;
+
+    align-items: center;
+
+    gap: 15px;
+
+    background: var(--white);
+
+    border: 4px solid var(--ink);
+    border-radius: 22px;
+
+    box-shadow:
+        0 7px 0 var(--ink);
+
+    left: auto;
+    right: auto;
+    transform: none;
+}
+
+
+/* Header sides */
+
+.category-selection-page .category-hud__side {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    min-width: 0;
+}
+
+.category-selection-page .category-hud__side--left {
+    justify-content: flex-start;
+}
+
+.category-selection-page .category-hud__side--right {
+    justify-content: flex-end;
+}
+
+
+/* Header buttons */
+
+.category-selection-page .category-hud-btn {
+    position: relative;
+
+    min-height: 38px;
+
+    padding: 7px 13px;
+
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 6px;
+
+    background: var(--white);
+
+    border: 3px solid var(--ink);
+    border-radius: 11px;
+
+    color: var(--ink);
+
+    font-family:
+        "Tajawal",
+        "Cairo",
+        sans-serif;
+
+    font-size: 12px;
+    font-weight: 900;
+
+    cursor: pointer;
+
+    box-shadow:
+        3px 3px 0 var(--ink);
+
+    transition:
+        transform 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+.category-selection-page .category-hud-btn:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        3px 5px 0 var(--ink);
+}
+
+.category-selection-page .category-hud-btn:active {
+    transform: translateY(2px);
+
+    box-shadow:
+        1px 2px 0 var(--ink);
+}
+
+
+/* Remaining games */
+
+.category-selection-page .category-games-left {
+    min-height: 38px;
+
+    padding: 5px 12px;
+
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 7px;
+
+    background: var(--white);
+
+    border: 3px solid var(--ink);
+    border-radius: 11px;
+
+    color: var(--ink);
+
+    font-size: 12px;
+    font-weight: 900;
+
+    box-shadow:
+        3px 3px 0 var(--ink);
+}
+
+.category-selection-page .category-games-left b {
+    min-width: 25px;
+    height: 25px;
+
+    display: grid;
+
+    place-items: center;
+
+    background: var(--yellow);
+
+    border: 2px solid var(--ink);
+    border-radius: 7px;
+
+    box-shadow:
+        2px 2px 0 var(--ink);
+}
+
+
+/* =========================================================
+   4. LOGO
+   ========================================================= */
+
+.category-selection-page .category-logo {
+    position: relative;
+    z-index: 25;
+
+    width: 190px;
+    height: 72px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+}
+
+.category-selection-page .category-logo__image {
+    display: block;
+
+    width: 175px;
+    height: auto;
+
+    object-fit: contain;
+
+    filter:
+        drop-shadow(
+            2px 3px 0 rgba(31, 41, 55, 0.16)
+        );
+}
+
+
+/* =========================================================
+   5. CATEGORY HEADER / TITLE AREA
+   ========================================================= */
+
+.category-selection-page .category-header {
+    position: relative;
+    z-index: 5;
+
+    width: 100%;
+
+    text-align: center;
+}
+
+
+/* Header top information */
+
+.category-selection-page .category-header__top {
+    position: relative;
+
+    width: 100%;
+
+    height: 0;
+
+    pointer-events: none;
+}
+
+.category-selection-page .category-round {
+    position: absolute;
+
+    top: 18px;
+    right: 28px;
+
+    color: var(--muted);
+
+    font-size: 9px;
+    font-weight: 800;
+}
+
+.category-selection-page .category-step {
+    position: absolute;
+
+    top: 18px;
+    left: 28px;
+
+    min-width: 38px;
+    height: 38px;
+
+    display: grid;
+
+    place-items: center;
+
+    background: var(--white);
+
+    border: 3px solid var(--ink);
+    border-radius: 10px;
+
+    box-shadow:
+        3px 3px 0 var(--ink);
+
+    font-size: 12px;
+    font-weight: 900;
+}
+
+
+/* Turn badge */
+
+.category-selection-page .category-turn {
+    width: fit-content;
+
+    margin: 30px auto 10px;
+
+    padding: 7px 20px;
+
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    background: var(--white);
+
+    border: 3px solid var(--ink);
+    border-radius: 999px;
+
+    box-shadow:
+        4px 4px 0 var(--ink);
+
+    font-size: 13px;
+    font-weight: 900;
+
+    line-height: 1;
+}
+
+
+/* Main title */
+
+.category-selection-page .category-title {
+    width: min(1000px, calc(100% - 30px));
+
+    margin: 0 auto;
+
+    color: var(--ink);
+
+    font-family:
+        "Tajawal",
+        "Cairo",
+        sans-serif;
+
+    font-size:
+        clamp(
+            42px,
+            4.4vw,
+            60px
+        );
+
+    font-weight: 900;
+
+    line-height: 1.08;
+
+    letter-spacing: -0.025em;
+
+    text-align: center;
+
+    white-space: nowrap;
+}
+
+
+/* Subtitle */
+
+.category-selection-page .category-subtitle {
+    margin: 5px auto 0;
+
+    color: var(--muted);
+
+    font-size: 12px;
+    font-weight: 700;
+
+    line-height: 1.5;
+
+    text-align: center;
+}
+
+
+/* =========================================================
+   6. COUNTER
+   ========================================================= */
+
+.category-selection-page .category-counter {
+    position: relative;
+
+    width: 112px;
+    height: 54px;
+
+    margin: 17px auto 18px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 5px;
+
+    background: var(--white);
+
+    border: 4px solid var(--ink);
+    border-radius: 15px;
+
+    box-shadow:
+        5px 5px 0 var(--ink);
+
+    font-weight: 900;
+}
+
+.category-selection-page .category-counter__current {
+    font-size: 25px;
+}
+
+.category-selection-page .category-counter__divider {
+    color: var(--muted);
+
+    font-size: 20px;
+}
+
+.category-selection-page .category-counter__total {
+    color: var(--muted);
+
+    font-size: 21px;
+}
+
+
+/* Small yellow label */
+
+.category-selection-page .category-counter::after {
+    content: "تم الاختيار";
+
+    position: absolute;
+
+    right: 6px;
+    bottom: -15px;
+
+    padding: 3px 7px;
+
+    background: var(--yellow);
+
+    border: 2px solid var(--ink);
+    border-radius: 5px;
+
+    color: var(--ink);
+
+    font-size: 7px;
+    font-weight: 900;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   7. CATEGORY FILTER TABS
+   ========================================================= */
+
+.category-selection-page .category-tabs {
+    position: relative;
+    z-index: 5;
+
+    width: min(900px, calc(100% - 30px));
+
+    margin: 25px auto 17px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    flex-wrap: wrap;
+
+    gap: 8px;
+}
+
+.category-selection-page .category-tab {
+    min-height: 37px;
+
+    padding: 6px 15px;
+
+    background: var(--white);
+
+    border: 3px solid var(--ink);
+    border-radius: 999px;
+
+    color: var(--ink);
+
+    font-family:
+        "Tajawal",
+        "Cairo",
+        sans-serif;
+
+    font-size: 11px;
+    font-weight: 900;
+
+    cursor: pointer;
+
+    box-shadow:
+        3px 3px 0 var(--ink);
+
+    transition:
+        transform 0.15s ease,
+        box-shadow 0.15s ease,
+        background 0.15s ease;
+}
+
+.category-selection-page .category-tab:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        3px 5px 0 var(--ink);
+}
+
+.category-selection-page .category-tab:active {
+    transform: translateY(2px);
+
+    box-shadow:
+        1px 2px 0 var(--ink);
+}
+
+.category-selection-page .category-tab.active {
+    background: var(--ink);
+
+    color: var(--white);
+}
+
+/* =========================================================
+   8. CATEGORY GRID
+   ========================================================= */
+
+.category-selection-page .categories-container {
+    position: relative;
+    z-index: 5;
+
+    width: 960px;
+    max-width: calc(100% - 40px);
+
+    margin: 0 auto;
+
+    display: grid;
+
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+
+    gap: 18px;
+
+    align-items: stretch;
+}
+
+
+/* =========================================================
+   9. CATEGORY CARD
+   ========================================================= */
+
+.category-selection-page .category-card {
+    position: relative;
+
+    width: 100%;
+    min-width: 0;
+    min-height: 198px;
+
+    padding: 27px 15px 18px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #FFFFFF;
+
+    border: 4px solid var(--ink);
+    border-radius: 17px;
+
+    color: var(--ink);
+
+    box-shadow:
+        7px 8px 0 var(--ink);
+
+    cursor: pointer;
+
+    overflow: hidden;
+
+    transition:
+        transform 0.16s ease,
+        box-shadow 0.16s ease,
+        background 0.16s ease,
+        border-color 0.16s ease,
+        opacity 0.16s ease;
+}
+
+
+/* ---------------------------------------------------------
+   Top color strip
+   --------------------------------------------------------- */
+
+.category-selection-page .category-card::after {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 8px;
+
+    background: var(--red);
+
+    border-radius: 12px 12px 0 0;
+}
+
+
+/* Card colors — same rhythm as reference */
+
+.category-selection-page
+.category-card:nth-child(1)::after {
+    background: var(--red);
+}
+
+.category-selection-page
+.category-card:nth-child(2)::after {
+    background: var(--yellow);
+}
+
+.category-selection-page
+.category-card:nth-child(3)::after {
+    background: var(--blue);
+}
+
+.category-selection-page
+.category-card:nth-child(4)::after {
+    background: var(--red);
+}
+
+.category-selection-page
+.category-card:nth-child(5)::after {
+    background: var(--blue);
+}
+
+.category-selection-page
+.category-card:nth-child(6)::after {
+    background: var(--yellow);
+}
+
+.category-selection-page
+.category-card:nth-child(7)::after {
+    background: var(--red);
+}
+
+.category-selection-page
+.category-card:nth-child(8)::after {
+    background: var(--blue);
+}
+
+.category-selection-page
+.category-card:nth-child(n + 9)::after {
+    background: var(--red);
+}
+
+
+/* =========================================================
+   CARD HOVER
+   ========================================================= */
+
+.category-selection-page
+.category-card:hover:not(.locked) {
+    transform: translateY(-4px);
+
+    box-shadow:
+        8px 11px 0 var(--ink);
+}
+
+
+/* =========================================================
+   CARD PRESS
+   ========================================================= */
+
+.category-selection-page
+.category-card:active:not(.locked) {
+    transform: translateY(2px);
+
+    box-shadow:
+        3px 4px 0 var(--ink);
+}
+
+
+/* =========================================================
+   10. CARD CONTENT
+   ========================================================= */
+
+.category-selection-page .category-card-content {
+    width: 100%;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    text-align: center;
+}
+
+
+
+/* =========================================================
+   12. CARD TEXT
+   ========================================================= */
+
+.category-selection-page
+.category-card-content h3 {
+    margin: 0;
+
+    color: var(--ink);
+
+    font-size: 18px;
+    font-weight: 900;
+
+    line-height: 1.3;
+
+    text-align: center;
+
+    overflow-wrap: anywhere;
+}
+
+.category-selection-page
+.category-card-content p {
+    max-width: 210px;
+
+    margin: 6px auto 0;
+
+    color: var(--muted);
+
+    font-family:
+        "Cairo",
+        system-ui,
+        sans-serif;
+
+    font-size: 10px;
+    font-weight: 700;
+
+    line-height: 1.55;
+
+    text-align: center;
+
+    overflow-wrap: anywhere;
+}
+
+
+/* =========================================================
+   13. SELECTED STATES
+   ========================================================= */
+
+.category-selection-page
+.category-card.selected,
+
+.category-selection-page
+.category-card.selected-team-one,
+
+.category-selection-page
+.category-card.selected-team-two {
+    background: #FFFBEA;
+
+    border-color: var(--yellow);
+
+    box-shadow:
+        7px 8px 0 var(--ink),
+        0 0 0 3px var(--yellow);
+}
+
+
+/* Keep the selected card visually above the others */
+
+.category-selection-page
+.category-card.selected,
+
+.category-selection-page
+.category-card.selected-team-one,
+
+.category-selection-page
+.category-card.selected-team-two {
+    z-index: 3;
+}
+
+
+/* =========================================================
+   14. LOCKED CARD
+   ========================================================= */
+
+.category-selection-page
+.category-card.locked {
+    cursor: not-allowed;
+
+    opacity: 0.48;
+
+    filter: grayscale(0.12);
+}
+
+.category-selection-page
+.category-card.locked:hover {
+    transform: none;
+
+    box-shadow:
+        7px 8px 0 var(--ink);
+}
+
+
+/* =========================================================
+   15. CHECK MARK
+   ========================================================= */
+
+.category-selection-page .category-check {
+    position: absolute;
+
+    top: 9px;
+    left: 9px;
+
+    width: 29px;
+    height: 29px;
+
+    display: grid;
+
+    place-items: center;
+
+    background: var(--yellow);
+
+    border: 3px solid var(--ink);
+    border-radius: 50%;
+
+    color: var(--ink);
+
+    font-family: Arial, sans-serif;
+
+    font-size: 15px;
+    font-weight: 900;
+
+    line-height: 1;
+
+    box-shadow:
+        2px 2px 0 var(--ink);
+
+    z-index: 10;
+}
+
+
+
+/* =========================================================
+   16. BOTTOM BAR
+   ========================================================= */
+
+.category-selection-page .category-bottom {
+    position: fixed;
+
+    left: 50%;
+    bottom: 10px;
+
+    transform: translateX(-50%);
+
+    z-index: 30;
+
+    width: min(1050px, calc(100% - 40px));
+
+    min-height: 62px;
+
+    padding: 8px 10px;
+
+    display: grid;
+
+    grid-template-columns:
+        1fr
+        auto
+        1fr;
+
+    align-items: center;
+
+    gap: 12px;
+
+    background: var(--white);
+
+    border: 4px solid var(--ink);
+    border-radius: 18px;
+
+    box-shadow:
+        0 6px 0 var(--ink);
+}
+
+
+/* Bottom buttons */
+
+.category-selection-page
+.category-back-btn,
+.category-selection-page
+.category-next-btn {
+    min-height: 44px;
+
+    padding: 0 19px;
+
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border: 3px solid var(--ink);
+    border-radius: 12px;
+
+    font-family:
+        "Tajawal",
+        "Cairo",
+        sans-serif;
+
+    font-size: 13px;
+    font-weight: 900;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.15s ease,
+        box-shadow 0.15s ease,
+        opacity 0.15s ease;
+}
+
+
+/* Back */
+
+.category-selection-page
+.category-back-btn {
+    justify-self: start;
+
+    background: var(--white);
+
+    color: var(--ink);
+
+    box-shadow:
+        3px 4px 0 var(--ink);
+}
+
+
+/* Next */
+
+.category-selection-page
+.category-next-btn {
+    justify-self: end;
+
+    background: var(--yellow);
+
+    color: var(--ink);
+
+    box-shadow:
+        3px 4px 0 var(--ink);
+}
+
+
+/* Button hover */
+
+.category-selection-page
+.category-back-btn:hover,
+.category-selection-page
+.category-next-btn.active:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        3px 6px 0 var(--ink);
+}
+
+
+/* Button press */
+
+.category-selection-page
+.category-back-btn:active,
+.category-selection-page
+.category-next-btn.active:active {
+    transform: translateY(2px);
+
+    box-shadow:
+        1px 2px 0 var(--ink);
+}
+
+
+/* Disabled */
+
+.category-selection-page
+.category-next-btn.disabled,
+.category-selection-page
+.category-next-btn:disabled {
+    background: #F1F5F9;
+
+    color: #94A3B8;
+
+    cursor: not-allowed;
+
+    opacity: 0.8;
+
+    box-shadow:
+        2px 3px 0 #94A3B8;
+}
+
+
+/* Bottom text */
+
+.category-selection-page
+.category-bottom-text {
+    text-align: center;
+
+    color: var(--ink);
+
+    font-size: 12px;
+    font-weight: 900;
+}
+
+
+/* =========================================================
+   17. LARGE DESKTOP
+   ========================================================= */
+
+@media (min-width: 1200px) {
+
+    .category-selection-page
+    .categories-container {
+        width: 960px;
+
+        grid-template-columns:
+            repeat(4, minmax(0, 1fr));
+
+        gap: 17px;
+    }
+
+    .category-selection-page
+    .category-card {
+        min-height: 195px;
+    }
+
+    .category-selection-page
+    .category-title {
+        font-size: 58px;
+    }
+}
+
+
+/* =========================================================
+   18. TABLET
+   ========================================================= */
+
+@media (max-width: 1000px) {
+
+    .category-selection-page {
+        padding-bottom: 95px;
+    }
+
+    .category-selection-page
+    .category-hud {
+        width: calc(100% - 28px);
+    }
+
+    .category-selection-page
+    .categories-container {
+        width: calc(100% - 28px);
+
+        grid-template-columns:
+            repeat(3, minmax(0, 1fr));
+
+        gap: 14px;
+    }
+
+    .category-selection-page
+    .category-card {
+        min-height: 180px;
+    }
+
+    .category-selection-page
+    .category-bottom {
+        width: calc(100% - 28px);
+    }
+}
+
+
+/* =========================================================
+   19. MOBILE
+   ========================================================= */
+
+@media (max-width: 760px) {
+
+    .category-selection-page {
+        padding-bottom: 92px;
+    }
+
+    .category-selection-page
+    .category-hud {
+        width: calc(100% - 20px);
+
+        min-height: 70px;
+
+        padding: 7px 9px;
+
+        border-width: 3px;
+        border-radius: 17px;
+
+        box-shadow:
+            0 5px 0 var(--ink);
+    }
+
+    .category-selection-page
+    .category-logo {
+        width: 135px;
+        height: 62px;
+    }
+
+    .category-selection-page
+    .category-logo__image {
+        width: 125px;
+    }
+
+    .category-selection-page
+    .category-hud__side {
+        gap: 7px;
+    }
+
+    .category-selection-page
+    .category-hud-btn {
+        min-height: 34px;
+
+        padding: 5px 8px;
+
+        border-width: 2px;
+
+        box-shadow:
+            2px 3px 0 var(--ink);
+
+        font-size: 10px;
+    }
+
+    .category-selection-page
+    .category-games-left {
+        min-height: 34px;
+
+        padding: 4px 8px;
+
+        border-width: 2px;
+
+        box-shadow:
+            2px 3px 0 var(--ink);
+
+        font-size: 10px;
+    }
+
+    .category-selection-page
+    .category-turn {
+        margin-top: 23px;
+
+        padding: 6px 15px;
+
+        border-width: 2px;
+
+        box-shadow:
+            3px 3px 0 var(--ink);
+
+        font-size: 11px;
+    }
+
+    .category-selection-page
+    .category-title {
+        width: calc(100% - 20px);
+
+        font-size:
+            clamp(
+                32px,
+                8vw,
+                48px
+            );
+
+        white-space: normal;
+    }
+
+    .category-selection-page
+    .category-subtitle {
+        font-size: 10px;
+    }
+
+    .category-selection-page
+    .category-counter {
+        width: 98px;
+        height: 50px;
+
+        margin-top: 14px;
+
+        border-width: 3px;
+        border-radius: 13px;
+
+        box-shadow:
+            4px 4px 0 var(--ink);
+    }
+
+    .category-selection-page
+    .category-counter__current {
+        font-size: 23px;
+    }
+
+    .category-selection-page
+    .category-counter__divider {
+        font-size: 18px;
+    }
+
+    .category-selection-page
+    .category-counter__total {
+        font-size: 18px;
+    }
+
+    .category-selection-page
+    .category-tabs {
+        width: calc(100% - 20px);
+
+        gap: 6px;
+
+        margin-top: 24px;
+        margin-bottom: 13px;
+    }
+
+    .category-selection-page
+    .category-tab {
+        min-height: 32px;
+
+        padding: 5px 10px;
+
+        border-width: 2px;
+
+        box-shadow:
+            2px 2px 0 var(--ink);
+
+        font-size: 9px;
+    }
+
+    .category-selection-page
+    .categories-container {
+        width: calc(100% - 20px);
+
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        gap: 11px;
+    }
+
+    .category-selection-page
+    .category-card {
+        min-height: 165px;
+
+        padding: 20px 9px 14px;
+
+        border-width: 3px;
+        border-radius: 15px;
+
+        box-shadow:
+            5px 6px 0 var(--ink);
+    }
+
+    .category-selection-page
+    .category-card::before {
+        height: 8px;
+    }
+
+    .category-selection-page
+    .category-card-content::before {
+        width: 51px;
+        height: 51px;
+
+        margin-bottom: 10px;
+
+        border-width: 3px;
+        border-radius: 13px;
+
+        box-shadow:
+            4px 4px 0 var(--ink);
+
+        font-size: 24px;
+    }
+
+    .category-selection-page
+    .category-card-content h3 {
+        font-size: 14px;
+    }
+
+    .category-selection-page
+    .category-card-content p {
+        max-width: 170px;
+
+        font-size: 9px;
+    }
+
+    .category-selection-page
+    .category-check {
+        top: 7px;
+        left: 7px;
+
+        width: 25px;
+        height: 25px;
+
+        border-width: 2px;
+
+        box-shadow:
+            2px 2px 0 var(--ink);
+
+        font-size: 14px;
+    }
+
+    .category-selection-page
+    .category-bottom {
+        width: calc(100% - 20px);
+
+        min-height: 55px;
+
+        padding: 6px;
+
+        grid-template-columns:
+            auto
+            1fr
+            auto;
+
+        gap: 7px;
+
+        border-width: 3px;
+        border-radius: 14px;
+
+        box-shadow:
+            0 4px 0 var(--ink);
+    }
+
+    .category-selection-page
+    .category-back-btn,
+    .category-selection-page
+    .category-next-btn {
+        min-height: 39px;
+
+        padding: 0 12px;
+
+        border-width: 2px;
+        border-radius: 10px;
+
+        box-shadow:
+            2px 3px 0 var(--ink);
+
+        font-size: 10px;
+    }
+
+    .category-selection-page
+    .category-bottom-text {
+        font-size: 9px;
+    }
+}
+
+
+/* =========================================================
+   20. SMALL PHONES
+   ========================================================= */
+
+@media (max-width: 480px) {
+
+    .category-selection-page {
+        padding-bottom: 84px;
+    }
+
+    .category-selection-page
+    .category-hud {
+        width: calc(100% - 12px);
+
+        margin-top: 5px;
+
+        min-height: 62px;
+    }
+
+    .category-selection-page
+    .category-logo {
+        width: 115px;
+        height: 56px;
+    }
+
+    .category-selection-page
+    .category-logo__image {
+        width: 105px;
+    }
+
+    .category-selection-page
+    .category-title {
+        font-size: 31px;
+    }
+
+    .category-selection-page
+    .category-tabs {
+        gap: 5px;
+    }
+
+    .category-selection-page
+    .category-tab {
+        padding: 5px 8px;
+
+        font-size: 8px;
+    }
+
+    .category-selection-page
+    .categories-container {
+        gap: 8px;
+    }
+
+    .category-selection-page
+    .category-card {
+        min-height: 145px;
+
+        padding: 17px 6px 11px;
+
+        border-radius: 13px;
+    }
+
+    .category-selection-page
+    .category-card-content::before {
+        width: 44px;
+        height: 44px;
+
+        margin-bottom: 8px;
+
+        font-size: 21px;
+    }
+
+    .category-selection-page
+    .category-card-content h3 {
+        font-size: 12px;
+    }
+
+    .category-selection-page
+    .category-card-content p {
+        font-size: 8px;
+
+        line-height: 1.45;
+    }
+
+    .category-selection-page
+    .category-bottom-text {
+        display: none;
+    }
+
+    .category-selection-page
+    .category-bottom {
+        grid-template-columns:
+            1fr
+            1fr;
+    }
+
+    .category-selection-page
+    .category-back-btn,
+    .category-selection-page
+    .category-next-btn {
+        width: 100%;
+    }
+}
+
+
+/* =========================================================
+   21. REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .category-selection-page *,
+    .category-selection-page *::before,
+    .category-selection-page *::after {
+        animation: none !important;
+        transition: none !important;
+    }
+}
+.category-icon-box {
+  width: 64px;
+  height: 64px;
+
+  border: 3px solid #1f2937;
+  border-radius: 16px;
+
+  background: #ffffff;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin: 0 auto 14px;
+
+  box-shadow: 5px 5px 0 #1f2937;
+}
+
+.category-icon {
+  font-size: 32px;
+  line-height: 1;
+}
+

@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { categoryIcons } from "../categoryIcons";
+import "../styles/Admin.css";
 import {
   getPacks,
   addPack,
@@ -15,6 +17,7 @@ import {
   getCategories,
   addCategory,
   deleteCategory,
+  updateCategory,
 } from "../services/categoryService";
 
 import {
@@ -67,6 +70,17 @@ useEffect(() => {
 
   const [newCategory, setNewCategory] =
     useState("");
+    const [newCategoryDescription, setNewCategoryDescription] =
+  useState("");
+
+const [newCategoryIcon, setNewCategoryIcon] =
+  useState("trophy");
+
+const [newCategoryColor, setNewCategoryColor] =
+  useState("#3B82F6");
+
+const [editingCategoryId, setEditingCategoryId] =
+  useState(null);
     const [selectedCategoryId, setSelectedCategoryId] = useState("");
 
 const [packs, setPacks] = useState([]);
@@ -76,6 +90,7 @@ const [selectedPackId, setSelectedPackId] = useState("");
 const [selectedQuestionPackId, setSelectedQuestionPackId] = useState("");
 
 const [questions, setQuestions] = useState([]);
+const [questionType, setQuestionType] = useState("text");
 
 const [packages, setPackages] = useState([]);
 
@@ -224,24 +239,43 @@ async function deletePackageHandler(id) {
 
     // إضافة فئة
   const addCategoryHandler = async () => {
-    if (!newCategory.trim()) return;
+  if (!newCategory.trim()) {
+    alert("اكتب اسم التصنيف");
+    return;
+  }
 
+  try {
     await addCategory({
-      name: newCategory,
-      description: "",
-      imageUrl: "",
-      color: "#3B82F6",
-      order: categories.length + 1,
-      packsCount: 0,
-      isActive: true,
-      //createdAt: new Date(),
-    // updatedAt: new Date(),
+     name: newCategory.trim(),
+
+  description:
+    newCategoryDescription.trim(),
+
+  icon: newCategoryIcon,
+
+  color:
+    newCategoryColor,
+
+  order:
+    categories.length + 1,
+
+  packsCount: 0,
+
+  isActive: true,
     });
 
     setNewCategory("");
+    setNewCategoryDescription("");
+    setNewCategoryIcon("trophy");
+    setNewCategoryColor("#3B82F6");
 
-    loadCategories();
-  };
+    await loadCategories();
+
+  } catch (error) {
+    console.error(error);
+    alert("حدث خطأ أثناء إضافة التصنيف");
+  }
+};
 
     // حذف فئة
     const deleteCategoryHandler = async (id) => {
@@ -250,19 +284,81 @@ async function deletePackageHandler(id) {
     loadCategories();
   };
 
+  const editCategory = (category) => {
+  setEditingCategoryId(category.id);
+
+  setNewCategory(
+    category.name || ""
+  );
+
+  setNewCategoryDescription(
+    category.description || ""
+  );
+
+  setNewCategoryIcon(
+     category.icon || "trophy"
+  );
+
+  setNewCategoryColor(
+    category.color || "#3B82F6"
+  );
+};
+
+const updateCategoryHandler = async () => {
+  if (!editingCategoryId) return;
+
+  if (!newCategory.trim()) {
+    alert("اكتب اسم التصنيف");
+    return;
+  }
+
+  try {
+    await updateCategory(
+      editingCategoryId,
+      {
+        name: newCategory.trim(),
+
+        description:
+          newCategoryDescription.trim(),
+
+        icon: newCategoryIcon,
+
+        color:
+          newCategoryColor,
+      }
+    );
+
+    setEditingCategoryId(null);
+
+    setNewCategory("");
+    setNewCategoryDescription("");
+    setNewCategoryIcon("trophy");
+    setNewCategoryColor("#3B82F6");
+
+    await loadCategories();
+
+  } catch (error) {
+    console.error(error);
+    alert("حدث خطأ أثناء تعديل التصنيف");
+  }
+};
+
     // إضافة أو تعديل سؤال
   const addQuestionHandler = async () => {
-    if (
-      !selectedQuestionPackId ||
-      !questionText.trim() ||
-      !answerText.trim() ||
-      !questionPoints
-    ) {
-      return;
-    }
+  if (
+    !selectedQuestionPackId ||
+    !questionText.trim() ||
+    !answerText.trim() ||
+    !questionPoints
+  ) {
+    alert("الرجاء تعبئة جميع بيانات السؤال");
+    return;
+  }
 
+  try {
     await addQuestion({
       packId: selectedQuestionPackId,
+      type: questionType,
       question: questionText,
       answer: answerText,
       points: Number(questionPoints),
@@ -270,11 +366,17 @@ async function deletePackageHandler(id) {
       isActive: true,
     });
 
-  setQuestionText("");
-  setAnswerText("");
-  setQuestionPoints("");
+    setQuestionText("");
+    setAnswerText("");
+    setQuestionPoints("");
+    setQuestionType("text");
 
-  loadQuestions(selectedQuestionPackId);
+    await loadQuestions(selectedQuestionPackId);
+
+  } catch (error) {
+    console.error(error);
+    alert("حدث خطأ أثناء إضافة السؤال");
+  }
 };
 
   // تعديل سؤال
@@ -306,7 +408,7 @@ async function deletePackageHandler(id) {
 }
 
   return (
-    <div>
+    <div className="admin-page" >
       <h1>Admin Panel</h1>
 
       <button onClick={logout}>
@@ -317,23 +419,133 @@ async function deletePackageHandler(id) {
 
       <h2>Categories</h2>
 
-      <input
-        value={newCategory}
-        onChange={(e) =>
-          setNewCategory(
-            e.target.value
-          )
-        }
-        placeholder="Category Name"
-      />
+      <div className="category-admin-form">
 
-      <button onClick={addCategoryHandler}>
-        Add Category
+  <input
+    value={newCategory}
+    onChange={(e) =>
+      setNewCategory(e.target.value)
+    }
+    placeholder="Category Name"
+  />
+
+  <textarea
+    value={newCategoryDescription}
+    onChange={(e) =>
+      setNewCategoryDescription(e.target.value)
+    }
+    placeholder="Category Description"
+  />
+
+  <div className="category-icon-picker">
+
+  <label className="category-icon-picker-title">
+    اختر أيقونة التصنيف
+  </label>
+
+  <div className="category-icon-grid">
+
+    {categoryIcons.map((icon) => (
+      <button
+        type="button"
+        key={icon.id}
+        className={`category-icon-option ${
+          newCategoryIcon === icon.id
+            ? "selected"
+            : ""
+        }`}
+        onClick={() =>
+          setNewCategoryIcon(icon.id)
+        }
+      >
+
+        <span className="category-icon-symbol">
+          {icon.symbol}
+        </span>
+
+        {newCategoryIcon === icon.id && (
+          <span className="category-icon-check">
+            ✓
+          </span>
+        )}
+
+      </button>
+    ))}
+
+  </div>
+
+</div>
+
+  <input
+    type="color"
+    value={newCategoryColor}
+    onChange={(e) =>
+      setNewCategoryColor(e.target.value)
+    }
+  />
+
+  {editingCategoryId ? (
+    <>
+      <button onClick={updateCategoryHandler}>
+        Update Category
       </button>
 
-      {categories.map((category) => (
-  <div key={category.id}>
-    {category.name}
+      <button
+        onClick={() => {
+          setEditingCategoryId(null);
+
+          setNewCategory("");
+          setNewCategoryDescription("");
+          setNewCategoryIcon("trophy");
+          setNewCategoryColor("#3B82F6");
+        }}
+      >
+        Cancel
+      </button>
+    </>
+  ) : (
+    <button onClick={addCategoryHandler}>
+      Add Category
+    </button>
+  )}
+
+</div>
+
+   {categories.map((category) => (
+  <div
+    key={category.id}
+    className="admin-category-item"
+  >
+
+    <div className="admin-category-icon">
+  {
+    categoryIcons.find(
+      (icon) => icon.id === category.icon
+    )?.symbol || "🏆"
+  }
+</div>
+
+    <div>
+      <strong>
+        {category.name}
+      </strong>
+
+      <p>
+        {category.description}
+      </p>
+
+      <small>
+        Color: {category.color}
+      </small>
+    </div>
+
+    <button
+      onClick={() =>
+        editCategory(category)
+      }
+    >
+      Edit
+    </button>
 
     <button
       onClick={() =>
@@ -342,6 +554,7 @@ async function deletePackageHandler(id) {
     >
       Delete
     </button>
+
   </div>
 ))}
 
@@ -403,15 +616,50 @@ async function deletePackageHandler(id) {
   </div>
 ))}
 
-<hr />  
+<hr />
 
-      <h2>Questions</h2>
+<h2>Questions</h2>
 
-      <select
+{/* Category */}
+
+<select
+  value={selectedCategoryId}
+  onChange={(e) => {
+    const categoryId = e.target.value;
+
+    setSelectedCategoryId(categoryId);
+    setSelectedQuestionPackId("");
+
+    loadPacks(categoryId);
+    setQuestions([]);
+  }}
+>
+  <option value="">
+    Select Category
+  </option>
+
+  {categories.map((category) => (
+    <option
+      key={category.id}
+      value={category.id}
+    >
+      {category.name}
+    </option>
+  ))}
+</select>
+
+<br />
+<br />
+
+{/* Pack */}
+
+<select
   value={selectedQuestionPackId}
   onChange={(e) => {
-    setSelectedQuestionPackId(e.target.value);
-    loadQuestions(e.target.value);
+    const packId = e.target.value;
+
+    setSelectedQuestionPackId(packId);
+    loadQuestions(packId);
   }}
 >
   <option value="">
@@ -428,118 +676,128 @@ async function deletePackageHandler(id) {
   ))}
 </select>
 
-      <br />
-      <br />
+<br />
+<br />
 
-      <input
-        type="number"
-        placeholder="Points"
-        value={questionPoints}
-        onChange={(e) =>
-          setQuestionPoints(
-            e.target.value
-          )
-        }
-      />
+{/* Question Type */}
 
-      <br />
-      <br />
+<select
+  value={questionType}
+  onChange={(e) =>
+    setQuestionType(e.target.value)
+  }
+>
+  <option value="text">
+    Text Question
+  </option>
 
-      <input
-        type="text"
-        placeholder="Question"
-        value={questionText}
-        onChange={(e) =>
-          setQuestionText(
-            e.target.value
-          )
-        }
-      />
+  <option value="image">
+    Image Question
+  </option>
 
-      <br />
-      <br />
+  <option value="audio">
+    Audio Question
+  </option>
 
-      <input
-        type="text"
-        placeholder="Answer"
-        value={answerText}
-        onChange={(e) =>
-          setAnswerText(
-            e.target.value
-          )
-        }
-      />
+  <option value="video">
+    Video Question
+  </option>
+</select>
 
-      <br />
-      <br />
+<br />
+<br />
 
-     <button onClick={addQuestionHandler}>
-       
-         
-           "Add Question"
-      </button>
+{/* Points */}
+
+<input
+  type="number"
+  placeholder="Points"
+  value={questionPoints}
+  onChange={(e) =>
+    setQuestionPoints(e.target.value)
+  }
+/>
+
+<br />
+<br />
+
+{/* Question */}
+
+<input
+  type="text"
+  placeholder="Question"
+  value={questionText}
+  onChange={(e) =>
+    setQuestionText(e.target.value)
+  }
+/>
+
+<br />
+<br />
+
+{/* Answer */}
+
+<input
+  type="text"
+  placeholder="Answer"
+  value={answerText}
+  onChange={(e) =>
+    setAnswerText(e.target.value)
+  }
+/>
+
+<br />
+<br />
+
+<button onClick={addQuestionHandler}>
+  Add Question
+</button>
 
       <hr />
 
       {questions.map((question) => (
-        <div
-          key={question.id}
-          style={{
-            border:
-              "1px solid gray",
-            padding: "10px",
-            marginBottom: "10px",
-          }}
-        >
-          <p>
-            <strong>
-              Category:
-            </strong>{" "}
-            {question.category}
-          </p>
+  <div
+    key={question.id}
+    style={{
+      border: "1px solid gray",
+      padding: "10px",
+      marginBottom: "10px",
+    }}
+  >
+    <p>
+      <strong>Type:</strong>{" "}
+      {question.type || "text"}
+    </p>
 
-          <p>
-            <strong>
-              Points:
-            </strong>{" "}
-            {question.points}
-          </p>
+    <p>
+      <strong>Category:</strong>{" "}
+      {question.category}
+    </p>
 
-          <p>
-            <strong>
-              Question:
-            </strong>{" "}
-            {question.question}
-          </p>
+    <p>
+      <strong>Points:</strong>{" "}
+      {question.points}
+    </p>
 
-          <p>
-            <strong>
-              Answer:
-            </strong>{" "}
-            {question.answer}
-          </p>
+    <p>
+      <strong>Question:</strong>{" "}
+      {question.question}
+    </p>
 
-          {/*<button
-            onClick={() =>
-              editQuestion(
-                question
-              )
-            }
-          >
-            Edit
-          </button>*/}
+    <p>
+      <strong>Answer:</strong>{" "}
+      {question.answer}
+    </p>
 
-          <button
-  onClick={() =>
-    deleteQuestionHandler(
-      question.id
-    )
-  }
->
-  Delete
-</button>
-        </div>
-      ))}
+    <button
+      onClick={() =>
+        deleteQuestionHandler(question.id)
+      }
+    >
+      Delete
+    </button>
+  </div>
+))}
 
       <hr />
 
