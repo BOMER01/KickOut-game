@@ -1,11 +1,16 @@
+html,
+body {
+  background: #000000;
+}
 /* =========================================================
    KICKOUT ADMIN PANEL
    ========================================================= */
+   
 
 .admin-page {
   min-height: 100vh;
   padding: 40px;
-  background: #eef3f8;
+  background: #000000;
   color: #1f2937;
   font-family: inherit;
   box-sizing: border-box;
