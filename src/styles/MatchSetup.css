@@ -1,0 +1,428 @@
+.match-setup-page {
+  min-height: 100vh;
+  padding: 120px 30px 80px;
+  box-sizing: border-box;
+
+  background:
+    linear-gradient(
+      170deg,
+      transparent 0 13%,
+      rgba(239, 68, 68, 0.45) 13.2%,
+      rgba(239, 68, 68, 0.45) 13.6%,
+      transparent 13.8%
+    ),
+    linear-gradient(
+      170deg,
+      transparent 0 75%,
+      rgba(59, 130, 246, 0.45) 75.2%,
+      rgba(59, 130, 246, 0.45) 75.6%,
+      transparent 75.8%
+    ),
+    #eef2f7;
+
+  direction: rtl;
+}
+.match-setup-content {
+  width: min(900px, 100%);
+  margin: 0 auto;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 28px;
+}
+
+.match-setup-title {
+  display: inline-block;
+
+  margin: 0;
+
+  padding: 8px 22px;
+
+  background: #ffffff;
+
+  color: #1f2937;
+
+  border: 4px solid #1f2937;
+  border-radius: 18px;
+
+  box-shadow: 5px 6px 0 #1f2937;
+
+  font-size: 22px;
+  font-weight: 900;
+}
+
+.match-setup-subtitle {
+  margin: -10px 0 5px;
+
+  color: #6b7280;
+
+  font-size: 18px;
+  font-weight: 700;
+}
+.match-name-card {
+  width: min(470px, 100%);
+
+  padding: 22px;
+
+  box-sizing: border-box;
+
+  background: #ffffff;
+
+  border: 4px solid #1f2937;
+  border-top: 9px solid #facc15;
+
+  border-radius: 18px;
+
+  box-shadow: 8px 9px 0 #1f2937;
+
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.match-label {
+  align-self: center;
+
+  padding: 6px 20px;
+
+  background: #facc15;
+
+  color: #1f2937;
+
+  border: 3px solid #1f2937;
+  border-radius: 999px;
+
+  font-weight: 900;
+}
+
+.match-input {
+  width: 100%;
+
+  box-sizing: border-box;
+
+  padding: 15px 18px;
+
+  background: #eef2f7;
+
+  color: #1f2937;
+
+  border: 3px solid #1f2937;
+  border-radius: 11px;
+
+  outline: none;
+
+  font-family: inherit;
+  font-size: 18px;
+  font-weight: 700;
+
+  text-align: center;
+}
+
+.match-input:focus {
+  border-color: #3b82f6;
+}
+/* ============================= */
+/* TEAMS SETUP */
+/* ============================= */
+
+.teams-setup {
+  width: min(780px, 100%);
+
+  display: grid;
+  grid-template-columns: 1fr 90px 1fr;
+
+  align-items: center;
+
+  gap: 18px;
+
+  direction: ltr;
+}
+
+
+/* Team card */
+
+.team-setup-card {
+  min-height: 145px;
+
+  padding: 22px;
+
+  box-sizing: border-box;
+
+  background: #ffffff;
+
+  border: 4px solid #1f2937;
+
+  border-radius: 18px;
+
+  box-shadow: 8px 9px 0 #1f2937;
+
+  display: flex;
+  flex-direction: column;
+
+  justify-content: center;
+  align-items: center;
+
+  gap: 18px;
+
+  direction: rtl;
+}
+
+
+/* Red team */
+
+.team-setup-card.team-red {
+  border-top: 9px solid #ef4444;
+}
+
+
+/* Blue team */
+
+.team-setup-card.team-blue {
+  border-top: 9px solid #3b82f6;
+}
+
+
+/* Team labels */
+
+.team-setup-label {
+  padding: 6px 22px;
+
+  color: #ffffff;
+
+  border: 3px solid #1f2937;
+
+  border-radius: 999px;
+
+  font-size: 17px;
+  font-weight: 900;
+}
+
+
+/* Red label */
+
+.team-red .team-setup-label {
+  background: #ef4444;
+}
+
+
+/* Blue label */
+
+.team-blue .team-setup-label {
+  background: #3b82f6;
+}
+
+
+/* VS circle */
+
+.setup-vs {
+  width: 76px;
+  height: 76px;
+
+  border-radius: 50%;
+
+  background: #facc15;
+
+  border: 4px solid #1f2937;
+
+  box-shadow: 5px 6px 0 #1f2937;
+
+  display: grid;
+  place-items: center;
+
+  color: #1f2937;
+
+  font-size: 20px;
+  font-weight: 1000;
+
+  direction: ltr;
+}
+.team-setup-card .match-input {
+  width: 100%;
+}
+/* ============================= */
+/* SELECTED CATEGORIES */
+/* ============================= */
+
+.selected-categories {
+  width: min(780px, 100%);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 18px;
+
+  margin-top: 10px;
+}
+
+.selected-categories h2 {
+  margin: 0;
+
+  padding: 7px 24px;
+
+  background: #ffffff;
+
+  color: #1f2937;
+
+  border: 4px solid #1f2937;
+  border-radius: 999px;
+
+  box-shadow: 5px 6px 0 #1f2937;
+
+  font-size: 20px;
+  font-weight: 900;
+}
+
+
+/* Cards container */
+
+.selected-category-list {
+  width: 100%;
+
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 18px;
+
+  direction: rtl;
+}
+
+
+/* Individual card */
+
+.selected-category {
+  min-height: 90px;
+
+  padding: 18px;
+
+  box-sizing: border-box;
+
+  background: #ffffff;
+
+  border: 4px solid #1f2937;
+
+  border-radius: 16px;
+
+  box-shadow: 6px 7px 0 #1f2937;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  position: relative;
+
+  overflow: hidden;
+
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+
+/* Top color strip */
+
+.selected-category::before {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: 0;
+  right: 0;
+
+  height: 8px;
+
+  background: #facc15;
+}
+
+
+/* Category name */
+
+.selected-category strong {
+  color: #1f2937;
+
+  font-size: 19px;
+
+  font-weight: 900;
+
+  text-align: center;
+}
+
+
+/* Small interaction */
+
+.selected-category:hover {
+  transform: translateY(-3px);
+
+  box-shadow: 6px 10px 0 #1f2937;
+}
+.selected-category:nth-child(3n + 1)::before {
+  background: #ef4444;
+}
+
+.selected-category:nth-child(3n + 2)::before {
+  background: #3b82f6;
+}
+
+.selected-category:nth-child(3n + 3)::before {
+  background: #facc15;
+}
+/* ============================= */
+/* CREATE MATCH BUTTON */
+/* ============================= */
+
+.create-match-btn {
+  margin-top: 15px;
+
+  min-width: 270px;
+
+  padding: 18px 35px;
+
+  background: #facc15;
+
+  color: #1f2937;
+
+  border: 4px solid #1f2937;
+
+  border-radius: 15px;
+
+  box-shadow: 7px 8px 0 #1f2937;
+
+  font-family: inherit;
+
+  font-size: 22px;
+
+  font-weight: 1000;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.12s ease,
+    box-shadow 0.12s ease;
+}
+
+.create-match-btn:hover {
+  transform: translateY(-3px);
+
+  box-shadow: 7px 11px 0 #1f2937;
+}
+
+.create-match-btn:active {
+  transform: translateY(4px);
+
+  box-shadow: 3px 4px 0 #1f2937;
+}
+
+.create-match-btn:disabled {
+  opacity: 0.6;
+
+  cursor: not-allowed;
+
+  transform: none;
+
+  box-shadow: 5px 6px 0 #1f2937;
+}

@@ -2,7 +2,6 @@ import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { getStorage } from "firebase/storage";
-
 const firebaseConfig = {
   apiKey: "AIzaSyBv57VIoblqOzOcEMgZtKft_bL8Zwbg2xg",
   authDomain: "kickout1.firebaseapp.com",

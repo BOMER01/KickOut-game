@@ -1,40 +1,29 @@
-import { useLocation, useNavigate } from "react-router-dom";
 import { useState, useContext } from "react";
 import { GameContext } from "../context/GameContext";
+import "../styles/QuestionPage.css";
 
-function QuestionPage() {
-  const location = useLocation();
-  const navigate = useNavigate();
+function QuestionPage({
+  question,
+  categoryName,
+  teamOne,
+  teamTwo,
+  onClose,
+}) {
 
   const [showAnswer, setShowAnswer] = useState(false);
 
   const { gameData, setGameData } =
     useContext(GameContext);
 
-  const {
-    categoryName,
-    teamOne,
-    teamTwo,
-    question,
-  } = location.state || {};
-
   if (!question) {
-    return (
-      <div>
-        <h2>لم يتم العثور على السؤال</h2>
-
-        <button onClick={() => navigate("/game")}>
-          العودة للعبة
-        </button>
-      </div>
-    );
+    return null;
   }
 
-  /*
-   * تسجيل السؤال كمستخدم
-   */
   function markQuestionAsUsed() {
-    if (gameData.usedQuestions.includes(question.id)) {
+
+    if (
+      gameData.usedQuestions.includes(question.id)
+    ) {
       return gameData.usedQuestions;
     }
 
@@ -44,10 +33,8 @@ function QuestionPage() {
     ];
   }
 
-  /*
-   * إعطاء النقاط للفريق الأول
-   */
   function givePointsToTeamOne() {
+
     setGameData({
       ...gameData,
 
@@ -59,13 +46,11 @@ function QuestionPage() {
         markQuestionAsUsed(),
     });
 
-    navigate("/game");
+    onClose();
   }
 
-  /*
-   * إعطاء النقاط للفريق الثاني
-   */
   function givePointsToTeamTwo() {
+
     setGameData({
       ...gameData,
 
@@ -77,13 +62,11 @@ function QuestionPage() {
         markQuestionAsUsed(),
     });
 
-    navigate("/game");
+    onClose();
   }
 
-  /*
-   * لا أحد يحصل على النقاط
-   */
   function noWinner() {
+
     setGameData({
       ...gameData,
 
@@ -91,19 +74,20 @@ function QuestionPage() {
         markQuestionAsUsed(),
     });
 
-    navigate("/game");
+    onClose();
   }
 
-  /*
-   * عرض محتوى السؤال
-   */
   function renderQuestionContent() {
+
     const type = question.type || "text";
 
     switch (type) {
+
       case "image":
+
         return (
           <div className="question-media">
+
             {question.mediaUrl ? (
               <img
                 src={question.mediaUrl}
@@ -114,47 +98,51 @@ function QuestionPage() {
                 لا توجد صورة لهذا السؤال.
               </p>
             )}
+
           </div>
         );
 
       case "audio":
+
         return (
           <div className="question-media">
+
             {question.mediaUrl ? (
               <audio
                 controls
                 src={question.mediaUrl}
-              >
-                متصفحك لا يدعم تشغيل الصوت.
-              </audio>
+              />
             ) : (
               <p>
                 لا يوجد ملف صوتي لهذا السؤال.
               </p>
             )}
+
           </div>
         );
 
       case "video":
+
         return (
           <div className="question-media">
+
             {question.mediaUrl ? (
               <video
                 controls
                 src={question.mediaUrl}
-              >
-                متصفحك لا يدعم تشغيل الفيديو.
-              </video>
+              />
             ) : (
               <p>
                 لا يوجد فيديو لهذا السؤال.
               </p>
             )}
+
           </div>
         );
 
       case "text":
       default:
+
         return (
           <p className="question-text">
             {question.question}
@@ -164,63 +152,131 @@ function QuestionPage() {
   }
 
   return (
-    <div>
-      <h1>السؤال</h1>
+    <div
+      className="question-overlay"
+      onClick={onClose}
+    >
 
-      <h2>
-        الفئة: {categoryName}
-      </h2>
-
-      <h3>
-        النقاط: {question.points}
-      </h3>
-
-      <h3>
-        {teamOne} VS {teamTwo}
-      </h3>
-
-      <hr />
-
-      {/* محتوى السؤال */}
-      {renderQuestionContent()}
-
-      <button
-        onClick={() => setShowAnswer(true)}
+      <div
+        className="question-modal"
+        onClick={(e) => e.stopPropagation()}
       >
-        إظهار الإجابة
-      </button>
 
-      {showAnswer && (
-        <>
-          <h3>الإجابة:</h3>
+        {/* HEADER */}
 
-          <p>
-            {question.answer}
-          </p>
+        <div className="question-header">
 
-          <h3>
-            من حصل على النقاط؟
-          </h3>
+          <div className="question-points">
+            {question.points}
+          </div>
+
+          <div className="question-category">
+            {categoryName}
+          </div>
 
           <button
-            onClick={givePointsToTeamOne}
+            className="question-close"
+            onClick={onClose}
           >
-            {teamOne}
+            ✕
           </button>
 
-          <button
-            onClick={givePointsToTeamTwo}
-          >
+        </div>
+
+
+        {/* TEAMS */}
+
+        <div className="question-teams">
+
+          <div className="question-team team-two">
             {teamTwo}
-          </button>
+          </div>
+
+          <div className="question-vs">
+            VS
+          </div>
+
+          <div className="question-team team-one">
+            {teamOne}
+          </div>
+
+        </div>
+
+
+        {/* QUESTION */}
+
+        <div className="question-content">
+
+          {renderQuestionContent()}
+
+        </div>
+
+
+        {/* ANSWER */}
+
+        {!showAnswer ? (
 
           <button
-            onClick={noWinner}
+            className="show-answer-btn"
+            onClick={() => setShowAnswer(true)}
           >
-            لا أحد
+            👁 كشف الإجابة
           </button>
-        </>
-      )}
+
+        ) : (
+
+          <div className="answer-section">
+
+            <div className="answer-box">
+
+              <span>
+                الإجابة
+              </span>
+
+              <p>
+                {question.answer}
+              </p>
+
+            </div>
+
+
+            <h3>
+              من حصل على النقاط؟
+            </h3>
+
+
+            <div className="winner-buttons">
+
+              <button
+                className="team-one-btn"
+                onClick={givePointsToTeamOne}
+              >
+                {teamOne}
+              </button>
+
+              <button
+                className="team-two-btn"
+                onClick={givePointsToTeamTwo}
+              >
+                {teamTwo}
+              </button>
+
+            </div>
+
+
+            <button
+              className="no-winner-btn"
+              onClick={noWinner}
+            >
+              لا أحد
+            </button>
+
+          </div>
+
+        )}
+
+      </div>
+
     </div>
   );
 }

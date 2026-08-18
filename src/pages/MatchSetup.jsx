@@ -3,6 +3,7 @@ import { useState, useContext } from "react";
 import { GameContext } from "../context/GameContext";
 import { useAuth } from "../context/AuthContext";
 import { consumeGame } from "../services/gameService";
+import "../styles/MatchSetup.css";
 function MatchSetup() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -70,76 +71,132 @@ function MatchSetup() {
 }
 
   return (
-    <div>
-      <h1>إعداد المباراة</h1>
+  <div className="match-setup-page">
 
-      <div>
-        <label>اسم اللعبة</label>
+    <div className="match-setup-content">
 
-        <br />
+      <h1 className="match-setup-title">
+        بيانات المباراة
+      </h1>
+
+      <p className="match-setup-subtitle">
+        أنشئ مباراة جديدة وأدخل أسماء الفريقين
+      </p>
+
+
+      {/* اسم المباراة */}
+      <div className="match-name-card">
+
+        <span className="match-label">
+          اسم المباراة
+        </span>
 
         <input
+          className="match-input"
           type="text"
           value={gameName}
+          placeholder="مثال: نزال الأبطال"
           onChange={(e) =>
             setGameName(e.target.value)
           }
         />
+
       </div>
 
-      <br />
 
-      <div>
-        <label>اسم الفريق الأول</label>
+      {/* الفريقين */}
+      <div className="teams-setup">
 
-        <br />
+        {/* الفريق الثاني */}
+        <div className="team-setup-card team-blue">
 
-        <input
-          type="text"
-          value={teamOne}
-          onChange={(e) =>
-            setTeamOne(e.target.value)
-          }
-        />
+          <span className="team-setup-label">
+            الفريق الثاني
+          </span>
+
+          <input
+            className="match-input"
+            type="text"
+            value={teamTwo}
+            placeholder="اسم الفريق الثاني"
+            onChange={(e) =>
+              setTeamTwo(e.target.value)
+            }
+          />
+
+        </div>
+
+
+        {/* VS */}
+        <div className="setup-vs">
+          VS
+        </div>
+
+
+        {/* الفريق الأول */}
+        <div className="team-setup-card team-red">
+
+          <span className="team-setup-label">
+            الفريق الأول
+          </span>
+
+          <input
+            className="match-input"
+            type="text"
+            value={teamOne}
+            placeholder="اسم الفريق الأول"
+            onChange={(e) =>
+              setTeamOne(e.target.value)
+            }
+          />
+
+        </div>
+
       </div>
 
-      <br />
 
-      <div>
-        <label>اسم الفريق الثاني</label>
+      {/* التصنيفات */}
+      <div className="selected-categories">
 
-        <br />
+        <h2>
+          التصنيفات المختارة
+        </h2>
 
-        <input
-          type="text"
-          value={teamTwo}
-          onChange={(e) =>
-            setTeamTwo(e.target.value)
-          }
-        />
+        <div className="selected-category-list">
+
+          {categories.map((category) => (
+            <div
+              key={category.categoryId}
+              className="selected-category"
+            >
+              <strong>
+                {category.categoryName}
+              </strong>
+
+           
+            </div>
+          ))}
+
+        </div>
+
       </div>
 
-      <br />
 
-      <h2>الفئات المختارة</h2>
-
-      {categories.map((category) => (
-        <p key={category.categoryId}>
-          {category.categoryName}{" "}
-          ({category.packName})
-        </p>
-      ))}
-
+      {/* زر إنشاء المباراة */}
       <button
+        className="create-match-btn"
         onClick={handleStartGame}
         disabled={loading}
       >
         {loading
           ? "جاري بدء المباراة..."
-          : "ابدأ المباراة"}
+          : "أنشئ المباراة"}
       </button>
+
     </div>
-  );
+
+  </div>
+);
 }
 
 export default MatchSetup;

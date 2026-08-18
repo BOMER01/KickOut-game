@@ -1,0 +1,566 @@
+/* =========================================
+   GAME BOARD
+   KICKOUT STYLE
+========================================= */
+
+.game-page {
+  min-height: 100vh;
+  width: 100%;
+
+  box-sizing: border-box;
+
+  padding: 20px 25px 60px;
+
+  background: #f4f7fb;
+
+  color: #243247;
+
+  font-family: Arial, sans-serif;
+
+  direction: rtl;
+}
+
+
+/* =========================================
+   MAIN TITLE
+========================================= */
+
+.game-title {
+  margin: 0;
+
+  text-align: center;
+
+  font-size: 28px;
+  font-weight: 900;
+
+  color: #243247;
+}
+
+.game-page > h1:nth-of-type(2) {
+  margin: 0 0 28px;
+
+  text-align: center;
+
+  font-size: 18px;
+  font-weight: 700;
+
+  color: #243247;
+}
+
+
+/* =========================================
+   SCORE BOARD
+========================================= */
+
+.score-board {
+  width: 100%;
+  max-width: 770px;
+
+  margin: 0 auto 18px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 14px;
+}
+
+
+/* =========================================
+   TEAM SCORE CARD
+========================================= */
+
+.team-score {
+  flex: 1;
+
+  height: 88px;
+
+  box-sizing: border-box;
+
+  padding: 10px 20px;
+
+  background: #ffffff;
+
+  border: 3px solid #243247;
+
+  border-radius: 13px;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  box-shadow:
+    0 5px 0 #243247,
+    0 8px 16px rgba(36, 50, 71, 0.12);
+}
+
+
+/* =========================================
+   TEAM ONE — RED
+========================================= */
+
+.team-one {
+  border-color: #ef3e46;
+
+  box-shadow:
+    0 5px 0 #bd2930,
+    0 8px 16px rgba(36, 50, 71, 0.12);
+}
+
+.team-one h3 {
+  color: #ef3e46;
+}
+
+
+/* =========================================
+   TEAM TWO — BLUE
+========================================= */
+
+.team-two {
+  border-color: #347ff0;
+
+  box-shadow:
+    0 5px 0 #225bb5,
+    0 8px 16px rgba(36, 50, 71, 0.12);
+}
+
+.team-two h3 {
+  color: #347ff0;
+}
+
+
+/* =========================================
+   TEAM NAME
+========================================= */
+
+.team-score h3 {
+  margin: 0 0 2px;
+
+  font-size: 15px;
+
+  font-weight: 900;
+}
+
+
+/* =========================================
+   SCORE
+========================================= */
+
+.team-score strong {
+  margin: 0;
+
+  font-size: 34px;
+
+  line-height: 1;
+
+  font-weight: 900;
+
+  color: #243247;
+}
+
+
+/* =========================================
+   VS CIRCLE
+========================================= */
+
+.vs-circle {
+  width: 50px;
+  height: 50px;
+
+  flex-shrink: 0;
+
+  box-sizing: border-box;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #243247;
+
+  border: 4px solid #ffffff;
+
+  color: #ffffff;
+
+  font-size: 15px;
+
+  font-weight: 900;
+
+  box-shadow:
+    0 3px 0 #172232,
+    0 4px 10px rgba(36, 50, 71, 0.25);
+}
+
+
+/* =========================================
+   END GAME BUTTON
+========================================= */
+
+.end-game-btn {
+  display: block;
+
+  margin: 0 auto 32px;
+
+  padding: 10px 25px;
+
+  min-width: 110px;
+
+  border: 3px solid #a9272d;
+
+  border-radius: 8px;
+
+  background: #ef3e46;
+
+  color: #ffffff;
+
+  font-size: 13px;
+
+  font-weight: 900;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 4px 0 #a9272d;
+
+  transition: all 0.12s ease;
+}
+
+.end-game-btn:hover {
+  background: #f34d54;
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 6px 0 #a9272d;
+}
+
+.end-game-btn:active {
+  transform: translateY(2px);
+
+  box-shadow:
+    0 1px 0 #a9272d;
+}
+
+
+/* =========================================
+   GAME BOARD GRID
+========================================= */
+
+.game-board-grid {
+  width: 100%;
+
+  max-width: 1140px;
+
+  margin: 0 auto;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, 1fr);
+
+  gap: 12px;
+
+  align-items: start;
+}
+
+
+/* =========================================
+   CATEGORY COLUMN
+========================================= */
+
+.category-column {
+  width: 100%;
+
+  box-sizing: border-box;
+
+  padding: 0 9px 10px;
+
+  background: #ffffff;
+
+  border: 3px solid #243247;
+
+  border-radius: 12px;
+
+  overflow: hidden;
+
+  box-shadow:
+    0 5px 0 #243247,
+    0 8px 15px rgba(36, 50, 71, 0.14);
+}
+
+
+/* =========================================
+   CATEGORY TITLE
+========================================= */
+
+.category-column h3 {
+  min-height: 52px;
+
+  margin: 0 -9px 10px;
+
+  padding: 8px;
+
+  box-sizing: border-box;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+
+  color: #ffffff;
+
+  font-size: 16px;
+
+  font-weight: 900;
+
+  border-bottom: 3px solid;
+
+  background: #347ff0;
+}
+/* =========================================
+   CATEGORY TITLE + ICON
+========================================= */
+
+.category-title {
+  gap: 8px;
+}
+
+.category-icon {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  width: 22px;
+  height: 22px;
+
+  font-size: 17px;
+
+  flex-shrink: 0;
+}
+
+
+/* =========================================
+   CATEGORY COLORS
+
+   Right → Left because RTL
+========================================= */
+
+.category-column:nth-child(1) h3 {
+  background: #347ff0;
+  border-bottom-color: #225bb5;
+}
+
+.category-column:nth-child(2) h3 {
+  background: #ef3e46;
+  border-bottom-color: #bd2930;
+}
+
+.category-column:nth-child(3) h3 {
+  background: #347ff0;
+  border-bottom-color: #225bb5;
+}
+
+.category-column:nth-child(4) h3 {
+  background: #ef3e46;
+  border-bottom-color: #bd2930;
+}
+
+
+/* =========================================
+   QUESTION / VALUE BUTTON
+========================================= */
+
+.question-btn {
+  width: 100%;
+
+  height: 58px;
+
+  margin-bottom: 9px;
+
+  padding: 5px;
+
+  box-sizing: border-box;
+
+  border: 3px solid #243247;
+
+  border-radius: 9px;
+
+  background: #f1f3f6;
+
+  color: #243247;
+
+  font-size: 21px;
+
+  font-weight: 900;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 4px 0 #243247;
+
+  transition:
+    transform 0.12s ease,
+    background 0.12s ease,
+    box-shadow 0.12s ease;
+}
+
+
+/* =========================================
+   QUESTION HOVER
+========================================= */
+
+.question-btn:hover {
+  background: #ffffff;
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 6px 0 #243247;
+}
+
+
+/* =========================================
+   QUESTION ACTIVE
+========================================= */
+
+.question-btn:active {
+  transform: translateY(3px);
+
+  box-shadow:
+    0 1px 0 #243247;
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 900px) {
+
+  .game-page {
+    padding: 18px 15px 40px;
+  }
+
+  .game-board-grid {
+    grid-template-columns:
+      repeat(2, 1fr);
+  }
+
+  .score-board {
+    max-width: 700px;
+  }
+}
+
+
+/* =========================================
+   PHONE
+========================================= */
+
+@media (max-width: 600px) {
+
+  .game-title {
+    font-size: 24px;
+  }
+
+  .game-page > h1:nth-of-type(2) {
+    font-size: 16px;
+  }
+
+  .score-board {
+    gap: 7px;
+  }
+
+  .team-score {
+    height: 78px;
+
+    padding: 8px;
+  }
+
+  .team-score h3 {
+    font-size: 13px;
+  }
+
+  .team-score strong {
+    font-size: 28px;
+  }
+
+  .vs-circle {
+    width: 43px;
+    height: 43px;
+
+    font-size: 12px;
+  }
+
+  .game-board-grid {
+    grid-template-columns:
+      repeat(2, 1fr);
+
+    gap: 9px;
+  }
+
+  .category-column {
+    padding-left: 7px;
+    padding-right: 7px;
+  }
+
+  .category-column h3 {
+    margin-left: -7px;
+    margin-right: -7px;
+
+    min-height: 48px;
+
+    font-size: 14px;
+  }
+
+  .question-btn {
+    height: 52px;
+
+    font-size: 19px;
+  }
+}
+
+
+/* =========================================
+   VERY SMALL PHONE
+========================================= */
+
+@media (max-width: 400px) {
+
+  .score-board {
+    gap: 4px;
+  }
+
+  .team-score strong {
+    font-size: 24px;
+  }
+
+  .vs-circle {
+    width: 38px;
+    height: 38px;
+  }
+
+  .game-board-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.category-title {
+  gap: 8px;
+}
+
+.category-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 18px;
+
+  line-height: 1;
+}

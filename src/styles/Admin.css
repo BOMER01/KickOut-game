@@ -33,7 +33,7 @@ body {
 
   padding: 22px 30px;
 
-  background: #ffffff;
+  background: #0a0a0a;
 
   border: 3px solid #1f2937;
   border-radius: 18px;
@@ -121,7 +121,7 @@ body {
 
   padding: 28px;
 
-  background: #ffffff;
+  background: #111111;
 
   border: 3px solid #1f2937;
   border-radius: 18px;
@@ -228,7 +228,7 @@ body {
   width: 70px;
   height: 70px;
 
-  border: 3px solid #1f2937;
+  border: 3px solid #111111;
   border-radius: 14px;
 
   background: #ffffff;
@@ -250,7 +250,7 @@ body {
 
 .category-icon-option:active {
   transform: translate(1px, 1px);
-  box-shadow: 1px 1px 0 #1f2937;
+  box-shadow: 1px 1px 0 #111111;
 }
 
 .category-icon-option.selected {
@@ -333,7 +333,7 @@ body {
 
   padding: 18px 20px;
 
-  background: #ffffff;
+  background: #111111;
 
   border: 3px solid #1f2937;
   border-radius: 15px;
@@ -366,7 +366,7 @@ body {
 
   font-size: 28px;
 
-  background: #f3f4f6;
+  background: #111111;
 
   box-shadow: 3px 3px 0 #1f2937;
 }
@@ -462,7 +462,7 @@ body {
 
   margin: 15px auto !important;
 
-  background: #ffffff !important;
+  background: #111111 !important;
 
   border: 3px solid #1f2937 !important;
   border-radius: 14px;
@@ -483,7 +483,7 @@ body {
   border-radius: 8px;
 
   background: #ff4b4b;
-  color: #ffffff;
+  color: #111111;
 
   font-weight: 800;
 
@@ -543,5 +543,402 @@ body {
 
   .admin-category-icon {
     margin: 0 auto;
+  }
+}
+/* =========================================================
+   PACKS
+   ========================================================= */
+
+.admin-pack-section {
+  width: min(1200px, 100%);
+  margin: 0 auto;
+  padding: 28px;
+
+  background: #ffffff;
+
+  border: 3px solid #1f2937;
+  border-radius: 18px;
+
+  box-shadow: 7px 7px 0 #1f2937;
+
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Category selector */
+
+.admin-pack-section select {
+  width: 100%;
+}
+
+/* Pack name input */
+
+.admin-pack-section input[type="text"] {
+  width: 100%;
+}
+
+/* Add Pack */
+
+.admin-pack-section > button {
+  width: fit-content;
+
+  padding: 11px 22px;
+
+  background: #facc15;
+
+  border: 3px solid #1f2937;
+  border-radius: 10px;
+
+  color: #1f2937;
+
+  font-weight: 900;
+
+  cursor: pointer;
+
+  box-shadow: 4px 4px 0 #1f2937;
+
+  transition: 0.15s ease;
+}
+
+.admin-pack-section > button:hover {
+  transform: translateY(-2px);
+}
+
+.admin-pack-section > button:active {
+  transform: translate(2px, 2px);
+
+  box-shadow: 2px 2px 0 #1f2937;
+}
+
+/* Individual Pack */
+
+.admin-pack-section > div {
+  min-height: 60px;
+
+  padding: 12px 15px;
+
+  background: #f8fafc;
+
+  border: 3px solid #1f2937;
+  border-radius: 12px;
+
+  box-shadow: 4px 4px 0 #1f2937;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 15px;
+
+  font-weight: 900;
+}
+
+/* Delete Pack */
+
+.admin-pack-section > div button {
+  padding: 8px 15px;
+
+  background: #ff4b4b;
+
+  border: 3px solid #1f2937;
+  border-radius: 8px;
+
+  color: #ffffff;
+
+  font-weight: 900;
+
+  cursor: pointer;
+
+  box-shadow: 3px 3px 0 #1f2937;
+
+  transition: 0.15s ease;
+}
+
+.admin-pack-section > div button:hover {
+  transform: translateY(-2px);
+}
+
+.admin-pack-section > div button:active {
+  transform: translate(2px, 2px);
+
+  box-shadow: 1px 1px 0 #1f2937;
+}
+
+/* Mobile */
+
+@media (max-width: 600px) {
+
+  .admin-pack-section {
+    padding: 18px;
+  }
+
+  .admin-pack-section > div {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .admin-pack-section > div button {
+    width: 100%;
+  }
+}
+/* =========================================================
+   QUESTIONS
+   ========================================================= */
+
+.admin-question-section {
+  width: min(1200px, 100%);
+  margin: 0 auto;
+  padding: 28px;
+
+  background: #ffffff;
+
+  border: 3px solid #1f2937;
+  border-radius: 18px;
+
+  box-shadow: 7px 7px 0 #1f2937;
+
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Question inputs */
+
+.admin-question-section select,
+.admin-question-section input[type="text"],
+.admin-question-section input[type="number"] {
+  width: 100%;
+}
+
+/* Add Question */
+
+.admin-question-section > button {
+  width: fit-content;
+
+  padding: 11px 22px;
+
+  background: #facc15;
+
+  border: 3px solid #1f2937;
+  border-radius: 10px;
+
+  color: #1f2937;
+
+  font-weight: 900;
+
+  cursor: pointer;
+
+  box-shadow: 4px 4px 0 #1f2937;
+
+  transition: 0.15s ease;
+}
+
+.admin-question-section > button:hover {
+  transform: translateY(-2px);
+}
+
+.admin-question-section > button:active {
+  transform: translate(2px, 2px);
+
+  box-shadow: 2px 2px 0 #1f2937;
+}
+
+/* Question cards */
+
+.admin-question-section > div {
+  padding: 18px;
+
+  background: #f8fafc;
+
+  border: 3px solid #1f2937;
+  border-radius: 14px;
+
+  box-shadow: 5px 5px 0 #1f2937;
+}
+
+.admin-question-section > div p {
+  margin: 7px 0;
+
+  color: #1f2937;
+}
+
+.admin-question-section > div strong {
+  font-weight: 900;
+}
+
+/* Delete Question */
+
+.admin-question-section > div button {
+  padding: 8px 15px;
+
+  margin-top: 8px;
+
+  background: #ff4b4b;
+
+  border: 3px solid #1f2937;
+  border-radius: 8px;
+
+  color: #ffffff;
+
+  font-weight: 900;
+
+  cursor: pointer;
+
+  box-shadow: 3px 3px 0 #1f2937;
+
+  transition: 0.15s ease;
+}
+
+.admin-question-section > div button:hover {
+  transform: translateY(-2px);
+}
+
+.admin-question-section > div button:active {
+  transform: translate(2px, 2px);
+
+  box-shadow: 1px 1px 0 #1f2937;
+}
+
+/* Mobile */
+
+@media (max-width: 600px) {
+
+  .admin-question-section {
+    padding: 18px;
+  }
+
+  .admin-question-section > button {
+    width: 100%;
+  }
+}
+/* =========================================================
+   PACKAGES
+   ========================================================= */
+
+.admin-package-section {
+  width: min(1200px, 100%);
+  margin: 0 auto;
+  padding: 28px;
+
+  background: #ffffff;
+
+  border: 3px solid #1f2937;
+  border-radius: 18px;
+
+  box-shadow: 7px 7px 0 #1f2937;
+
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Inputs */
+
+.admin-package-section input[type="text"],
+.admin-package-section input[type="number"],
+.admin-package-section select {
+  width: 100%;
+}
+
+/* Add Package */
+
+.admin-package-section > button {
+  width: fit-content;
+
+  padding: 11px 22px;
+
+  background: #facc15;
+
+  border: 3px solid #1f2937;
+  border-radius: 10px;
+
+  color: #1f2937;
+
+  font-weight: 900;
+
+  cursor: pointer;
+
+  box-shadow: 4px 4px 0 #1f2937;
+
+  transition: 0.15s ease;
+}
+
+.admin-package-section > button:hover {
+  transform: translateY(-2px);
+}
+
+.admin-package-section > button:active {
+  transform: translate(2px, 2px);
+
+  box-shadow: 2px 2px 0 #1f2937;
+}
+
+/* Package cards */
+
+.admin-package-section > div {
+  padding: 18px;
+
+  background: #f8fafc;
+
+  border: 3px solid #1f2937;
+  border-radius: 14px;
+
+  box-shadow: 5px 5px 0 #1f2937;
+}
+
+.admin-package-section > div p {
+  margin: 7px 0;
+
+  color: #1f2937;
+}
+
+.admin-package-section > div strong {
+  font-weight: 900;
+}
+
+/* Delete Package */
+
+.admin-package-section > div button {
+  padding: 8px 15px;
+
+  margin-top: 8px;
+
+  background: #ff4b4b;
+
+  border: 3px solid #1f2937;
+  border-radius: 8px;
+
+  color: #ffffff;
+
+  font-weight: 900;
+
+  cursor: pointer;
+
+  box-shadow: 3px 3px 0 #1f2937;
+
+  transition: 0.15s ease;
+}
+
+.admin-package-section > div button:hover {
+  transform: translateY(-2px);
+}
+
+.admin-package-section > div button:active {
+  transform: translate(2px, 2px);
+
+  box-shadow: 1px 1px 0 #1f2937;
+}
+
+/* Mobile */
+
+@media (max-width: 600px) {
+
+  .admin-package-section {
+    padding: 18px;
+  }
+
+  .admin-package-section > button {
+    width: 100%;
   }
 }

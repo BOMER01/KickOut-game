@@ -838,24 +838,24 @@ export default function HowToPlay() {
               <div className="cat-grid">
 
                 <div
-                  className="cat-card"
-                  id="catWM"
-                  style={{
-                    "--rot": "-2deg",
-                  }}
-                >
-                  راسلمنيا
-                </div>
+  className="cat-card selected focused"
+  id="catWM"
+  style={{
+    "--rot": "-2deg",
+  }}
+>
+  راسلمنيا
+</div>
 
                 <div
-                  className="cat-card"
-                  id="catTitles"
-                  style={{
-                    "--rot": "1.5deg",
-                  }}
-                >
-                  الألقاب
-                </div>
+  className="cat-card selected focused"
+  id="catTitles"
+  style={{
+    "--rot": "1.5deg",
+  }}
+>
+  الألقاب
+</div>
 
                 <div
                   className="cat-card"
@@ -970,14 +970,14 @@ export default function HowToPlay() {
                     className="answer-btn answer-btn--correct"
                     type="button"
                   >
-                    ✓ إجابة صحيحة
+                    فريق الروك
                   </button>
 
                   <button
                     className="answer-btn answer-btn--wrong"
                     type="button"
                   >
-                    ✕ إجابة خاطئة
+                    فريق سينا
                   </button>
                 </div>
 
@@ -985,7 +985,7 @@ export default function HowToPlay() {
                   className="skip-btn"
                   type="button"
                 >
-                  ⏭ تخطي السؤال
+                  لا احد
                 </button>
               </div>
             </div>
@@ -1008,6 +1008,7 @@ export default function HowToPlay() {
               >
                 <span className="arcade-btn__face">
                   فهمت... يلا نلعب!
+                  
                 </span>
               </button>
             </div>

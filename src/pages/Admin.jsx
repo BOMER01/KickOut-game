@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { categoryIcons } from "../categoryIcons";
 import "../styles/Admin.css";
+import { uploadMedia } from "../services/mediaService";
 import {
   getPacks,
   addPack,
@@ -91,6 +92,8 @@ const [selectedQuestionPackId, setSelectedQuestionPackId] = useState("");
 
 const [questions, setQuestions] = useState([]);
 const [questionType, setQuestionType] = useState("text");
+const [questionMedia, setQuestionMedia] = useState(null);
+const [uploadingMedia, setUploadingMedia] = useState(false);
 
 const [packages, setPackages] = useState([]);
 
@@ -355,27 +358,66 @@ const updateCategoryHandler = async () => {
     return;
   }
 
+  if (
+    questionType !== "text" &&
+    !questionMedia
+  ) {
+    alert("الرجاء اختيار ملف للسؤال");
+    return;
+  }
+
   try {
+    setUploadingMedia(true);
+
+    let mediaUrl = "";
+
+    // رفع الملف إذا كان السؤال Media
+    if (
+      questionType !== "text" &&
+      questionMedia
+    ) {
+      mediaUrl =
+        await uploadMedia(questionMedia);
+    }
+
     await addQuestion({
       packId: selectedQuestionPackId,
+
       type: questionType,
+
       question: questionText,
+
       answer: answerText,
+
       points: Number(questionPoints),
+
+      mediaUrl: mediaUrl,
+
       order: questions.length + 1,
+
       isActive: true,
     });
 
+    // تنظيف الحقول
     setQuestionText("");
     setAnswerText("");
     setQuestionPoints("");
     setQuestionType("text");
+    setQuestionMedia(null);
 
-    await loadQuestions(selectedQuestionPackId);
+    await loadQuestions(
+      selectedQuestionPackId
+    );
 
   } catch (error) {
     console.error(error);
-    alert("حدث خطأ أثناء إضافة السؤال");
+
+    alert(
+      "حدث خطأ أثناء إضافة السؤال"
+    );
+
+  } finally {
+    setUploadingMedia(false);
   }
 };
 
@@ -562,63 +604,62 @@ const updateCategoryHandler = async () => {
 
       <h2>Packs</h2>
 
-<select
-  value={selectedCategoryId}
-  onChange={(e) => {
-    setSelectedCategoryId(e.target.value);
-    loadPacks(e.target.value);
-  }}
->
-  <option value="">
-    Select Category
-  </option>
+<div className="admin-pack-section">
 
-  {categories.map((category) => (
-    <option
-      key={category.id}
-      value={category.id}
-    >
-      {category.name}
+  <select
+    value={selectedCategoryId}
+    onChange={(e) => {
+      setSelectedCategoryId(e.target.value);
+      loadPacks(e.target.value);
+    }}
+  >
+    <option value="">
+      Select Category
     </option>
+
+    {categories.map((category) => (
+      <option
+        key={category.id}
+        value={category.id}
+      >
+        {category.name}
+      </option>
+    ))}
+  </select>
+
+  <input
+    type="text"
+    placeholder="Pack Name"
+    value={newPack}
+    onChange={(e) =>
+      setNewPack(e.target.value)
+    }
+  />
+
+  <button onClick={addPackHandler}>
+    Add Pack
+  </button>
+
+  {packs.map((pack) => (
+    <div key={pack.id}>
+      {pack.name}
+
+      <button
+        onClick={() =>
+          deletePackHandler(pack.id)
+        }
+      >
+        Delete
+      </button>
+    </div>
   ))}
-</select>
 
-<br />
-<br />
-
-<input
-  type="text"
-  placeholder="Pack Name"
-  value={newPack}
-  onChange={(e) =>
-    setNewPack(e.target.value)
-  }
-/>
-
-<button onClick={addPackHandler}>
-  Add Pack
-</button>
-
-<br />
-<br />
-
-{packs.map((pack) => (
-  <div key={pack.id}>
-    {pack.name}
-
-    <button
-      onClick={() =>
-        deletePackHandler(pack.id)
-      }
-    >
-      Delete
-    </button>
-  </div>
-))}
+</div>
 
 <hr />
 
 <h2>Questions</h2>
+<div className="admin-question-section">
 
 {/* Category */}
 
@@ -704,6 +745,38 @@ const updateCategoryHandler = async () => {
   </option>
 </select>
 
+{questionType !== "text" && (
+  <div className="question-media-upload">
+
+    <label>
+      اختر ملف السؤال
+    </label>
+
+    <input
+      type="file"
+      accept={
+        questionType === "image"
+          ? "image/*"
+          : questionType === "audio"
+          ? "audio/*"
+          : "video/*"
+      }
+      onChange={(e) =>
+        setQuestionMedia(
+          e.target.files?.[0] || null
+        )
+      }
+    />
+
+    {questionMedia && (
+      <p>
+        الملف المختار: {questionMedia.name}
+      </p>
+    )}
+
+  </div>
+)}
+
 <br />
 <br />
 
@@ -748,9 +821,13 @@ const updateCategoryHandler = async () => {
 
 <br />
 <br />
-
-<button onClick={addQuestionHandler}>
-  Add Question
+<button
+  onClick={addQuestionHandler}
+  disabled={uploadingMedia}
+>
+  {uploadingMedia
+    ? "جاري رفع الملف..."
+    : "Add Question"}
 </button>
 
       <hr />
@@ -763,6 +840,7 @@ const updateCategoryHandler = async () => {
       padding: "10px",
       marginBottom: "10px",
     }}
+    
   >
     <p>
       <strong>Type:</strong>{" "}
@@ -798,10 +876,14 @@ const updateCategoryHandler = async () => {
     </button>
   </div>
 ))}
+</div>
+
+
 
       <hr />
 
 <h2>Packages</h2>
+<div className="admin-package-section">
 
 <input
   type="text"
@@ -892,6 +974,7 @@ const updateCategoryHandler = async () => {
     </button>
   </div>
 ))}
+</div>
     </div>
   );
 }

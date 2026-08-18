@@ -167,43 +167,50 @@ function CategorySelection() {
   // GET RANDOM PACKS
   // =========================
 
-  async function handleNext() {
-    try {
-      const selectedCategories = [];
+async function handleNext() {
+  try {
+    const selectedCategories = [];
 
-      const allCategories = [
-        ...teamOneCategories,
-        ...teamTwoCategories,
-      ];
+    const allCategories = [
+      ...teamOneCategories,
+      ...teamTwoCategories,
+    ];
 
-      for (const category of allCategories) {
-        const randomPack = await getRandomPack(category.id);
+    for (const category of allCategories) {
+      const randomPack = await getRandomPack(category.id);
 
-        if (!randomPack) {
-          alert(
-            `الفئة ${category.name} لا تحتوي على أي Pack`
-          );
-          return;
-        }
-
-        selectedCategories.push({
-          categoryId: category.id,
-          categoryName: category.name,
-          packId: randomPack.id,
-          packName: randomPack.name,
-        });
+      if (!randomPack) {
+        alert(
+          `الفئة ${category.name} لا تحتوي على أي Pack`
+        );
+        return;
       }
 
-      navigate("/setup", {
-        state: {
-          categories: selectedCategories,
-        },
+      const categoryIcon = categoryIcons.find(
+        (icon) =>
+          icon.id === category.icon ||
+          icon.symbol === category.icon
+      );
+
+      selectedCategories.push({
+        categoryId: category.id,
+        categoryName: category.name,
+        packId: randomPack.id,
+        packName: randomPack.name,
+        icon: categoryIcon?.symbol || "★",
       });
-    } catch (error) {
-      console.error(error);
-      alert("حدث خطأ أثناء تجهيز المباراة");
     }
+
+    navigate("/setup", {
+      state: {
+        categories: selectedCategories,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    alert("حدث خطأ أثناء تجهيز المباراة");
   }
+}
 
   // =========================
   // PAGE DATA
