@@ -1,8 +1,11 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { signOut } from "firebase/auth";
+import { auth } from "../firebase";
 import { categoryIcons } from "../categoryIcons";
 import "../styles/Admin.css";
 import { uploadMedia } from "../services/mediaService";
+
 import {
   getPacks,
   addPack,
@@ -30,23 +33,13 @@ import {
 
 export default function Admin() {
   const navigate = useNavigate();
-
-  // حماية صفحة الأدمن
-useEffect(() => {
-  const isAdmin =
-    localStorage.getItem(
-      "adminLoggedIn"
-    );
-
-  if (isAdmin !== "true") {
-    navigate("/admin-login");
-    return;
-  }
-
+  useEffect(() => {
   loadCategories();
   loadPackages();
+}, []);
 
-}, [navigate]);
+
+
 
   async function loadCategories() {
   try {
@@ -58,13 +51,14 @@ useEffect(() => {
 }
 
   // تسجيل خروج
-  function logout() {
-    localStorage.removeItem(
-      "adminLoggedIn"
-    );
-
-    navigate("/");
+ async function logout() {
+  try {
+    await signOut(auth);
+    navigate("/admin-login");
+  } catch (error) {
+    console.error("Admin logout error:", error);
   }
+}
 
   // Categories
   const [categories, setCategories] = useState([]);
