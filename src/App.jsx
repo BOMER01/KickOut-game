@@ -12,6 +12,7 @@ import CategorySelection from "./pages/CategorySelection";
 import MatchSetup from "./pages/MatchSetup";
 import WinnerPage from "./pages/WinnerPage";
 import MyAccount from "./pages/MyAccount";
+import AdminProtectedRoute from "./components/AdminProtectedRoute";
 function App() {
   return (
     <BrowserRouter>
@@ -20,7 +21,14 @@ function App() {
   path="/admin-login"
   element={<AdminLogin />}
 />
-        <Route path="/admin" element={<Admin />} />
+        <Route
+  path="/admin"
+  element={
+    <AdminProtectedRoute>
+      <Admin />
+    </AdminProtectedRoute>
+  }
+/>
         <Route
   path="/winner"
   element={

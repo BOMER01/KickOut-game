@@ -1,7 +1,13 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { doc, getDoc } from "firebase/firestore";
+
 import { getCategories } from "../services/categoryService";
 import { getRandomPack } from "../services/packService";
+import { useAuth } from "../context/AuthContext";
+
+import { db } from "../firebase";
+
 import logo from "../assets/images/logo-1-06.png";
 import "../styles/CategorySelection.css";
 import { categoryIcons } from "../categoryIcons";
@@ -17,6 +23,9 @@ function CategorySelection() {
   const [currentTeam, setCurrentTeam] = useState(1);
 
   const navigate = useNavigate();
+  const { currentUser } = useAuth();
+
+const [gamesRemaining, setGamesRemaining] = useState(0);
 
   useEffect(() => {
     loadCategories();
@@ -30,6 +39,36 @@ function CategorySelection() {
       console.error(error);
     }
   }
+  useEffect(() => {
+  async function loadGamesRemaining() {
+    if (!currentUser) return;
+
+    try {
+      const userRef = doc(
+        db,
+        "users",
+        currentUser.uid
+      );
+
+      const userSnap = await getDoc(userRef);
+
+      if (userSnap.exists()) {
+        const userData = userSnap.data();
+
+        setGamesRemaining(
+          userData.gamesRemaining || 0
+        );
+      }
+    } catch (error) {
+      console.error(
+        "Failed to load games remaining:",
+        error
+      );
+    }
+  }
+
+  loadGamesRemaining();
+}, [currentUser]);
 
   // =========================
   // SELECTION LOGIC
@@ -349,10 +388,10 @@ async function handleNext() {
         <div className="category-hud__side category-hud__side--left">
 
           <div className="category-games-left">
-            <span>🏆</span>
-            الألعاب المتبقية
-            <b>1</b>
-          </div>
+  <span>🏆</span>
+  الألعاب المتبقية
+  <b>{gamesRemaining}</b>
+</div>
 
           <button className="category-hud-btn">
             خروج
