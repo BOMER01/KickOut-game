@@ -1,4 +1,4 @@
-import { doc, runTransaction } from "firebase/firestore";
+/*import { doc, runTransaction } from "firebase/firestore";
 import { db } from "../firebase";
 
 export async function consumeGame(userId) {
@@ -26,4 +26,4 @@ export async function consumeGame(userId) {
 
     return newGamesRemaining;
   });
-}
+}*/

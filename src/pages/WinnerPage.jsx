@@ -1,11 +1,16 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+
+import { useRef } from "react";
+import { saveGameHistory } from "../services/gameHistoryService";
+
+
 import { GameContext } from "../context/GameContext";
 import { useAuth } from "../context/AuthContext";
 
-import { doc, getDoc } from "firebase/firestore";
-import { db } from "../firebase";
+/*import { doc, getDoc } from "firebase/firestore";
+import { db } from "../firebase";*/
 
 import logo from "../assets/images/logo-1-06.png";
 
@@ -22,6 +27,29 @@ function WinnerPage() {
 
   const { currentUser } = useAuth();
 
+  
+const historySaved = useRef(false);
+
+useEffect(() => {
+  async function saveFinishedGame() {
+    if (!currentUser || historySaved.current) return;
+
+    if (!gameData.teamOne || !gameData.teamTwo) return;
+
+    historySaved.current = true;
+
+    try {
+      await saveGameHistory(currentUser.uid, gameData);
+    } catch (error) {
+      historySaved.current = false;
+      console.error("Failed to save game history:", error);
+    }
+  }
+
+  saveFinishedGame();
+}, [currentUser, gameData]);
+
+
 
   /*
    * =========================
@@ -29,8 +57,8 @@ function WinnerPage() {
    * =========================
    */
 
-  const [gamesRemaining, setGamesRemaining] =
-    useState(0);
+  /*const [gamesRemaining, setGamesRemaining] =
+    useState(0);*/
     const [isMusicPlaying, setIsMusicPlaying] =
   useState(false);
   const [audio] = useState(() => {
@@ -43,7 +71,7 @@ function WinnerPage() {
 });
 
 
-  useEffect(() => {
+ /* useEffect(() => {
 
     async function loadGamesRemaining() {
 
@@ -83,7 +111,7 @@ function WinnerPage() {
 
     loadGamesRemaining();
 
-  }, [currentUser]);
+  }, [currentUser]);*/
 
   useEffect(() => {
 
@@ -201,7 +229,7 @@ function WinnerPage() {
 
             {/* OPTIONS */}
 
-            <button
+            {/*<button
               type="button"
               className="hud-btn hud-btn--ghost"
             >
@@ -214,7 +242,7 @@ function WinnerPage() {
                 الخيارات
               </span>
 
-            </button>
+            </button>*/}
 
 
             {/* PREVIOUS GAMES */}
@@ -222,6 +250,7 @@ function WinnerPage() {
             <button
               type="button"
               className="hud-btn hud-btn--ghost"
+              onClick={() => navigate("/game-history")}
             >
 
               <span className="hud-btn__icon">
@@ -262,7 +291,7 @@ function WinnerPage() {
 
             {/* GAMES REMAINING */}
 
-            <div className="hud-stat">
+            {/*<div className="hud-stat">
 
               <span className="hud-stat__value">
                 {gamesRemaining}
@@ -276,7 +305,7 @@ function WinnerPage() {
                 🏆
               </span>
 
-            </div>
+            </div>*/}
 
 
             {/* HOME */}

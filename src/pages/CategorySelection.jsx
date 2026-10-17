@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { doc, getDoc } from "firebase/firestore";
+{/*import { doc, getDoc } from "firebase/firestore"; 
+  import { db } from "../firebase"; */}
 
 import { getCategories } from "../services/categoryService";
 import { getRandomPack } from "../services/packService";
 import { useAuth } from "../context/AuthContext";
 
-import { db } from "../firebase";
+
 
 import logo from "../assets/images/logo-1-06.png";
 import "../styles/CategorySelection.css";
@@ -25,7 +26,7 @@ function CategorySelection() {
   const navigate = useNavigate();
   const { currentUser } = useAuth();
 
-const [gamesRemaining, setGamesRemaining] = useState(0);
+ {/*const [gamesRemaining, setGamesRemaining] = useState(0);*/}
 
   useEffect(() => {
     loadCategories();
@@ -39,7 +40,7 @@ const [gamesRemaining, setGamesRemaining] = useState(0);
       console.error(error);
     }
   }
-  useEffect(() => {
+  {/*useEffect(() => {
   async function loadGamesRemaining() {
     if (!currentUser) return;
 
@@ -68,7 +69,7 @@ const [gamesRemaining, setGamesRemaining] = useState(0);
   }
 
   loadGamesRemaining();
-}, [currentUser]);
+}, [currentUser]);*/}
 
   // =========================
   // SELECTION LOGIC
@@ -365,15 +366,17 @@ async function handleNext() {
 
         <div className="category-hud__side category-hud__side--right">
 
-          <button className="category-hud-btn">
-            <span>⚙</span>
-            الخيارات
-          </button>
 
-          <button className="category-hud-btn">
-            <span>◷</span>
-            العابي السابقة
-          </button>
+        
+<button
+  type="button"
+  className="category-hud-btn"
+  onClick={() => navigate("/game-history")}
+>
+  <span>◷</span>
+  العابي السابقة
+</button>
+
 
         </div>
 
@@ -387,16 +390,16 @@ async function handleNext() {
 
         <div className="category-hud__side category-hud__side--left">
 
-          <div className="category-games-left">
+         {/*} <div className="category-games-left">
   <span>🏆</span>
   الألعاب المتبقية
   <b>{gamesRemaining}</b>
-</div>
+</div>*/}
 
-          <button className="category-hud-btn">
+          {/*<button className="category-hud-btn">
             خروج
             <span>↪</span>
-          </button>
+          </button>*/}
 
         </div>
 
@@ -579,11 +582,27 @@ async function handleNext() {
 
                 <div className="category-card-content">
 
-  <div className="category-icon-box">
+ 
+<div className="category-icon-box">
+  {category.iconUrl ? (
+    <img
+      src={category.iconUrl}
+      alt={category.name}
+      className="category-icon category-custom-image"
+
+      style={{
+        width: "100%",
+        height: "100%",
+        objectFit: "contain",
+      }}
+    />
+  ) : (
     <span className="category-icon">
       {categoryIcon?.symbol || "★"}
     </span>
-  </div>
+  )}
+</div>
+
 
   <h3>
     {category.name}

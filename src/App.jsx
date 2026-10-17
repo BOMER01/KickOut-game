@@ -14,6 +14,9 @@ import WinnerPage from "./pages/WinnerPage";
 import MyAccount from "./pages/MyAccount";
 import AdminProtectedRoute from "./components/AdminProtectedRoute";
 
+import GameHistory from "./pages/GameHistory";
+
+
 function App() {
   return (
     <BrowserRouter>
@@ -73,6 +76,17 @@ function App() {
     </ProtectedRoute>
   }
 />
+
+
+<Route
+  path="/game-history"
+  element={
+    <ProtectedRoute>
+      <GameHistory />
+    </ProtectedRoute>
+  }
+/>
+
         <Route
   path="/setup"
   element={

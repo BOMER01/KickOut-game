@@ -18,6 +18,9 @@ function QuestionModal({
   twoAnswersActive,
   twoAnswersUsed,
 
+  extraTimeUsed,
+onUseExtraTime,
+
   onClose,
 }) {
   const [time, setTime] = useState(60);
@@ -25,43 +28,55 @@ function QuestionModal({
   const [showAnswer, setShowAnswer] = useState(false);
   
 
+// TIMER
+useEffect(() => {
+  setTime(60);
+  setTimerRunning(true);
+  setShowAnswer(false);
+}, [question]);
 
-  // TIMER
-  useEffect(() => {
-    if (!timerRunning) return;
+useEffect(() => {
+  if (!timerRunning) return;
 
-    const interval = setInterval(() => {
-      setTime((prev) => {
-        if (prev <= 1) {
-          setTimerRunning(false);
-          return 0;
-        }
+  const interval = setInterval(() => {
+    setTime((prev) => {
+      if (prev <= 1) {
+        setTimerRunning(false);
+        return 0;
+      }
 
-        return prev - 1;
-      });
-    }, 1000);
+      return prev - 1;
+    });
+  }, 1000);
 
-    return () => clearInterval(interval);
-  }, [timerRunning]);
+  return () => clearInterval(interval);
+}, [timerRunning]);
 
-  const minutes = String(
-    Math.floor(time / 60)
-  ).padStart(2, "0");
+const minutes = String(
+  Math.floor(time / 60)
+).padStart(2, "0");
 
-  const seconds = String(
-    time % 60
-  ).padStart(2, "0");
+const seconds = String(
+  time % 60
+).padStart(2, "0");
 
-  function toggleTimer() {
-    if (time === 0) return;
+function toggleTimer() {
+  if (time === 0) return;
 
-    setTimerRunning((prev) => !prev);
-  }
+  setTimerRunning((prev) => !prev);
+}
 
-  function resetTimer() {
-    setTimerRunning(false);
-    setTime(60);
-  }
+function resetTimer() {
+  setTimerRunning(false);
+  setTime(60);
+}
+function useExtraTime() {
+  if (extraTimeUsed) return;
+
+  setTime(30);
+  setTimerRunning(true);
+  onUseExtraTime();
+}
  
 
   return (
@@ -231,12 +246,20 @@ function QuestionModal({
   </span>
 </button>
 
-          <button
-            type="button"
-            className="helper-btn"
-          >
-            ⚽
-          </button>
+       <button
+  type="button"
+  className={`helper-btn ${
+    extraTimeUsed ? "is-used" : ""
+  }`}
+  disabled={extraTimeUsed}
+  onClick={useExtraTime}
+>
+  <span className="helper-icon">⏳</span>
+
+  <span className="helper-text">
+    وقت إضافي
+  </span>
+</button>
 
         </div>
 

@@ -86,6 +86,8 @@
 
   font-size: 30px;
   font-weight: 900;
+
+  box-sizing: border-box;
 }
 
 
@@ -156,6 +158,8 @@
   font-weight: 900;
 
   cursor: pointer;
+
+  box-sizing: border-box;
 }
 
 
@@ -215,6 +219,8 @@
 
   font-size: 16px;
   font-weight: 900;
+
+  text-align: center;
 }
 
 
@@ -262,6 +268,8 @@
   cursor: pointer;
 
   box-shadow: 0 4px 0 #243247;
+
+  box-sizing: border-box;
 }
 
 
@@ -301,6 +309,8 @@
 
   font-size: 19px;
   font-weight: 800;
+
+  box-sizing: border-box;
 }
 
 
@@ -327,6 +337,8 @@
   cursor: pointer;
 
   box-shadow: 0 4px 0 #243247;
+
+  box-sizing: border-box;
 }
 
 
@@ -360,6 +372,8 @@
   cursor: pointer;
 
   box-shadow: 0 4px 0 #243247;
+
+  box-sizing: border-box;
 }
 
 
@@ -396,6 +410,8 @@
   cursor: pointer;
 
   box-shadow: 0 4px 0 #243247;
+
+  box-sizing: border-box;
 }
 
 
@@ -419,44 +435,507 @@
 }
 
 
-/* =========================
+/* =========================================================
    MOBILE
-========================= */
+========================================================= */
 
 @media (max-width: 600px) {
 
-  .question-modal {
-    padding: 20px 15px;
+  .question-overlay {
+    padding: 8px;
   }
+
+
+  .question-modal {
+    width: 100%;
+    max-width: 100%;
+
+    max-height: 96vh;
+
+    padding: 14px 12px 12px;
+
+    border-width: 3px;
+    border-radius: 18px;
+
+    box-shadow:
+      0 6px 0 #172232,
+      0 14px 35px rgba(0, 0, 0, .25);
+  }
+
+
+  /* =========================
+     TOP
+  ========================= */
+
+  .qm-top {
+    min-height: 105px;
+
+    display: grid;
+
+    grid-template-columns: 56px minmax(105px, 1fr) 90px;
+
+    align-items: start;
+
+    justify-content: normal;
+
+    column-gap: 6px;
+
+    box-sizing: border-box;
+  }
+
+
+  /* =========================
+     POINTS
+  ========================= */
 
   .qm-points {
-    width: 62px;
-    height: 62px;
+    position: static;
 
-    font-size: 24px;
+    width: 56px;
+    height: 56px;
+
+    margin-top: 2px;
+
+    border-width: 3px;
+
+    font-size: 22px;
+
+    box-shadow: 0 3px 0 #243247;
+
+    grid-column: 1;
+    grid-row: 1;
+
+    justify-self: start;
   }
 
+
+  /* =========================
+     TIMER
+  ========================= */
+
+  .qm-timer-area {
+    width: 100%;
+
+    gap: 5px;
+
+    grid-column: 2;
+    grid-row: 1;
+
+    align-items: center;
+
+    box-sizing: border-box;
+  }
+
+
+  .qm-timer {
+    width: 100%;
+    min-width: 0;
+
+    padding: 6px 8px;
+
+    border-width: 3px;
+
+    font-size: 20px;
+
+    box-shadow: 0 3px 0 #243247;
+
+    box-sizing: border-box;
+  }
+
+
+  .qm-clock {
+    font-size: 17px;
+  }
+
+
+  /* =========================
+     TIMER BUTTONS
+  ========================= */
+
+  .qm-timer-controls {
+    width: 100%;
+
+    display: flex;
+
+    justify-content: center;
+
+    gap: 6px;
+
+    box-sizing: border-box;
+  }
+
+
+  .qm-timer-controls button {
+    height: 40px;
+
+    border-width: 3px;
+
+    box-shadow: 0 3px 0 #243247;
+
+    box-sizing: border-box;
+  }
+
+
+  .qm-reset {
+    width: 40px;
+
+    min-width: 40px;
+
+    font-size: 17px;
+  }
+
+
+  .qm-start {
+    min-width: 0;
+
+    flex: 1;
+
+    padding: 0 6px;
+
+    font-size: 12px;
+  }
+
+
+  /* =========================
+     CATEGORY
+  ========================= */
+
   .qm-category {
-    width: 125px;
+    position: static;
+
+    width: 90px;
+    min-height: 38px;
+
+    margin-top: 5px;
+
+    padding: 5px 6px;
+
+    border-width: 3px;
+
+    font-size: 11px;
+
+    box-shadow: 0 3px 0 #243247;
+
+    grid-column: 3;
+    grid-row: 1;
+
+    justify-self: end;
+
+    text-align: center;
+
+    box-sizing: border-box;
+  }
+
+
+  /* =========================
+     TURN
+  ========================= */
+
+  .qm-turn {
+    margin-top: 0;
+
+    font-size: 20px;
+  }
+
+
+  /* =========================
+     ICONS
+  ========================= */
+
+  .qm-icons {
+    gap: 6px;
+
+    margin: 7px 0 10px;
+  }
+
+
+  .qm-icons button {
+    width: 42px;
+    height: 42px;
+
+    border-width: 3px;
+
+    font-size: 17px;
+
+    box-shadow: 0 3px 0 #243247;
+  }
+
+
+  /* =========================
+     QUESTION
+  ========================= */
+
+  .qm-question {
+    width: 100%;
+    max-width: 100%;
+
+    margin: 5px auto 12px;
+
+    padding: 0 4px;
+
+    font-size: 18px;
+
+    line-height: 1.35;
+
+    box-sizing: border-box;
+  }
+
+
+  /* =========================
+     ANSWER
+  ========================= */
+
+  .qm-answer {
+    width: 100%;
+
+    margin-bottom: 9px;
+
+    padding: 10px;
+
+    font-size: 16px;
+
+    line-height: 1.4;
+  }
+
+
+  /* =========================
+     SHOW ANSWER
+  ========================= */
+
+  .qm-show-answer {
+    height: 48px;
+
+    margin-bottom: 8px;
+
+    font-size: 15px;
+
+    box-shadow: 0 3px 0 #243247;
+  }
+
+
+  /* =========================
+     TEAMS
+  ========================= */
+
+  .qm-teams {
+    width: 100%;
+
+    gap: 7px;
+
+    margin-bottom: 7px;
+  }
+
+
+  .qm-team {
+    height: 48px;
+
+    font-size: 13px;
+
+    box-shadow: 0 3px 0 #243247;
+  }
+
+
+  /* =========================
+     NO TEAM
+  ========================= */
+
+  .qm-no-team {
+    height: 44px;
+
+    margin-bottom: 9px;
+
+    font-size: 14px;
+
+    box-shadow: 0 3px 0 #243247;
+  }
+
+
+  /* =========================
+     BACK
+  ========================= */
+
+  .qm-back {
+    font-size: 13px;
+  }
+}
+
+
+/* =========================================================
+   VERY SMALL PHONES
+========================================================= */
+
+@media (max-width: 380px) {
+
+  .question-overlay {
+    padding: 6px;
+  }
+
+
+  .question-modal {
+    padding: 12px 10px 10px;
+
+    max-height: 97vh;
+  }
+
+
+  /* =========================
+     TOP
+  ========================= */
+
+  .qm-top {
+    min-height: 100px;
+
+    grid-template-columns: 52px minmax(96px, 1fr) 82px;
+
+    column-gap: 5px;
+  }
+
+
+  /* =========================
+     POINTS
+  ========================= */
+
+  .qm-points {
+    width: 52px;
+    height: 52px;
+
+    margin-top: 2px;
+
+    font-size: 20px;
+  }
+
+
+  /* =========================
+     TIMER
+  ========================= */
+
+  .qm-timer {
+    font-size: 18px;
+
+    padding: 5px 6px;
+  }
+
+
+  .qm-clock {
+    font-size: 15px;
+  }
+
+
+  .qm-timer-controls {
+    gap: 5px;
+  }
+
+
+  .qm-timer-controls button {
+    height: 38px;
+  }
+
+
+  .qm-reset {
+    width: 38px;
+    min-width: 38px;
+
+    font-size: 16px;
+  }
+
+
+  .qm-start {
+    font-size: 11px;
+  }
+
+
+  /* =========================
+     CATEGORY
+  ========================= */
+
+  .qm-category {
+    width: 82px;
+
+    min-height: 36px;
+
+    margin-top: 5px;
+
+    font-size: 10px;
+  }
+
+
+  /* =========================
+     TURN
+  ========================= */
+
+  .qm-turn {
+    font-size: 18px;
+  }
+
+
+  /* =========================
+     ICONS
+  ========================= */
+
+  .qm-icons {
+    gap: 5px;
+
+    margin-top: 6px;
+    margin-bottom: 9px;
+  }
+
+
+  .qm-icons button {
+    width: 40px;
+    height: 40px;
+
+    font-size: 16px;
+  }
+
+
+  /* =========================
+     QUESTION
+  ========================= */
+
+  .qm-question {
+    font-size: 17px;
+
+    line-height: 1.35;
+  }
+
+
+  /* =========================
+     ANSWER
+  ========================= */
+
+  .qm-answer {
+    padding: 9px;
+
+    font-size: 15px;
+  }
+
+
+  /* =========================
+     BUTTONS
+  ========================= */
+
+  .qm-show-answer {
+    height: 45px;
+
+    font-size: 14px;
+  }
+
+
+  .qm-team {
+    height: 45px;
+
+    font-size: 12px;
+  }
+
+
+  .qm-no-team {
+    height: 42px;
 
     font-size: 13px;
   }
 
-  .qm-timer {
-    min-width: 120px;
 
-    font-size: 21px;
-  }
-
-  .qm-start {
-    min-width: 105px;
-  }
-
-  .qm-question {
-    font-size: 20px;
-  }
-
-  .qm-team {
-    font-size: 14px;
+  .qm-back {
+    font-size: 12px;
   }
 }

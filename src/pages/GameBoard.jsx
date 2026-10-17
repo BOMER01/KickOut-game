@@ -7,8 +7,8 @@ import { getQuestions } from "../services/questionService";
 
 import "../styles/ui.css";
 import QuestionModal from "../components/QuestionModal";
-import { doc, getDoc } from "firebase/firestore";
-import { db } from "../firebase";
+/*import { doc, getDoc } from "firebase/firestore";
+import { db } from "../firebase";*/
 import { useAuth } from "../context/AuthContext";
 
 function GameBoard() {
@@ -20,7 +20,7 @@ function GameBoard() {
   const navigate = useNavigate();
   const { currentUser } = useAuth();
 
-const [gamesRemaining, setGamesRemaining] = useState(0);
+/*const [gamesRemaining, setGamesRemaining] = useState(0);*/
 
   const [questionsByPack, setQuestionsByPack] =
     useState({});
@@ -56,6 +56,13 @@ const [teamOneTwoAnswersUsed, setTeamOneTwoAnswersUsed] =
 const [teamTwoTwoAnswersUsed, setTeamTwoTwoAnswersUsed] =
   useState(false);
 
+  // الوقت الإضافي: مرة واحدة لكل فريق في المباراة
+const [teamOneExtraTimeUsed, setTeamOneExtraTimeUsed] =
+  useState(false);
+
+const [teamTwoExtraTimeUsed, setTeamTwoExtraTimeUsed] =
+  useState(false);
+
 // الفريق الذي حجز المساعدة للسؤال القادم
 const [twoAnswersNextTeam, setTwoAnswersNextTeam] =
   useState(null);
@@ -70,7 +77,7 @@ const [twoAnswersActiveForQuestion, setTwoAnswersActiveForQuestion] =
    * =========================
    */
 
-  useEffect(() => {
+ /* useEffect(() => {
   async function loadGamesRemaining() {
     if (!currentUser) return;
 
@@ -99,7 +106,7 @@ const [twoAnswersActiveForQuestion, setTwoAnswersActiveForQuestion] =
   }
 
   loadGamesRemaining();
-}, [currentUser]);
+}, [currentUser]);*/
 
   useEffect(() => {
     async function loadQuestions() {
@@ -232,6 +239,20 @@ function activateTwoAnswersNext() {
   }
 }
 
+function activateExtraTime() {
+  if (currentTurn === "teamOne") {
+    if (teamOneExtraTimeUsed) return;
+
+    setTeamOneExtraTimeUsed(true);
+    return;
+  }
+
+  if (currentTurn === "teamTwo") {
+    if (teamTwoExtraTimeUsed) return;
+
+    setTeamTwoExtraTimeUsed(true);
+  }
+}
 
 
 
@@ -421,7 +442,7 @@ const doubleWasActive =
 
           <div className="hud__group hud__group--start">
 
-            <button
+           {/* <button
               type="button"
               className="hud-btn hud-btn--ghost"
             >
@@ -432,12 +453,13 @@ const doubleWasActive =
               <span className="hud-btn__label">
                 الخيارات
               </span>
-            </button>
+            </button>*/}
 
 
             <button
               type="button"
               className="hud-btn hud-btn--ghost"
+              onClick={() => navigate("/game-history")}
             >
               <span className="hud-btn__icon">
                 ↶
@@ -483,7 +505,7 @@ const doubleWasActive =
 
           <div className="hud__group hud__group--end">
 
-            <div className="hud-stat">
+{/*<div className="hud-stat">
 
              <span className="hud-stat__value">
   {gamesRemaining}
@@ -497,7 +519,7 @@ const doubleWasActive =
                 🏆
               </span>
 
-            </div>
+            </div>*/}
 
 
             <button
@@ -997,6 +1019,13 @@ const doubleWasActive =
   onUseTwoAnswers={
     activateTwoAnswersNext
   }
+  extraTimeUsed={
+  currentTurn === "teamOne"
+    ? teamOneExtraTimeUsed
+    : teamTwoExtraTimeUsed
+}
+
+onUseExtraTime={activateExtraTime}
 
   onFinish={finishQuestion}
 

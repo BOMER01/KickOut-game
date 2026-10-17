@@ -1,0 +1,433 @@
+
+/* =========================================
+   KICKOUT — GAME HISTORY
+   Match the main game UI
+========================================= */
+
+.game-history {
+  position: relative;
+  isolation: isolate;
+  min-height: 100vh;
+  padding: 28px 20px 50px;
+  overflow: hidden;
+  direction: rtl;
+  color: #222b3a;
+  background: #edf2f8;
+  font-family: inherit;
+}
+
+/* Ring ropes background */
+
+.game-history::before,
+.game-history::after {
+  position: absolute;
+  z-index: -1;
+  right: -8%;
+  width: 116%;
+  height: 13px;
+  border: 3px solid #222b3a;
+  border-radius: 5px;
+  content: "";
+  pointer-events: none;
+  transform: rotate(-10deg);
+}
+
+.game-history::before {
+  top: 170px;
+  background: #f0444c;
+  box-shadow: 0 9px 0 #aab7c8;
+}
+
+.game-history::after {
+  top: 205px;
+  background: #3980f6;
+  box-shadow: 0 9px 0 #aab7c8;
+}
+
+/* =========================================
+   HEADER
+========================================= */
+
+.game-history__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  width: min(100%, 1050px);
+  margin: 0 auto 32px;
+  padding: 16px 20px;
+  border: 3px solid #222b3a;
+  border-radius: 15px;
+  background: #fff;
+  box-shadow: 5px 6px 0 #222b3a;
+}
+
+.game-history__header h1 {
+  margin: 0;
+  color: #f0444c;
+  font-size: clamp(23px, 3vw, 32px);
+  font-weight: 900;
+  text-shadow: 1px 2px 0 #222b3a;
+}
+
+.game-history__header h1::after {
+  display: block;
+  width: 48px;
+  height: 5px;
+  margin-top: 9px;
+  border: 2px solid #222b3a;
+  border-radius: 5px;
+  background: #ffcc16;
+  content: "";
+}
+
+.game-history__header button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 10px 18px;
+  border: 3px solid #222b3a;
+  border-radius: 12px;
+  background: #ffcc16;
+  box-shadow: 3px 4px 0 #222b3a;
+  color: #222b3a;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 900;
+  cursor: pointer;
+  transition: transform 150ms ease, box-shadow 150ms ease;
+}
+
+.game-history__header button:hover {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 2px 0 #222b3a;
+}
+
+.game-history__header button:active {
+  transform: translate(3px, 4px);
+  box-shadow: none;
+}
+
+.game-history__header button:focus-visible {
+  outline: 3px solid #3980f6;
+  outline-offset: 4px;
+}
+
+/* =========================================
+   MATCH LIST
+========================================= */
+
+.game-history__list {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(min(100%, 310px), 1fr)
+  );
+  align-items: stretch;
+  gap: 22px;
+  width: min(100%, 1050px);
+  margin: 0 auto;
+}
+
+/* =========================================
+   MATCH CARD
+========================================= */
+
+.game-history__card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 22px 18px 18px;
+  overflow: hidden;
+  border: 3px solid #222b3a;
+  border-radius: 17px;
+  background: #fff;
+  box-shadow: 5px 6px 0 #222b3a;
+  transition: transform 160ms ease;
+}
+
+.game-history__card::before {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 9px;
+  background: #3980f6;
+  content: "";
+}
+
+.game-history__card:nth-child(3n + 2)::before {
+  background: #f0444c;
+}
+
+.game-history__card:nth-child(3n)::before {
+  background: #ffcc16;
+}
+
+.game-history__card:hover {
+  transform: translateY(-3px);
+}
+
+/* Date and match name */
+
+.game-history__date {
+  margin: 4px 0 9px;
+  color: #657187;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.game-history__card h2 {
+  margin: 0;
+  color: #222b3a;
+  font-size: 19px;
+  font-weight: 900;
+  overflow-wrap: anywhere;
+}
+
+/* =========================================
+   SCOREBOARD
+========================================= */
+
+.game-history__score {
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 22px 0 18px;
+}
+
+.game-history__score > div {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-width: 0;
+  min-height: 112px;
+  padding: 13px 8px;
+  border: 3px solid #222b3a;
+  border-radius: 13px;
+  box-shadow: 3px 4px 0 #222b3a;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+.game-history__score > div:first-child {
+  border-top: 7px solid #f0444c;
+  background: #fff;
+}
+
+.game-history__score > div:last-child {
+  border-top: 7px solid #3980f6;
+  background: #fff;
+}
+
+.game-history__score > div span {
+  max-width: 100%;
+  color: #222b3a;
+  font-size: 13px;
+  font-weight: 900;
+  line-height: 1.6;
+}
+
+.game-history__score strong {
+  color: #222b3a;
+  font-size: clamp(28px, 4vw, 36px);
+  font-weight: 900;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.game-history__vs {
+  align-self: center;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border: 3px solid #222b3a;
+  border-radius: 50%;
+  background: #ffcc16;
+  box-shadow: 3px 4px 0 #222b3a;
+  color: #222b3a;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+/* =========================================
+   WINNER
+========================================= */
+
+.game-history__winner {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin: auto 0 0;
+  padding-top: 15px;
+  border-top: 2px solid #e0e5ed;
+  color: #222b3a;
+  font-size: 14px;
+  font-weight: 900;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+
+.game-history__winner::before {
+  flex-shrink: 0;
+  color: #d9a900;
+  content: "♛";
+  font-size: 21px;
+}
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 600px) {
+  .game-history {
+    padding: 18px 14px 35px;
+  }
+
+  .game-history::before {
+    top: 145px;
+  }
+
+  .game-history::after {
+    top: 180px;
+  }
+
+  .game-history__header {
+    gap: 12px;
+    margin-bottom: 26px;
+    padding: 13px 12px;
+    border-radius: 13px;
+    box-shadow: 4px 5px 0 #222b3a;
+  }
+
+  .game-history__header h1 {
+    font-size: 22px;
+  }
+
+  .game-history__header h1::after {
+    width: 36px;
+    height: 4px;
+    margin-top: 7px;
+  }
+
+  .game-history__header button {
+    flex-shrink: 0;
+    min-height: 40px;
+    padding: 8px 11px;
+    border-width: 2px;
+    box-shadow: 2px 3px 0 #222b3a;
+    font-size: 12px;
+  }
+
+  .game-history__list {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 17px;
+  }
+
+  .game-history__card {
+    padding: 20px 14px 15px;
+    border-radius: 14px;
+    box-shadow: 4px 5px 0 #222b3a;
+  }
+
+  .game-history__score {
+    gap: 8px;
+    margin: 20px 0 16px;
+  }
+
+  .game-history__score > div {
+    min-height: 100px;
+    padding: 11px 5px;
+    border-width: 2px;
+    box-shadow: 2px 3px 0 #222b3a;
+  }
+
+  .game-history__score > div span {
+    font-size: 12px;
+  }
+
+  .game-history__score strong {
+    font-size: 29px;
+  }
+
+  .game-history__vs {
+    width: 35px;
+    height: 35px;
+    border-width: 2px;
+    box-shadow: 2px 3px 0 #222b3a;
+    font-size: 10px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .game-history__card,
+  .game-history__header button {
+    transition: none;
+  }
+}
+
+/* KICKOUT brand in history header */
+
+.game-history__header {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 16px;
+}
+
+.game-history__brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.game-history__logo {
+  display: block;
+  width: clamp(100px, 14vw, 155px);
+  height: auto;
+  object-fit: contain;
+}
+
+.game-history__home {
+  justify-self: start;
+}
+
+.game-history__header h1 {
+  justify-self: end;
+  text-align: center;
+}
+
+@media (max-width: 600px) {
+  .game-history__header {
+    grid-template-columns: auto 1fr;
+    gap: 10px;
+  }
+
+  .game-history__brand {
+    grid-column: 1 / -1;
+    grid-row: 1;
+  }
+
+  .game-history__logo {
+    width: 115px;
+  }
+
+  .game-history__home {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .game-history__header h1 {
+    grid-column: 2;
+    grid-row: 2;
+    font-size: 20px;
+  }
+}

@@ -2,7 +2,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useState, useContext } from "react";
 import { GameContext } from "../context/GameContext";
 import { useAuth } from "../context/AuthContext";
-import { consumeGame } from "../services/gameService";
+/*import { consumeGame } from "../services/gameService";*/
 import "../styles/MatchSetup.css";
 function MatchSetup() {
   const location = useLocation();
@@ -20,7 +20,7 @@ function MatchSetup() {
 
   const [loading, setLoading] = useState(false);
 
-  async function handleStartGame() {
+  /*async function handleStartGame() {
   if (!gameName || !teamOne || !teamTwo) {
     alert("الرجاء تعبئة جميع الحقول");
     return;
@@ -68,7 +68,47 @@ function MatchSetup() {
   } finally {
     setLoading(false);
   }
+}*/
+
+
+async function handleStartGame() {
+  if (!gameName.trim() || !teamOne.trim() || !teamTwo.trim()) {
+    alert("الرجاء تعبئة جميع الحقول");
+    return;
+  }
+
+  if (!currentUser) {
+    alert("يجب تسجيل الدخول أولاً");
+    navigate("/login");
+    return;
+  }
+
+  if (loading) return;
+
+  setLoading(true);
+
+  try {
+    // حفظ بيانات المباراة دون خصم أي رصيد
+    setGameData({
+      gameName: gameName.trim(),
+      teamOne: teamOne.trim(),
+      teamTwo: teamTwo.trim(),
+      scoreTeamOne: 0,
+      scoreTeamTwo: 0,
+      categories,
+      usedQuestions: [],
+    });
+
+    // بدء المباراة
+    navigate("/game");
+  } catch (error) {
+    console.error("Start Game Error:", error);
+    alert("حدث خطأ أثناء بدء اللعبة.");
+  } finally {
+    setLoading(false);
+  }
 }
+
 
   return (
   <div className="match-setup-page">

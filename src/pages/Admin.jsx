@@ -71,6 +71,12 @@ export default function Admin() {
 const [newCategoryIcon, setNewCategoryIcon] =
   useState("trophy");
 
+  const [newCategoryImage, setNewCategoryImage] =
+  useState(null);
+
+const [uploadingCategoryImage, setUploadingCategoryImage] =
+  useState(false);
+
 const [newCategoryColor, setNewCategoryColor] =
   useState("#3B82F6");
 
@@ -242,6 +248,13 @@ async function deletePackageHandler(id) {
   }
 
   try {
+    setUploadingCategoryImage(true);
+
+let iconUrl = "";
+
+if (newCategoryImage) {
+  iconUrl = await uploadMedia(newCategoryImage);
+}
     await addCategory({
      name: newCategory.trim(),
 
@@ -249,6 +262,7 @@ async function deletePackageHandler(id) {
     newCategoryDescription.trim(),
 
   icon: newCategoryIcon,
+  iconUrl: iconUrl,
 
   color:
     newCategoryColor,
@@ -265,6 +279,7 @@ async function deletePackageHandler(id) {
     setNewCategoryDescription("");
     setNewCategoryIcon("trophy");
     setNewCategoryColor("#3B82F6");
+    setNewCategoryImage(null);
 
     await loadCategories();
 
@@ -272,6 +287,9 @@ async function deletePackageHandler(id) {
     console.error(error);
     alert("حدث خطأ أثناء إضافة التصنيف");
   }
+  finally {
+  setUploadingCategoryImage(false);
+}
 };
 
     // حذف فئة
@@ -301,6 +319,7 @@ async function deletePackageHandler(id) {
   );
 };
 
+
 const updateCategoryHandler = async () => {
   if (!editingCategoryId) return;
 
@@ -310,35 +329,44 @@ const updateCategoryHandler = async () => {
   }
 
   try {
-    await updateCategory(
-      editingCategoryId,
-      {
-        name: newCategory.trim(),
+    setUploadingCategoryImage(true);
 
-        description:
-          newCategoryDescription.trim(),
-
-        icon: newCategoryIcon,
-
-        color:
-          newCategoryColor,
-      }
+    // الاحتفاظ بالصورة الحالية إذا لم يختر الأدمن صورة جديدة
+    const currentCategory = categories.find(
+      (category) => category.id === editingCategoryId
     );
 
-    setEditingCategoryId(null);
+    let iconUrl = currentCategory?.iconUrl || "";
 
+    // رفع الصورة الجديدة فقط إذا تم اختيارها
+    if (newCategoryImage) {
+      iconUrl = await uploadMedia(newCategoryImage);
+    }
+
+    await updateCategory(editingCategoryId, {
+      name: newCategory.trim(),
+      description: newCategoryDescription.trim(),
+      icon: newCategoryIcon,
+      iconUrl: iconUrl,
+      color: newCategoryColor,
+    });
+
+    setEditingCategoryId(null);
     setNewCategory("");
     setNewCategoryDescription("");
     setNewCategoryIcon("trophy");
     setNewCategoryColor("#3B82F6");
+    setNewCategoryImage(null);
 
     await loadCategories();
-
   } catch (error) {
     console.error(error);
     alert("حدث خطأ أثناء تعديل التصنيف");
+  } finally {
+    setUploadingCategoryImage(false);
   }
 };
+
 
     // إضافة أو تعديل سؤال
   const addQuestionHandler = async () => {
@@ -512,6 +540,59 @@ const updateCategoryHandler = async () => {
 
 </div>
 
+<div className="category-image-upload">
+  <label>أو ارفع صورة مخصصة للتصنيف</label>
+
+  <input
+    type="file"
+    accept="image/*"
+    onChange={(e) => {
+      setNewCategoryImage(e.target.files?.[0] || null);
+    }}
+  />
+
+  
+{(newCategoryImage ||
+  (editingCategoryId &&
+    categories.find(
+      (category) => category.id === editingCategoryId
+    )?.iconUrl)) && (
+  <div>
+    <p>
+      {newCategoryImage
+        ? `الصورة المختارة: ${newCategoryImage.name}`
+        : "الصورة الحالية"}
+    </p>
+
+    <img
+      src={
+        newCategoryImage
+          ? URL.createObjectURL(newCategoryImage)
+          : categories.find(
+              (category) => category.id === editingCategoryId
+            )?.iconUrl
+      }
+      alt="معاينة صورة التصنيف"
+      style={{
+        width: "70px",
+        height: "70px",
+        objectFit: "contain",
+      }}
+    />
+
+    {newCategoryImage && (
+      <button
+        type="button"
+        onClick={() => setNewCategoryImage(null)}
+      >
+        إلغاء الصورة الجديدة
+      </button>
+    )}
+  </div>
+)}
+
+</div>
+
   <input
     type="color"
     value={newCategoryColor}
@@ -522,9 +603,14 @@ const updateCategoryHandler = async () => {
 
   {editingCategoryId ? (
     <>
-      <button onClick={updateCategoryHandler}>
-        Update Category
-      </button>
+     <button
+  onClick={updateCategoryHandler}
+  disabled={uploadingCategoryImage}
+>
+  {uploadingCategoryImage
+    ? "جاري حفظ الصورة..."
+    : "Update Category"}
+</button>
 
       <button
         onClick={() => {
@@ -540,9 +626,12 @@ const updateCategoryHandler = async () => {
       </button>
     </>
   ) : (
-    <button onClick={addCategoryHandler}>
-      Add Category
-    </button>
+   <button
+  onClick={addCategoryHandler}
+  disabled={uploadingCategoryImage}
+>
+  {uploadingCategoryImage ? "جاري رفع الصورة..." : "Add Category"}
+</button>
   )}
 
 </div>
@@ -553,13 +642,31 @@ const updateCategoryHandler = async () => {
     className="admin-category-item"
   >
 
-    <div className="admin-category-icon">
-  {
+    
+<div className="admin-category-icon">
+  {category.iconUrl ? (
+   
+<img
+  src={category.iconUrl}
+  alt={category.name}
+  className="category-icon category-custom-image"
+  style={{
+    width: "100%",
+    height: "100%",
+    objectFit: "cover",
+    borderRadius: "12px",
+  }}
+/>
+
+  ) : (
     categoryIcons.find(
-      (icon) => icon.id === category.icon
+      (icon) =>
+        icon.id === category.icon ||
+        icon.symbol === category.icon
     )?.symbol || "🏆"
-  }
+  )}
 </div>
+
 
     <div>
       <strong>
