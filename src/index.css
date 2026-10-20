@@ -53,6 +53,7 @@
 
 body {
   margin: 0;
+  
 }
 
 #root {
@@ -111,4 +112,8 @@ code {
   background: var(--code-bg);
 }
 
+body,
+body * {
+  font-weight: 700 !important;
+}
  

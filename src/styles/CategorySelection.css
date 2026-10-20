@@ -1559,3 +1559,10 @@
   border-radius: 10px;
   flex-shrink: 0;
 }
+.category-team-name.team-one-color {
+  color: #ef4444;
+}
+
+.category-team-name.team-two-color {
+  color: #347ff0;
+}

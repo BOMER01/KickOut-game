@@ -421,10 +421,13 @@ async function handleNext() {
 
         <h1 className="category-main-title">
 
-          <span className="category-team-name">
-            {teamName}
-          </span>
-
+          <span
+  className={`category-team-name ${
+    currentTeam === 1 ? "team-one-color" : "team-two-color"
+  }`}
+>
+  {teamName}
+</span>
           <span>
             يختار تصنيفين
           </span>

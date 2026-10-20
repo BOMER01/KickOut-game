@@ -226,12 +226,12 @@ export default function ChallengeTerminal() {
 
         <div className="terminal-heading">
 
-          <span className="terminal-heading__eyebrow">
+         {/* <span className="terminal-heading__eyebrow">
             اختر تحديك
-          </span>
+          </span>*/}
 
           <h2 className="terminal-heading__title">
-            اختر ساحة التحدي
+           الكتقوريات وغيرها الكثير 
           </h2>
 
           <p className="terminal-heading__text">
@@ -334,20 +334,20 @@ export default function ChallengeTerminal() {
 
             <article
               className="terminal-card terminal-card--wm"
-              data-title="راسلمنيا"
+              data-title="راسلمينيا"
             >
               <span className="terminal-card__badge">
 
                 <img
                   src={ring}
                   className="terminal-card__image"
-                  alt="راسلمنيا"
+                  alt="راسلمينيا"
                 />
 
               </span>
 
               <h3>
-                راسلمنيا
+                راسلمينيا
               </h3>
 
               <p>

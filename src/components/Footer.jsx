@@ -16,7 +16,7 @@ export default function Footer() {
 
             <p className="footer__description">
               اختبر معلوماتك، تحدَّ أصدقاءك، وكن بطل الحلبة في
-              أول لعبة مسابقات عربية لعشاق WWE.
+              أول لعبة مسابقات عربية لعشاق المصارعه
             </p>
           </div>
 
@@ -63,7 +63,7 @@ export default function Footer() {
             style={{ direction: "rtl" }}
             className="footer__copyright"
           >
-            صُمم لمحبي WWE في الوطن العربي.
+            صُمم لمحبي المصارعه في الوطن العربي 
           </p>
 
           {/* Socials */}

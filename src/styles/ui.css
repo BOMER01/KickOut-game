@@ -1035,7 +1035,7 @@ button { font-family: var(--font-display); cursor: pointer; }
 }
 
 .qbtn--right {
-  background: var(--green);
+  background: var(--blue);
   color: var(--white);
 }
 
@@ -1046,6 +1046,9 @@ button { font-family: var(--font-display); cursor: pointer; }
 
 .qbtn--skip {
   background: var(--white);
+  grid-column: 1 / -1;
+justify-self: center;
+width: 50%;
 }
 
 .qbtn--reveal {

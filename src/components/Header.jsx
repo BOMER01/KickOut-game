@@ -52,7 +52,7 @@ export default function Header() {
                 className="navlink navlink--cat"
                 data-fx="fan"
               >
-                التصنيفات
+                الكتقوريات
                 <span className="fan">
                   <i></i>
                   <i></i>
@@ -80,7 +80,7 @@ export default function Header() {
                 data-fx="press"
               >
                 <span className="arcade-btn__face">
-                  ابدأ التحدي!
+                 اضغط للبدء
                 </span>
               </Link>
             </li>

@@ -32,23 +32,25 @@ export default function CTA() {
             ★ الحدث الرئيسي ★
           </span>
 
-          <h2>
-            هل أنت مستعد لدخول الحلبة؟
-          </h2>
+          
 
           <p>
             اختبر معلوماتك في أكثر من 300 سؤال،
             واجمع النقاط،
-            وتحدَّ أصدقاءك لتثبت أنك ملك عالم WWE.
+            وتحدَّ أصدقاءك لتثبت أنك ملك عالم المصارعه
           </p>
 
           <div className="cta__buttons">
+            
 
             <a
-              href="#game"
+            to="/categories" 
+               
               className="cta__button cta__button--primary"
             >
-              ادخل الحلبة
+             اضغط للبدء
+             
+             
             </a>
 
             <a

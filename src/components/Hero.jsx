@@ -132,7 +132,7 @@ export default function Hero() {
           data-depth="card-mid"
           style={{ "--r": "7deg" }}
         >
-          خمن المصارع
+         الأنديز
         </div>
 
         <div
@@ -140,7 +140,7 @@ export default function Hero() {
           data-depth="card-mid"
           style={{ "--r": "-4deg" }}
         >
-          الألقاب
+          SPW
         </div>
 
         <div
@@ -167,7 +167,7 @@ export default function Hero() {
           data-depth="card-mid"
           style={{ "--r": "-15deg" }}
         >
-          500
+          600
         </div>
 
         <div
@@ -191,7 +191,7 @@ export default function Hero() {
           className="hero__eyebrow"
           data-seq="1"
         >
-          جاهز تختبر معلوماتك؟
+         اول لعبة مصارعة بالوطن العربي
         </p>
 
         <h1 className="hero__title">
@@ -200,20 +200,20 @@ export default function Hero() {
             className="hero__line1"
             data-seq="2"
           >
-            تعرف المصارعة؟
+           جاهزين تتحدون 
           </span>
 
           <span
             className="hero__line2"
             data-seq="3"
           >
-            أثبتها في{" "}
+          
 
             <span
               className="ring-word"
               id="ringWord"
             >
-              الحلبة.
+             بعض  بلمصارعه؟
             </span>
           </span>
 
@@ -223,9 +223,9 @@ export default function Hero() {
           className="hero__cta"
           data-seq="4"
         >
-          <span className="hero__prompt">
+          {/*<span className="hero__prompt">
             اضغط للبدء
-          </span>
+          </span>*/}
 
           <Link
   to="/categories"

@@ -73,7 +73,12 @@ function resetTimer() {
 function useExtraTime() {
   if (extraTimeUsed) return;
 
-  setTime(30);
+  if (time >= 10) {
+    alert("يمكنك استخدام الوقت الإضافي عندما يتبقى أقل من 10 ثوانٍ");
+    return;
+  }
+
+  setTime((prev) => prev + 30);
   setTimerRunning(true);
   onUseExtraTime();
 }
