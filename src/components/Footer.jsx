@@ -23,7 +23,7 @@ export default function Footer() {
           {/* Navigation */}
           <nav className="footer__nav">
 
-            <Link to="/">
+            {/*<Link to="/">
               الرئيسية
             </Link>
 
@@ -37,7 +37,7 @@ export default function Footer() {
 
             <a href="#contact">
               تواصل معنا
-            </a>
+            </a>*/}
 
           </nav>
         </div>

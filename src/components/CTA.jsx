@@ -43,7 +43,7 @@ export default function CTA() {
           <div className="cta__buttons">
             
 
-            <a
+            {/*<a
             to="/categories" 
                
               className="cta__button cta__button--primary"
@@ -51,7 +51,7 @@ export default function CTA() {
              اضغط للبدء
              
              
-            </a>
+            </a>*/}
 
             <a
               href="#contact"

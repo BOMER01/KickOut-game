@@ -4269,3 +4269,52 @@ body.intro .hud__nav--left {
   }
 
 }
+
+/*--------------------------------*/
+
+/* =========================================
+   KICKOUT — PHONE LANDSCAPE FULL WIDTH
+========================================= */
+
+@media screen and (orientation: landscape) and (max-height: 500px) {
+  html,
+  body,
+  #root {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    margin: 0;
+  }
+
+  body {
+    overflow-x: hidden;
+  }
+
+  main,
+  .hero,
+  .category-selection-page {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .hud {
+    width: 100%;
+    padding: 8px 12px 0;
+  }
+
+  .hud__inner {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+  }
+
+  .hero {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .category-selection-page {
+    min-height: 100vh;
+  }
+}
