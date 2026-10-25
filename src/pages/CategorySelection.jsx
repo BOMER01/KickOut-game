@@ -329,20 +329,7 @@ async function handleNext() {
     return ["★", "🏆", "ϟ", "♫", "♛", "🔔"][index % 6];
   }
 
-  function getCategoryTheme(index) {
-    const themes = [
-      "red",
-      "blue",
-      "yellow",
-      "red",
-      "blue",
-      "red",
-      "yellow",
-      "blue",
-    ];
-
-    return themes[index % themes.length];
-  }
+ 
 
   return (
     <div className="category-selection-page">
@@ -526,8 +513,21 @@ async function handleNext() {
             let cardClass =
               "category-card-new";
 
-            cardClass +=
-              ` theme-${getCategoryTheme(index)}`;
+            const categoryColor = (
+  category.color || "#3B82F6"
+).toUpperCase();
+
+const themeColors = {
+  "#EF4444": "red",
+  "#3B82F6": "blue",
+  "#FACC15": "yellow",
+};
+
+const theme = themeColors[categoryColor];
+
+if (theme) {
+  cardClass += ` theme-${theme}`;
+}
 
             if (selectedByTeamOne) {
               cardClass +=
@@ -559,15 +559,18 @@ async function handleNext() {
 
             return (
               <button
-                key={category.id}
-                type="button"
-                className={cardClass}
-                onClick={() => {
-                  if (!locked) {
-                    handleCategoryClick(category);
-                  }
-                }}
-              >
+  key={category.id}
+  type="button"
+  className={cardClass}
+  style={{
+    "--category-color": categoryColor,
+  }}
+  onClick={() => {
+    if (!locked) {
+      handleCategoryClick(category);
+    }
+  }}
+>
 
                 {/* CHECK */}
 

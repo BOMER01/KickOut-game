@@ -3207,9 +3207,21 @@ body.intro .hud__nav--left {
   background: var(--blue);
 }
 
-.category-card-new.theme-red::before { background: var(--red); }
-.category-card-new.theme-blue::before { background: var(--blue); }
-.category-card-new.theme-yellow::before { background: var(--yellow); }
+.category-card-new::before {
+  background: var(--category-color, var(--blue));
+}
+
+.category-card-new.theme-red .category-icon {
+  color: var(--red);
+}
+
+.category-card-new.theme-blue .category-icon {
+  color: var(--blue);
+}
+
+.category-card-new.theme-yellow .category-icon {
+  color: var(--ink);
+}
 
 .category-card-new:hover:not(.locked) {
   transform: translateY(-7px);
