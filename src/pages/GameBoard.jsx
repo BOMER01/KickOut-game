@@ -33,10 +33,12 @@ function GameBoard() {
    const [currentTurn, setCurrentTurn] =
   useState("teamOne");
 
-// الفريق الذي حجز ×2 للسؤال القادم
-const [doubleNextTeam, setDoubleNextTeam] =
-  useState(null);
+// مضاعفة محجوزة لكل فريق بشكل مستقل
+const [teamOneDoublePending, setTeamOneDoublePending] =
+  useState(false);
 
+const [teamTwoDoublePending, setTeamTwoDoublePending] =
+  useState(false);
 // هل ×2 مستخدمة نهائيًا للفريق الأول؟
 const [teamOneDoubleUsed, setTeamOneDoubleUsed] =
   useState(false);
@@ -182,32 +184,20 @@ const [twoAnswersActiveForQuestion, setTwoAnswersActiveForQuestion] =
       : "teamOne"
   );
 }
-function activateDoubleNext() {
-
-  // الفريق الأول
-  if (currentTurn === "teamOne") {
-
-    if (teamOneDoubleUsed) {
-      return;
-    }
+function activateDoubleNext(team) {
+  if (team === "teamOne") {
+    if (teamOneDoubleUsed) return;
 
     setTeamOneDoubleUsed(true);
-    setDoubleNextTeam("teamOne");
-
+    setTeamOneDoublePending(true);
     return;
   }
 
-  // الفريق الثاني
-  if (currentTurn === "teamTwo") {
-
-    if (teamTwoDoubleUsed) {
-      return;
-    }
+  if (team === "teamTwo") {
+    if (teamTwoDoubleUsed) return;
 
     setTeamTwoDoubleUsed(true);
-    setDoubleNextTeam("teamTwo");
-
-    return;
+    setTeamTwoDoublePending(true);
   }
 }
 function activateTwoAnswersNext() {
@@ -297,13 +287,12 @@ const doubleWasActive =
   if (winner === "teamOne") {
 
     const points =
-      Number(question.points) *
-      (
-        doubleWasActive &&
-        currentTurn === "teamOne"
-          ? 2
-          : 1
-      );
+  Number(question.points) *
+  (teamOneDoublePending ? 2 : 1);
+
+if (teamOneDoublePending) {
+  setTeamOneDoublePending(false);
+}
 
     setGameData({
       ...gameData,
@@ -325,13 +314,12 @@ const doubleWasActive =
   else if (winner === "teamTwo") {
 
     const points =
-      Number(question.points) *
-      (
-        doubleWasActive &&
-        currentTurn === "teamTwo"
-          ? 2
-          : 1
-      );
+  Number(question.points) *
+  (teamTwoDoublePending ? 2 : 1);
+
+if (teamTwoDoublePending) {
+  setTeamTwoDoublePending(false);
+}
 
     setGameData({
       ...gameData,
@@ -375,9 +363,18 @@ const doubleWasActive =
    */
 
   setSelectedQuestion(null);
-  setSelectedCategoryName("");
+setSelectedCategoryName("");
 
-  setDoubleActiveForQuestion(false);
+setDoubleActiveForQuestion(false);
+
+// استهلاك المضاعفة بعد انتهاء السؤال المخصص لها
+if (teamOneDoublePending) {
+  setTeamOneDoublePending(false);
+}
+
+if (teamTwoDoublePending) {
+  setTeamTwoDoublePending(false);
+}
   /*
    * =========================
    * الانتقال للفريق التالي
@@ -625,18 +622,7 @@ const doubleWasActive =
         100+
       </button>
 
-      <button
-        type="button"
-        onClick={() =>
-          setGameData({
-            ...gameData,
-            scoreTeamOne:
-              scoreTeamOne + 200,
-          })
-        }
-      >
-        200+
-      </button>
+      
 
       <button
         type="button"
@@ -651,18 +637,21 @@ const doubleWasActive =
         100-
       </button>
 
-      <button
-        type="button"
-        onClick={() =>
-          setGameData({
-            ...gameData,
-            scoreTeamOne:
-              scoreTeamOne - 200,
-          })
-        }
-      >
-        200-
-      </button>
+   <button
+  type="button"
+  className={`double-score-btn ${
+    teamOneDoublePending ? "is-active" : ""
+  }`}
+  disabled={teamOneDoubleUsed}
+  onClick={() => activateDoubleNext("teamOne")}
+>
+  <span className="helper-icon"></span>
+  <span className="helper-text">
+    {teamOneDoublePending
+      ? "مضاعفة مفعّلة"
+      : "مضاعفة النقاط القادمة"}
+  </span>
+</button>
 
     </div>
 
@@ -739,18 +728,7 @@ const doubleWasActive =
         100+
       </button>
 
-      <button
-        type="button"
-        onClick={() =>
-          setGameData({
-            ...gameData,
-            scoreTeamTwo:
-              scoreTeamTwo + 200,
-          })
-        }
-      >
-        200+
-      </button>
+      
 
       <button
         type="button"
@@ -766,17 +744,20 @@ const doubleWasActive =
       </button>
 
       <button
-        type="button"
-        onClick={() =>
-          setGameData({
-            ...gameData,
-            scoreTeamTwo:
-              scoreTeamTwo - 200,
-          })
-        }
-      >
-        200-
-      </button>
+  type="button"
+  className={`double-score-btn ${
+    teamTwoDoublePending ? "is-active" : ""
+  }`}
+  disabled={teamTwoDoubleUsed}
+  onClick={() => activateDoubleNext("teamTwo")}
+>
+  <span className="helper-icon"></span>
+  <span className="helper-text">
+    {teamOneDoublePending
+      ? "مضاعفة مفعّلة"
+      : "مضاعفة النقاط القادمة"}
+  </span>
+</button>
 
     </div>
 
@@ -881,29 +862,7 @@ const doubleWasActive =
                               disabled={isUsed}
                               onClick={() => {
 
-  // =========================
-  // المساعدة الأولى ×2
-  // =========================
-
-  const shouldDouble =
-    doubleNextTeam === currentTurn;
-
-  setDoubleActiveForQuestion(
-    shouldDouble
-  );
-
-  if (shouldDouble) {
-
-    if (currentTurn === "teamOne") {
-      setTeamOneDoubleUsed(true);
-    }
-
-    if (currentTurn === "teamTwo") {
-      setTeamTwoDoubleUsed(true);
-    }
-
-    setDoubleNextTeam(null);
-  }
+ 
 
 
   // =========================
@@ -988,19 +947,11 @@ const doubleWasActive =
   // المساعدة الأولى
   // =========================
 
-  doubleNextActive={
-    doubleActiveForQuestion
-  }
+ 
 
-  onUseDoubleNext={
-    activateDoubleNext
-  }
 
-  doubleNextUsed={
-    currentTurn === "teamOne"
-      ? teamOneDoubleUsed
-      : teamTwoDoubleUsed
-  }
+
+  
 
   // =========================
   // المساعدة الثانية

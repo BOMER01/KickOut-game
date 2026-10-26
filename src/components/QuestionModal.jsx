@@ -204,28 +204,7 @@ function useExtraTime() {
         ========================= */}
 
         <div className="modal-helpers">
-<button
-  type="button"
-  className={`helper-btn ${
-    doubleNextActive
-      ? "is-active"
-      : doubleNextUsed
-      ? "is-used"
-      : ""
-  }`}
-  disabled={
-    doubleNextActive ||
-    doubleNextUsed
-  }
-  onClick={onUseDoubleNext}
->
-   <span className="helper-text"> مضاعفة
-النقاط
-القادمة✨
-   
-   </span>
- 
-</button>
+
 
           <button
   type="button"

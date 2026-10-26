@@ -3238,3 +3238,66 @@ width: 50%;
     font-size: 7px;
   }
 }
+
+
+/* Double Points Helper — Match Question Modal Helpers */
+.double-score-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+
+  min-width: 0;
+  min-height: 90px;
+  padding: 10px 8px;
+
+  background: #facc15;
+  color: #1f2937;
+
+  border: 3px solid #1f2937;
+  border-radius: 17px;
+  box-shadow: 0 7px 0 #1f2937;
+
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 1.25;
+  text-align: center;
+
+  cursor: pointer;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    background 0.15s ease;
+}
+
+.double-score-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 9px 0 #1f2937;
+}
+
+.double-score-btn:active:not(:disabled) {
+  transform: translateY(4px);
+  box-shadow: 0 3px 0 #1f2937;
+}
+
+.double-score-btn.is-active {
+  background: #22c55e;
+  color: #1f2937;
+}
+
+.double-score-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  box-shadow: 0 4px 0 #1f2937;
+}
+
+/* Align score controls lower inside team panels */
+.score-controls {
+  align-items: center;
+}
+
+.score-controls > button:not(.double-score-btn) {
+  transform: translateY(20px);
+}
