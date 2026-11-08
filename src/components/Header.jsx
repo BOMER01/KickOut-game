@@ -25,8 +25,9 @@ export default function Header() {
                 className="navlink navlink--how"
                 data-fx="qbounce"
               >
-                كيف تلعب
                 <span className="q">؟</span>
+                كيف تلعب
+                
               </a>
             </li>
           </ul>
