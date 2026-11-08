@@ -4421,3 +4421,17 @@ body.intro .hud__nav--left {
     font-size: 9px;
   }
 }
+
+.footer__socials a svg {
+  width: 23px;
+  height: 23px;
+  display: block;
+  fill: currentColor;
+}
+
+.footer__socials a:hover {
+  background: #FACC15;
+  color: #1F2937;
+  border-color: #FACC15;
+  transform: translateY(-5px);
+}

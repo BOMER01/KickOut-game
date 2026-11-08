@@ -34,13 +34,29 @@ export default function Header() {
 
         {/* Center Logo */}
         <div className="hud__logo" id="hudLogo">
-          <Link to="/" className="logo" id="logo">
-            <img
-              className="logo_img"
-              src={logo}
-              alt="كيك أوت"
-            />
-          </Link>
+          
+          
+<Link
+  to="/"
+  className="logo"
+  id="logo"
+  onClick={(e) => {
+    if (window.location.pathname === "/") {
+      e.preventDefault();
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    }
+  }}
+>
+  <img
+    className="logo_img"
+    src={logo}
+    alt="كيك أوت"
+  />
+</Link>
+
         </div>
 
         {/* Left Navigation */}

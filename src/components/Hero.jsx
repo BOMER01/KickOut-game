@@ -88,6 +88,125 @@ export default function Hero() {
     };
   }, []);
 
+  
+  // Mouse Parallax — Background elements only
+  useEffect(() => {
+    const arena = arenaRef.current;
+    if (!arena) return;
+
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+
+    const finePointer = window.matchMedia(
+      "(hover: hover) and (pointer: fine)"
+    ).matches;
+
+    if (reduceMotion || !finePointer) return;
+
+    const layers = [
+      ...arena.querySelectorAll("[data-depth]:not([data-depth='hero'])"),
+    ].map((element) => {
+      const depth = element.dataset.depth;
+
+      const strength = {
+        "rope-back": 0.35,
+        "rope-front": 0.65,
+        "card-mid": 0.85,
+        "card-front": 1.2,
+      }[depth] ?? 0.5;
+
+      return {
+        element,
+        strength,
+        x: 0,
+        y: 0,
+      };
+    });
+
+    let targetX = 0;
+    let targetY = 0;
+    let rafId = null;
+
+    const animate = () => {
+      let moving = false;
+
+      layers.forEach((layer) => {
+        const nextX = targetX * layer.strength;
+        const nextY = targetY * layer.strength;
+
+        // Smooth follow
+        layer.x += (nextX - layer.x) * 0.055;
+        layer.y += (nextY - layer.y) * 0.055;
+
+        layer.element.style.setProperty("--px", `${layer.x}px`);
+        layer.element.style.setProperty("--py", `${layer.y}px`);
+
+        if (
+          Math.abs(nextX - layer.x) > 0.05 ||
+          Math.abs(nextY - layer.y) > 0.05
+        ) {
+          moving = true;
+        }
+      });
+
+      if (moving) {
+        rafId = requestAnimationFrame(animate);
+      } else {
+        rafId = null;
+      }
+    };
+
+    const startAnimation = () => {
+      if (rafId === null) {
+        rafId = requestAnimationFrame(animate);
+      }
+    };
+
+    const handlePointerMove = (event) => {
+      const rect = arena.getBoundingClientRect();
+
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+
+      const normalizedX = (event.clientX - centerX) / (rect.width / 2);
+      const normalizedY = (event.clientY - centerY) / (rect.height / 2);
+
+      const clamp = (value) => Math.max(-1, Math.min(1, value));
+
+      // Horizontal follows the mouse.
+      // Vertical moves in the opposite direction.
+      targetX = clamp(normalizedX) * 22;
+      targetY = -clamp(normalizedY) * 22;
+
+      startAnimation();
+    };
+
+    const handlePointerLeave = () => {
+      targetX = 0;
+      targetY = 0;
+      startAnimation();
+    };
+
+    arena.addEventListener("pointermove", handlePointerMove);
+    arena.addEventListener("pointerleave", handlePointerLeave);
+
+    return () => {
+      arena.removeEventListener("pointermove", handlePointerMove);
+      arena.removeEventListener("pointerleave", handlePointerLeave);
+
+      if (rafId !== null) {
+        cancelAnimationFrame(rafId);
+      }
+
+      layers.forEach(({ element }) => {
+        element.style.removeProperty("--px");
+        element.style.removeProperty("--py");
+      });
+    };
+  }, []);
+
+
   return (
     <section
       ref={arenaRef}
