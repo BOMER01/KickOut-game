@@ -652,3 +652,14 @@
     font-size: 11px;
   }
 }
+.question-text {
+  direction: rtl;
+  text-align: center;
+  unicode-bidi: isolate;
+  line-height: 1.8;
+}
+
+.question-text bdi {
+  unicode-bidi: isolate;
+  display: inline;
+}

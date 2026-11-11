@@ -293,7 +293,7 @@ function useExtraTime() {
 ========================= */}
 
 {question.question && (
-  <div className="modal__question">
+  <div className="modal__question mixed-text" dir="auto">
     {question.question}
   </div>
 )}
@@ -310,9 +310,9 @@ function useExtraTime() {
               الإجابة
             </div>
 
-            <div className="modal__answer-text">
-              {question.answer}
-            </div>
+           <div className="modal__answer-text mixed-text" dir="auto">
+  {question.answer}
+</div>
 
           </div>
         )}

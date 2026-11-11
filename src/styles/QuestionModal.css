@@ -939,3 +939,29 @@
     font-size: 12px;
   }
 }
+.question-text {
+  direction: rtl;
+  text-align: center;
+  unicode-bidi: isolate;
+  line-height: 1.8;
+}
+
+.question-text bdi {
+  unicode-bidi: isolate;
+  display: inline;
+}
+
+/* Correct Arabic + English text direction */
+.mixed-text {
+  direction: auto;
+  unicode-bidi: plaintext;
+  text-align: center;
+}
+
+/* Question and answer */
+.modal__question,
+.modal__answer-text {
+  unicode-bidi: plaintext;
+  text-align: center;
+  line-height: 1.6;
+}
