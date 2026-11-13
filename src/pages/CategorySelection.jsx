@@ -4,8 +4,13 @@ import { useNavigate } from "react-router-dom";
   import { db } from "../firebase"; */}
 
 import { getCategories } from "../services/categoryService";
-import { getRandomPack } from "../services/packService";
 import { useAuth } from "../context/AuthContext";
+
+import { getPacks } from "../services/packService";
+
+import {
+  getCompletedPackIds,
+} from "../services/categoryProgressService";
 
 
 
@@ -19,6 +24,11 @@ function CategorySelection() {
   const [teamOneCategories, setTeamOneCategories] = useState([]);
   const [teamTwoCategories, setTeamTwoCategories] = useState([]);
 
+  const [packsByCategory, setPacksByCategory] = useState({});
+const [completedCategoryIds, setCompletedCategoryIds] = useState([]);
+const [unavailableCategoryIds, setUnavailableCategoryIds] = useState([]);
+const [isLoadingCategories, setIsLoadingCategories] = useState(true);
+
   // 1 = الفريق الأول
   // 2 = الفريق الثاني
   const [currentTeam, setCurrentTeam] = useState(1);
@@ -29,17 +39,82 @@ function CategorySelection() {
  {/*const [gamesRemaining, setGamesRemaining] = useState(0);*/}
 
   useEffect(() => {
-    loadCategories();
-  }, []);
+  if (!currentUser) return;
 
-  async function loadCategories() {
+  loadCategories();
+}, [currentUser]);
+
+async function loadCategories() {
+  setIsLoadingCategories(true);
+
+  try {
+   const data = await getCategories();
+console.log("Categories loaded:", data);
+
+const packsResults = await Promise.all(
+  data.map(async (category) => {
     try {
-      const data = await getCategories();
-      setCategories(data);
+      const packs = await getPacks(category.id);
+      console.log(`Packs loaded: ${category.name}`, packs);
+
+      const completedPackIds = await getCompletedPackIds(
+        currentUser.uid,
+        category.id
+      );
+
+      console.log(
+        `Progress loaded: ${category.name}`,
+        completedPackIds
+      );
+
+      return {
+        categoryId: category.id,
+        packs,
+        completedPackIds,
+      };
     } catch (error) {
-      console.error(error);
+      console.error(
+        `Failed loading category data: ${category.name}`,
+        error
+      );
+      throw error;
     }
+  })
+);
+
+    const newPacksByCategory = {};
+    const completedIds = [];
+    const unavailableIds = [];
+
+    packsResults.forEach((result) => {
+      newPacksByCategory[result.categoryId] = result.packs;
+
+      if (result.packs.length === 0) {
+        unavailableIds.push(result.categoryId);
+        return;
+      }
+
+      const allCompleted = result.packs.every((pack) =>
+        result.completedPackIds.includes(pack.id)
+      );
+
+      if (allCompleted) {
+        completedIds.push(result.categoryId);
+      }
+    });
+
+    setCategories(data);
+    setPacksByCategory(newPacksByCategory);
+    setCompletedCategoryIds(completedIds);
+    setUnavailableCategoryIds(unavailableIds);
+
+  } catch (error) {
+    console.error("Failed to load categories:", error);
+    alert("حدث خطأ أثناء تحميل التصنيفات");
+  } finally {
+    setIsLoadingCategories(false);
   }
+}
   {/*useEffect(() => {
   async function loadGamesRemaining() {
     if (!currentUser) return;
@@ -95,6 +170,13 @@ function CategorySelection() {
   }
 
   function handleCategoryClick(category) {
+     if (
+    completedCategoryIds.includes(category.id) ||
+    unavailableCategoryIds.includes(category.id) ||
+    isLoadingCategories
+  ) {
+    return;
+  }
     // =========================
     // TEAM ONE
     // =========================
@@ -208,6 +290,11 @@ function CategorySelection() {
   // =========================
 
 async function handleNext() {
+  if (!currentUser) {
+    alert("يجب تسجيل الدخول أولاً");
+    return;
+  }
+
   try {
     const selectedCategories = [];
 
@@ -217,12 +304,23 @@ async function handleNext() {
     ];
 
     for (const category of allCategories) {
-      const randomPack = await getRandomPack(category.id);
+      // نعيد قراءة التقدم قبل بدء المباراة
+      const [packs, completedPackIds] = await Promise.all([
+        getPacks(category.id),
+        getCompletedPackIds(currentUser.uid, category.id),
+      ]);
 
-      if (!randomPack) {
+      // الحزم مرتبة حسب order من getPacks
+      const nextPack = packs.find(
+        (pack) => !completedPackIds.includes(pack.id)
+      );
+
+      if (!nextPack) {
         alert(
-          `الفئة ${category.name} لا تحتوي على أي Pack`
+          `لقد أكملت جميع الحزم في فئة ${category.name}`
         );
+
+        await loadCategories();
         return;
       }
 
@@ -235,8 +333,8 @@ async function handleNext() {
       selectedCategories.push({
         categoryId: category.id,
         categoryName: category.name,
-        packId: randomPack.id,
-        packName: randomPack.name,
+        packId: nextPack.id,
+        packName: nextPack.name,
         icon: categoryIcon?.symbol || "★",
       });
     }
@@ -246,8 +344,9 @@ async function handleNext() {
         categories: selectedCategories,
       },
     });
+
   } catch (error) {
-    console.error(error);
+    console.error("Failed to prepare game:", error);
     alert("حدث خطأ أثناء تجهيز المباراة");
   }
 }
@@ -509,9 +608,16 @@ async function handleNext() {
             const locked =
               currentTeam === 2 &&
               selectedByTeamOne;
+              const isCompleted = completedCategoryIds.includes(category.id);
+
+const isUnavailable = unavailableCategoryIds.includes(category.id);
 
             let cardClass =
               "category-card-new";
+
+              if (isCompleted || isUnavailable) {
+  cardClass += " completed";
+}
 
             const categoryColor = (
   category.color || "#3B82F6"
@@ -558,17 +664,28 @@ if (theme) {
             }
 
             return (
-              <button
+             <button
   key={category.id}
   type="button"
   className={cardClass}
+  disabled={
+    locked ||
+    isCompleted ||
+    isUnavailable ||
+    isLoadingCategories
+  }
   style={{
     "--category-color": categoryColor,
   }}
   onClick={() => {
-    if (!locked) {
+    if (!locked && !isCompleted && !isUnavailable) {
       handleCategoryClick(category);
     }
+    {isCompleted && (
+  <div className="category-check-new">
+    ✓
+  </div>
+)}
   }}
 >
 

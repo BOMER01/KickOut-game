@@ -1,6 +1,8 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import { markPacksCompleted } from "../services/categoryProgressService";
+
 
 import { useRef } from "react";
 import { saveGameHistory } from "../services/gameHistoryService";
@@ -29,6 +31,37 @@ function WinnerPage() {
 
   
 const historySaved = useRef(false);
+
+const packsSaved = useRef(false);
+
+useEffect(() => {
+  async function saveCompletedPacks() {
+    if (!currentUser || packsSaved.current) return;
+
+    if (!gameData.categories?.length) return;
+
+    packsSaved.current = true;
+
+    try {
+      await markPacksCompleted(
+        currentUser.uid,
+        gameData.categories
+      );
+
+      console.log("Completed packs saved successfully");
+
+    } catch (error) {
+      packsSaved.current = false;
+
+      console.error(
+        "Failed to save completed packs:",
+        error
+      );
+    }
+  }
+
+  saveCompletedPacks();
+}, [currentUser, gameData.categories]);
 
 useEffect(() => {
   async function saveFinishedGame() {
